@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.empMapper">
+    <!--회원가입-->
+    <insert id="insertUser" parameterType="EmpDTO">
+        INSERT INTO TB_EMPLOYEE ( EMP_NM
+                                , EMP_PWD
+                                , EMP_PHN
+                                , EMP_EML
+                                , EMP_ST_CD
+                                , EMP_RNK_CD
+                                , EMP_HR_DT
+                                , EMP_BRT_DT
+                                , IMG_NM
+                                , REG_DTM)
+        VALUES ( #{empNm}
+               , #{empPwd}
+               , #{empPhn}
+               , #{empEml}
+               , #{empStCd}
+               , #{empRnkCd}
+               , #{empHrDt}
+               , #{empBrtDt}
+               , #{imgNm}
+               , sysdate())
+    </insert>
+
+    <!--    사원 목록 페이지-->
+    <!--    사원 프로필 가져오기-->
+
+    <select id="empList" resultType="EmpDTO" parameterType="java.lang.Integer">
+        select EMP_NO     empno
+             , EMP_NM     empNm
+             , EMP_PHN    empPhn
+             , EMP_EML    empEml
+             , EMP_ST_CD  empStCd
+             , EMP_RNK_CD empRnkCd
+             , EMP_HR_DT  empHrDt
+             , EMP_BRT_DT empBrtDt
+             , REG_DTM
+        from TB_EMPLOYEE LIMIT #{startList}, #{listSize}
+    </select>
+
+    <!--    페이징 데이터 가져오기-->
+    <select id="getBoardListCnt" resultType="int">
+        SELECT count(*) as listCnt
+        FROM TB_EMPLOYEE
+    </select>
+    <!--    <select id="getTotalRow" resultType="java.lang.Integer" parameterType="java.util.Map">-->
+    <!--        SELECT COUNT(*)-->
+    <!--        FROM TB_EMPLOYEE-->
+    <!--        <if test="query !=null and data !=null">-->
+    <!--            and ${query} LIKE CONCAT('%', #{data}, '%')-->
+    <!--    </select>-->
+
+    <!--    사원 프로필 업데이트-->
+    <update id="empListUpdate" parameterType="EmpDTO">
+        UPDATE TB_EMPLOYEE
+        SET EMP_NM     = IFNULL(#{empNm}, EMP_NM),
+            EMP_PHN    = IFNULL(#{empPhn}, EMP_PHN),
+            EMP_EML    = IFNULL(#{empEml}, EMP_EML),
+            EMP_ST_CD  = IFNULL(#{empStCd}, EMP_ST_CD),
+            EMP_RNK_CD = IFNULL(#{empRnkCd}, EMP_RNK_CD),
+            EMP_HR_DT  = IFNULL(#{empHrDt}, EMP_HR_DT),
+            EMP_BRT_DT = IFNULL(#{empBrtDt}, EMP_BRT_DT),
+            EMP_SLR    = IFNULL(#{empSlr}, EMP_SLR)
+        WHERE EMP_NO = #{empNo}
+    </update>
+
+
+    <!--사원 프로필 검색-->
+    <select id="selectBoardList" resultType="EmpDTO" parameterType="EmpReq">
+        select EMP_NO empno
+        , EMP_NM empNm
+        , EMP_PHN empPhn
+        , EMP_EML empEml
+        , EMP_ST_CD empStCd
+        , EMP_RNK_CD empRnkCd
+        , EMP_HR_DT empHrDt
+        , EMP_BRT_DT empBrtDt
+        , REG_DTM
+        from TB_EMPLOYEE
+        <include refid="sqlSelectBoardList"/>
+        LIMIT #{startList}, #{listSize}
+    </select>
+    <!-- 검색 조건(이름,전화번호) -->
+    <sql id="sqlSelectBoardList">
+        <where>
+            <if test="empNm != null and empNm != ''">
+                and EMP_NM LIKE CONCAT('%', #{empNm}, '%')
+            </if>
+            <if test="empPhn != null and empPhn != ''">
+                and EMP_PHN LIKE CONCAT('%', #{empPhn}, '%')
+            </if>
+        </where>
+    </sql>
+
+    <!--목록 갯수-->
+    <select id="selectBoardListCnt" resultType="int" parameterType="EmpReq">
+        select count(*)
+        from TB_EMPLOYEE
+        <include refid="sqlSelectBoardList"/>
+    </select>
+
+    <!--파일 upload-->
+
+
+
+</mapper>
