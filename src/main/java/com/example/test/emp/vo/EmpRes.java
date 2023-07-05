@@ -10,5 +10,7 @@ public class EmpRes extends PageParam {
 
     private String query;
     private String data;
+    private int startList;
+
     private List<EmpDTO> list;
 }

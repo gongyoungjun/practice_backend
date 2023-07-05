@@ -59,6 +59,7 @@
     <update id="empListUpdate" parameterType="EmpDTO">
         UPDATE TB_EMPLOYEE
         SET EMP_NM     = IFNULL(#{empNm}, EMP_NM),
+            EMP_PWD    = IFNULL(#{empPwd}, EMP_PWD),
             EMP_PHN    = IFNULL(#{empPhn}, EMP_PHN),
             EMP_EML    = IFNULL(#{empEml}, EMP_EML),
             EMP_ST_CD  = IFNULL(#{empStCd}, EMP_ST_CD),

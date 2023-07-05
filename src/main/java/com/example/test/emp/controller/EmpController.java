@@ -5,10 +5,10 @@ import com.example.test.emp.service.EmpService;
 import com.example.test.emp.vo.EmpReq;
 import com.example.test.emp.vo.EmpRes;
 import com.example.test.emp.vo.FileVo;
-import com.example.test.emp.vo.Pagination;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @RestController
 @Slf4j
@@ -59,29 +58,9 @@ public class EmpController {
     }
 
     /**
-     * 사원목록
-     * get
-     * ResponseEntity = HttpHeader와 HttpBody를 포함하는 클래스
-     */
-    @Operation(summary = "사원 정보 목록", description = "사원 목록 조회 API")
-    @GetMapping("/empList")
-    public ResponseEntity<Pagination> getEmpList(Pagination pagination) throws Exception {
-
-        pagination.setListCnt(empService.getBoardListCnt());
-        // 사원 목록 가져오기
-        List<EmpDTO> empList = empService.empList(pagination);
-        if (empList == null) {
-            empList = new ArrayList<>(); // 빈 리스트로 초기화
-        }
-
-        pagination.setEmpList(empList);
-
-        return ResponseEntity.ok(pagination);
-    }
-
-    /**
      * 사원 정보 검색
      * post
+     *
      * @RequestBody : 요청 본문
      */
     @Operation(summary = "사원 정보 검색", description = "사원 정보 검색 API")
@@ -90,14 +69,23 @@ public class EmpController {
         EmpRes resultEmpRes = empService.getEmpListAndSearch(req);
         return ResponseEntity.ok(resultEmpRes);
     }
+
     /**
      * 사원목록
      * update
      */
+/*    @Operation(summary = "사원 프로필 업데이트", description = "사원 프로필을 업데이트하는 API")
+    @PutMapping("/update")
+    public ResponseEntity<String> setEmplistUpdate(@Valid @RequestBody EmpDTO empDTO) {
+
+        empService.empListUpdate(empDTO);
+        return ResponseEntity.ok("업데이트");
+    }*/
     @Operation(summary = "사원 프로필 업데이트", description = "사원 프로필을 업데이트하는 API")
     @PutMapping("/update")
-    public ResponseEntity<String> setEmplistUpdate(@RequestBody EmpDTO empDTO) {
+    public ResponseEntity<String> setEmplistUpdate(@Valid @RequestBody EmpDTO empDTO) {
         int result = empService.empListUpdate(empDTO);
+
         if (result > 0) {
             return ResponseEntity.ok("프로필이 성공적으로 업데이트되었습니다.");
         } else {

@@ -6,15 +6,14 @@ import com.example.test.emp.service.EmpService;
 import com.example.test.emp.vo.EmpReq;
 import com.example.test.emp.vo.EmpRes;
 import com.example.test.emp.vo.FileVo;
-import com.example.test.emp.vo.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 
 @Service
@@ -53,23 +52,6 @@ public class EmpServiceImpl implements EmpService {
     }
 
     /**
-     * 사원목록
-     * get
-     */
-    @Override
-    public List<EmpDTO> empList(Pagination pagination) {
-        return empDao.empList(pagination);
-    }
-/*    @Override
-    public List<EmpDTO> empList(Pagination pagination) {
-        int startList = pagination.getStartList();
-        int listSize = pagination.getListSize();
-
-        // empDao의 empList() 메서드를 호출하여 페이지네이션을 적용한 결과를 가져옴
-        return empDao.empList(startList, listSize);
-    }*/
-
-    /**
      * 사원 정보 검색
      */
     @Override
@@ -88,20 +70,43 @@ public class EmpServiceImpl implements EmpService {
         return res;
     }
 
+    @Override
+    public int selectBoardListCnt(EmpReq req) {
+        return empDao.selectBoardListCnt(req);
+    }
+
     /**
      * 사원목록
      * update
      */
+/*
+    public int empListUpdate(EmpDTO empDTO) {
+        if (StringUtils.isEmpty(empDTO.getEmpPwd())
+                | StringUtils.isEmpty(empDTO.getEmpNm())
+                || StringUtils.isEmpty(empDTO.getEmpPhn())) {
+            return 0;
+        }
+
+        return empDao.empListUpdate(empDTO);
+    }
+*/
     @Override
     public int empListUpdate(EmpDTO empDTO) {
         return empDao.empListUpdate(empDTO);
     }
 
-
-    @Override
-    public int selectBoardListCnt(EmpReq req) {
-        return empDao.selectBoardListCnt(req);
+/*    public int empListUpdate(EmpDTO empDTO) {
+    if (StringUtils.mpty(empDTO.getEmpPwd())){
+        return 0;
     }
+    if (StringUtils.isEmpty(empDTO.getEmpNm())){
+        return 0;
+    }
+    if (StringUtils.isEmpty(empDTO.getEmpPhn())){
+        return 0;
+    }
+    return empDao.empListUpdate(empDTO);
+}*/
 
     /**
      * 사원목록

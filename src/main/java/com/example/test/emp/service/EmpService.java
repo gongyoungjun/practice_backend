@@ -23,11 +23,8 @@ public interface EmpService {
      */
     EmpRes getEmpListAndSearch(EmpReq req) throws Exception;
 
-    /**
-     * 사원목록
-     * get
-     */
-    List<EmpDTO> empList(Pagination pagination);
+
+
 
     /**
      * 사원목록
