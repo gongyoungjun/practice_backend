@@ -2,6 +2,8 @@ package com.example.test.emp.controller;
 
 import com.example.test.emp.dto.EmpDTO;
 import com.example.test.emp.service.EmpService;
+import com.example.test.emp.vo.EmpReq;
+import com.example.test.emp.vo.EmpRes;
 import com.example.test.emp.vo.FileVo;
 import com.example.test.emp.vo.Pagination;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,9 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -60,7 +60,7 @@ public class EmpController {
 
     /**
      * 사원목록
-     * post
+     * get
      * ResponseEntity = HttpHeader와 HttpBody를 포함하는 클래스
      */
     @Operation(summary = "사원 정보 목록", description = "사원 목록 조회 API")
@@ -80,25 +80,16 @@ public class EmpController {
     }
 
     /**
-     * 사원 정보 목록 및 프로필 검색
+     * 사원 정보 검색
      * post
+     * @RequestBody : 요청 본문
      */
-
-    @Operation(summary = "사원 정보 목록 및 프로필 검색", description = "사원 정보 목록 조회 및 프로필 검색 API")
+    @Operation(summary = "사원 정보 검색", description = "사원 정보 검색 API")
     @PostMapping("/empList/search")
-    public ResponseEntity<Pagination> getEmpListAndSearch(
-            @RequestParam(required = false) String empNm,
-            @RequestParam(required = false) String empPhn,
-            @RequestBody Pagination pagination
-    ) {
-        try {
-            Pagination resultPagination = empService.getEmpListAndSearch(empNm, empPhn, pagination);
-            return ResponseEntity.ok(resultPagination);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<EmpReq> getEmpListAndSearch(@RequestBody EmpReq req) throws Exception {
+        EmpReq resultEmpReq = empService.getEmpListAndSearch(req);
+        return ResponseEntity.ok(resultEmpReq);
     }
-
     /**
      * 사원목록
      * update

@@ -16,8 +16,8 @@ public class testController {
     // User 추가
     @PostMapping("/user")
     public String add(@RequestBody testDTO user) {
-        users.add( new test(id, user.getNickname(), user.getPassword()) );
-        id ++;
+        users.add(new test(id, user.getNickname(), user.getPassword()));
+        id++;
         return "User 추가 완료";
     }
 

@@ -25,6 +25,6 @@ mybatis:
   mapper-locations: mapper/*Mapper.xml
   type-aliases-package: com.example.test.emp
 
-
+  #카멜 케이스
 #  configuration:
 #    map-underscore-to-camel-case: true

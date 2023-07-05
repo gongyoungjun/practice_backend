@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class EmpRes extends PageParam{
+public class EmpRes extends PageParam {
 
     private String query;
     private String data;

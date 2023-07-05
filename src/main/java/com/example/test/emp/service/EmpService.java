@@ -17,12 +17,12 @@ public interface EmpService {
      */
     int insertUser(EmpDTO empDTO);
 
-
     /**
      * 사원목록
      * 검색 및 목록
      */
-    Pagination getEmpListAndSearch(String empNm, String empPhn, Pagination pagination) throws Exception;
+    EmpReq getEmpListAndSearch(EmpReq req) throws Exception;
+
     /**
      * 사원목록
      * get
@@ -33,9 +33,11 @@ public interface EmpService {
      * 사원목록
      * search
      */
-    EmpRes selectBoardList(EmpReq req);
+
+
     int getBoardListCnt() throws Exception;
 
+    EmpRes selectBoardList(EmpReq req);
     int selectBoardListCnt(EmpReq req);
 
     /**
@@ -49,6 +51,7 @@ public interface EmpService {
      * upload
      */
     FileVo uploadFile(MultipartFile file) throws IOException;
+
     /**
      * 회원가입
      * 이미지

@@ -7,8 +7,9 @@ import com.example.test.emp.vo.EmpReq;
 import com.example.test.emp.vo.EmpRes;
 import com.example.test.emp.vo.FileVo;
 import com.example.test.emp.vo.Pagination;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,14 +21,18 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class EmpServiceImpl implements EmpService {
-    private static final String FILE_UPLOAD_PATH = "C:\\Users\\urbancode\\Desktop\\practice\\test-master\\src\\main\\resources\\static.image\\";
-    private final EmpDao empDao;
 
-    @Autowired
-    public EmpServiceImpl(EmpDao empDao) {
-        this.empDao = empDao;
-    }
+
+    /**
+     * system.getProperty : 시스템의 정보를 가져 올 때
+     * user.dir = 현재 디렉토리(폴더)
+     * user.home = 사용자 홈 디렉토리
+     * user.name = 사용자 계정
+     */
+    private static final String FILE_UPLOAD_PATH = System.getProperty("user.dir") + "/src/main/resources/static/image/";
+    private final EmpDao empDao;
 
     /**
      * 회원가입
@@ -49,36 +54,6 @@ public class EmpServiceImpl implements EmpService {
         return fileVo;
     }
 
-
-    /**
-     * 사원 정보 목록 및 프로필 검색
-     */
-    @Override
-    public Pagination getEmpListAndSearch(String empNm, String empPhn, Pagination pagination) throws Exception {
-        pagination.setListCnt(empDao.getBoardListCnt());
-        List<EmpDTO> empList;
-
-        if (empNm != null || empPhn != null) {
-            // 사원 이름 또는 전화번호가 존재하는 경우 사원 프로필을 검색
-            EmpReq req = new EmpReq();
-            req.setEmpNm(empNm);
-            req.setEmpPhn(empPhn);
-            EmpRes res = selectBoardList(req);
-            empList = res.getList();
-        } else {
-            // 사원 이름과 전화번호가 모두 존재하지 않는 경우 전체 사원 목록 조회
-            empList = empDao.empList(pagination);
-        }
-
-        if (empList == null) {
-            empList = new ArrayList<>(); // 빈 리스트로 초기화
-        }
-
-        pagination.setEmpList(empList);
-
-        return pagination;
-    }
-
     /**
      * 사원목록
      * get
@@ -87,15 +62,29 @@ public class EmpServiceImpl implements EmpService {
     public List<EmpDTO> empList(Pagination pagination) {
         return empDao.empList(pagination);
     }
+/*    @Override
+    public List<EmpDTO> empList(Pagination pagination) {
+        int startList = pagination.getStartList();
+        int listSize = pagination.getListSize();
+
+        // empDao의 empList() 메서드를 호출하여 페이지네이션을 적용한 결과를 가져옴
+        return empDao.empList(startList, listSize);
+    }*/
 
     /**
-     * 사원목록
-     * update
+     * 사원 정보 검색
      */
     @Override
-    public int empListUpdate(EmpDTO empDTO) {
-        return empDao.empListUpdate(empDTO);
+    public EmpReq getEmpListAndSearch(EmpReq req) {
+        // 프로필 검색 조건이 존재할 경우에만 사원 목록 조회
+        if (!StringUtils.isEmpty(req.getEmpNm()) || !StringUtils.isEmpty(req.getEmpPhn())) {
+            // 프로필 검색 조건을 이용하여 사원 목록 조회 로직 구현
+            List<EmpDTO> empList = selectBoardList(req).getList();
+            req.setEmpList(empList);
+        }
+        return req;
     }
+
 
     /**
      * 사원목록
@@ -116,6 +105,16 @@ public class EmpServiceImpl implements EmpService {
 
         return res;
     }
+
+    /**
+     * 사원목록
+     * update
+     */
+    @Override
+    public int empListUpdate(EmpDTO empDTO) {
+        return empDao.empListUpdate(empDTO);
+    }
+
 
     @Override
     public int selectBoardListCnt(EmpReq req) {
