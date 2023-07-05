@@ -86,9 +86,9 @@ public class EmpController {
      */
     @Operation(summary = "사원 정보 검색", description = "사원 정보 검색 API")
     @PostMapping("/empList/search")
-    public ResponseEntity<EmpReq> getEmpListAndSearch(@RequestBody EmpReq req) throws Exception {
-        EmpReq resultEmpReq = empService.getEmpListAndSearch(req);
-        return ResponseEntity.ok(resultEmpReq);
+    public ResponseEntity<EmpRes> getEmpListAndSearch(@RequestBody EmpReq req) throws Exception {
+        EmpRes resultEmpRes = empService.getEmpListAndSearch(req);
+        return ResponseEntity.ok(resultEmpRes);
     }
     /**
      * 사원목록

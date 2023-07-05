@@ -21,7 +21,7 @@ public interface EmpService {
      * 사원목록
      * 검색 및 목록
      */
-    EmpReq getEmpListAndSearch(EmpReq req) throws Exception;
+    EmpRes getEmpListAndSearch(EmpReq req) throws Exception;
 
     /**
      * 사원목록
@@ -33,11 +33,8 @@ public interface EmpService {
      * 사원목록
      * search
      */
-
-
     int getBoardListCnt() throws Exception;
 
-    EmpRes selectBoardList(EmpReq req);
     int selectBoardListCnt(EmpReq req);
 
     /**

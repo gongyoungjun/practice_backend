@@ -9,13 +9,11 @@ import com.example.test.emp.vo.FileVo;
 import com.example.test.emp.vo.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -75,23 +73,7 @@ public class EmpServiceImpl implements EmpService {
      * 사원 정보 검색
      */
     @Override
-    public EmpReq getEmpListAndSearch(EmpReq req) {
-        // 프로필 검색 조건이 존재할 경우에만 사원 목록 조회
-        if (!StringUtils.isEmpty(req.getEmpNm()) || !StringUtils.isEmpty(req.getEmpPhn())) {
-            // 프로필 검색 조건을 이용하여 사원 목록 조회 로직 구현
-            List<EmpDTO> empList = selectBoardList(req).getList();
-            req.setEmpList(empList);
-        }
-        return req;
-    }
-
-
-    /**
-     * 사원목록
-     * search
-     */
-    @Override
-    public EmpRes selectBoardList(EmpReq req) {
+    public EmpRes getEmpListAndSearch(EmpReq req) {
         EmpRes res = new EmpRes();
         res.setPage(req.getPage());
         res.setListSize(req.getListSize());
