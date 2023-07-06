@@ -40,6 +40,10 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     // Logback 의존
 //    implementation 'ch.qos.logback:logback-classic:1.2.6'
+    // security
+    //implementation 'org.springframework.boot:spring-boot-starter-security'
+    // validation //버전 다시 체크해서 업로드하자.
+    implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.0.1'
 }
 
 tasks.named('test') {
