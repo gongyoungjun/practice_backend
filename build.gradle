@@ -20,6 +20,15 @@ configurations {
 repositories {
     mavenCentral()
 }
+//message properties (제약사항을 지원하기 위해 사용)
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['src/main/resources', 'src/main/resources/messages']
+        }
+    }
+}
+
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -44,6 +53,8 @@ dependencies {
     //implementation 'org.springframework.boot:spring-boot-starter-security'
     // validation //버전 다시 체크해서 업로드하자.
     implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.0.1'
+
+
 }
 
 tasks.named('test') {

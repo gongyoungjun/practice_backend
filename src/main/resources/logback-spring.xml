@@ -44,9 +44,11 @@
         </rollingPolicy>
     </appender>
 
-<!--    <logger name="org.springframework.boot.autoconfigure" level="${LOG_LEVEL}" additivity="false">-->
-<!--        <appender-ref ref="CONSOLE" />-->
-<!--    </logger>-->
+
+   <!-- autoconfiguration 관련 -->
+    <logger name="org.springframework.boot.autoconfigure" level="${LOG_LEVEL}" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
 
     <logger name="com.example.test" level="debug" additivity="false">
         <appender-ref ref="CONSOLE" />

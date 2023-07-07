@@ -20,6 +20,17 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+  # message properties
+  messages:
+    basename: messages
+    encoding: UTF-8
+    # 기본 로케일(정의된 문자열)에서만 메시지를 검색할지 여부
+    fallback-to-system-locale: false
+    # 메시지를 항상 포맷 문자열로 처리
+    always-use-message-format: true
+    # 캐싱하지 않도록
+    #cache-duration: 3 # 3초간 만 캐싱
+
 
 mybatis:
   mapper-locations: mapper/*Mapper.xml
