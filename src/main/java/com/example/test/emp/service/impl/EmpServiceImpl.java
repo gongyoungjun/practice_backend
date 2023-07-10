@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 
 @Service
@@ -117,14 +114,31 @@ public class EmpServiceImpl implements EmpService {
      */
     @Override
     public FileVo uploadFile(MultipartFile file) throws IOException {
+        if (file.isEmpty()) {   //파일 확인
+            throw new IllegalArgumentException("파일이 없습니다.");
+        }
+        try (InputStream inputStream = file.getInputStream();
+             OutputStream outputStream = new FileOutputStream(FILE_UPLOAD_PATH + file.getOriginalFilename())) { //파일 이름,경로
+            byte[] buffer = new byte[8192]; //바이트 크기 // buffer - 데이터 임시 저장, 전송
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {  // 데이터를 읽기 // -1를 반환하면 데이터 x
+                outputStream.write(buffer, 0, bytesRead);  // bu 저장 데이터 -> out 출력
+            }
+        }
+        FileVo fileVo = new FileVo();
+        fileVo.setFileName(file.getOriginalFilename());
+        fileVo.setFilePath(FILE_UPLOAD_PATH + file.getOriginalFilename());
+
+        return fileVo;
+    }
+
+/*    @Override
+    public FileVo uploadFile(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("업로드할 파일이 없습니다.");
         }
         try {
             // 파일을 저장하거나 처리하는 로직을 구현
-
-            // MultipartFile을 In 변환 //file.g 호출
-            InputStream inputStream = file.getInputStream();
 
             // 예를 들어, 파일을 디스크에 저장하거나 데이터베이스에 저장
             // 여기에서는 파일의 이름과 경로를 생성하여 FileVo 객체에 저장하여 반환
@@ -132,13 +146,7 @@ public class EmpServiceImpl implements EmpService {
             String filePath = FILE_UPLOAD_PATH + fileName;
             File saveFile = new File(filePath);
 
-            //StremaUtils - 간단한 유티릴티 매서드
-            //StremaUtils.copy -  복사 작업 단순화 개발자가 직접 처리 x
-            //주어진 In 내용을  Out 복사 - 파일로 저장하기 위해
-            StreamUtils.copy(inputStream, new FileOutputStream(saveFile));
-
-            // 경로 지정해서 저장(처음 사용한 코드)
-            //file.transferTo(saveFile);
+            file.transferTo(saveFile);
 
             FileVo fileVo = new FileVo();
             fileVo.setFileName(fileName);
@@ -151,7 +159,7 @@ public class EmpServiceImpl implements EmpService {
             // throw - 던지다
             throw new IOException("파일 업로드 중 오류가 발생했습니다.", e);
         }
-    }
+    } */
+
 
 }
-
