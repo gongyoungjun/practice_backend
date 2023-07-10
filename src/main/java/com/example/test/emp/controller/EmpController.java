@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,7 @@ public class EmpController {
 
     private final EmpService empService;
 
+    private final MessageSourceAccessor MessageSourceAccessor;
 
     /**
      * 회원가입
@@ -90,11 +93,12 @@ public class EmpController {
         int result = empService.empListUpdate(empDTO);
 
         if (result > 0) {
-            return ResponseEntity.ok("프로필이 성공적으로 업데이트되었습니다.");
+            return ResponseEntity.ok(MessageSourceAccessor.getMessage("profileSuccess"));
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 업데이트에 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MessageSourceAccessor.getMessage("profileFail"));
         }
     }
+
     /**
      * file
      * InputStream
@@ -116,11 +120,22 @@ public class EmpController {
         }
     }
 
-
-
-
-
-
+    /**
+     * 파일
+     * inputstream
+     */
+    @Operation(summary = "파일 업로드", description = "파일 업로드")
+    @PostMapping("/fileUpload")
+    public String fileUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        try {
+            FileVo fileVo = empService.uploadFile(file);
+            request.setAttribute("fileVo", fileVo);
+            return "success-page";
+        } catch (IOException e) {
+            request.setAttribute("error", "파일 업로드 중 오류가 발생했습니다.");
+            return "error-page";
+        }
+    }
 
 
     /**

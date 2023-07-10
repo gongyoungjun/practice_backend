@@ -8,12 +8,14 @@ import com.example.test.emp.vo.EmpRes;
 import com.example.test.emp.vo.FileVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 
 @Service
@@ -79,17 +81,6 @@ public class EmpServiceImpl implements EmpService {
      * 사원목록
      * update
      */
-/*
-    public int empListUpdate(EmpDTO empDTO) {
-        if (StringUtils.isEmpty(empDTO.getEmpPwd())
-                | StringUtils.isEmpty(empDTO.getEmpNm())
-                || StringUtils.isEmpty(empDTO.getEmpPhn())) {
-            return 0;
-        }
-
-        return empDao.empListUpdate(empDTO);
-    }
-*/
     @Override
     public int empListUpdate(EmpDTO empDTO) {
         return empDao.empListUpdate(empDTO);
@@ -131,12 +122,23 @@ public class EmpServiceImpl implements EmpService {
         }
         try {
             // 파일을 저장하거나 처리하는 로직을 구현
+
+            // MultipartFile을 In 변환 //file.g 호출
+            InputStream inputStream = file.getInputStream();
+
             // 예를 들어, 파일을 디스크에 저장하거나 데이터베이스에 저장
             // 여기에서는 파일의 이름과 경로를 생성하여 FileVo 객체에 저장하여 반환
             String fileName = file.getOriginalFilename();
             String filePath = FILE_UPLOAD_PATH + fileName;
             File saveFile = new File(filePath);
-            file.transferTo(saveFile); // 경로 지정해서 저장.
+
+            //StremaUtils - 간단한 유티릴티 매서드
+            //StremaUtils.copy -  복사 작업 단순화 개발자가 직접 처리 x
+            //주어진 In 내용을  Out 복사 - 파일로 저장하기 위해
+            StreamUtils.copy(inputStream, new FileOutputStream(saveFile));
+
+            // 경로 지정해서 저장(처음 사용한 코드)
+            //file.transferTo(saveFile);
 
             FileVo fileVo = new FileVo();
             fileVo.setFileName(fileName);
