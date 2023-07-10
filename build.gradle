@@ -52,7 +52,7 @@ dependencies {
     // security
     //implementation 'org.springframework.boot:spring-boot-starter-security'
     // validation //버전 다시 체크해서 업로드하자.
-    implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 
 }

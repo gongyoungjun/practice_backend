@@ -16,7 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 
 @RestController
@@ -92,6 +95,33 @@ public class EmpController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 업데이트에 실패했습니다.");
         }
     }
+    /**
+     * file
+     * InputStream
+     */
+    @GetMapping("/file/{filename}")
+    public String processFile(@PathVariable String filename) {
+        try {
+            File file = new File("경로/" + filename); // 파일 경로를 적절히 지정해주세요
+            InputStream inputStream = new FileInputStream(file);
+            // FileInputStream을 사용하여 파일 처리 작업 수행
+            // 예: 파일을 읽어서 특정 로직을 적용하거나 응답으로 전송 등
+
+            inputStream.close(); // 작업이 끝나면 InputStream을 닫아주세요
+
+            return "파일 처리 완료";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "파일 처리 실패";
+        }
+    }
+
+
+
+
+
+
+
 
     /**
      * 파일

@@ -45,10 +45,12 @@ public class testController {
         ArrayList<String> msgs = new ArrayList<>();
 
         msgs.add(messageSource.getMessage("test",null,locale ));
+        msgs.add(messageSource.getMessage("save",null,locale ));
 
         msgs.add(messageSource.getMessage("test",null, locale.ENGLISH));
+        msgs.add(messageSource.getMessage("save",null, locale.ENGLISH));
 
-        msgs.add(messageSource.getMessage("test",null, locale.KOREA));
+        msgs.add(messageSource.getMessage("test",null, locale.KOREAN));
 
 
         return msgs;
