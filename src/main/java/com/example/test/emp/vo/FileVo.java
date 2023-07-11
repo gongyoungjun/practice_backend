@@ -8,6 +8,6 @@ public class FileVo {
     private String imgNm;
     private String fileName;
     private String filePath;
-
+    private String fileContent;
 
 }

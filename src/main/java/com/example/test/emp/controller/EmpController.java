@@ -5,23 +5,28 @@ import com.example.test.emp.service.EmpService;
 import com.example.test.emp.vo.EmpReq;
 import com.example.test.emp.vo.EmpRes;
 import com.example.test.emp.vo.FileVo;
+import com.example.test.emp.vo.Lesson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -100,27 +105,6 @@ public class EmpController {
     }
 
     /**
-     * file
-     * InputStream
-     */
-    @GetMapping("/file/{filename}")
-    public String processFile(@PathVariable String filename) {
-        try {
-            File file = new File("경로/" + filename); // 파일 경로를 적절히 지정해주세요
-            InputStream inputStream = new FileInputStream(file);
-            // FileInputStream을 사용하여 파일 처리 작업 수행
-            // 예: 파일을 읽어서 특정 로직을 적용하거나 응답으로 전송 등
-
-            inputStream.close(); // 작업이 끝나면 InputStream을 닫아주세요
-
-            return "파일 처리 완료";
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "파일 처리 실패";
-        }
-    }
-
-    /**
      * 파일
      * inputstream
      */
@@ -159,5 +143,57 @@ public class EmpController {
             return "error-page";
         }
     }
+
+
+    /**
+     * 파일
+     * losson
+     *
+     * @PathVariable = 템플릿 변수 처리 {}
+     */
+    @Operation(summary = "Lesson", description = "Lesson")
+    @GetMapping("/read-file/{fileName}")
+    public List<Lesson> readFile(@PathVariable String fileName) {
+        return empService.readFile(fileName);
+    }
+
+    /**
+     * 파일
+     * lesson
+     * 횟수 별
+     * 인원 수
+     */
+    @Operation(summary = "Registered/인원수", description = "Registered/인원수")
+    @GetMapping("/read-file/registered/count/{fileName}")
+    public ResponseEntity<List<Lesson>> getRegisteredLessons(@PathVariable String fileName) {
+        List<Lesson> registeredLessons = empService.registered(fileName);
+        return ResponseEntity.ok(registeredLessons);
+    }
+
+    /**
+     * 파일
+     * lesson
+     * 횟수 별
+     * 등록된 사람들
+     */
+    @Operation(summary = "Registered/사람", description = "Registered/사람")
+    @GetMapping("/read-file/registered/person/{fileName}")
+    public ResponseEntity<Map<String, List<String>>> getRegisteredByCount(@PathVariable String fileName) {
+        Map<String, List<String>> registeredMap = empService.getRegisteredByCount(fileName);
+        return ResponseEntity.ok(registeredMap);
+    }
+
+    /**
+     * 엑셀
+     * 업로드
+     */
+    @Operation(summary = "엑셀 업로드", description = "엑셀 업로드")
+    @GetMapping("/excel/read")
+    public String readExcel() {
+        empService.readExcelFile();
+        return "Excel file read successfully.";
+    }
+
+
 }
 
