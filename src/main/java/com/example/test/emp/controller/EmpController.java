@@ -1,22 +1,14 @@
 package com.example.test.emp.controller;
 
+import com.example.test.emp.config.Code;
 import com.example.test.emp.dto.EmpDTO;
 import com.example.test.emp.service.EmpService;
-import com.example.test.emp.vo.EmpReq;
-import com.example.test.emp.vo.EmpRes;
-import com.example.test.emp.vo.FileVo;
-import com.example.test.emp.vo.Lesson;
+import com.example.test.emp.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -49,7 +39,7 @@ public class EmpController {
     public ResponseEntity<String> insertUser(@RequestPart("file") MultipartFile file, @RequestBody EmpDTO empDTO) {
         try {
             // 실패(99)
-            String code = "99";
+            String code = Code.FAIL;
             // 회원가입 로직 구현
             log.debug("회원가입 {}", empDTO);
             // 파일 업로드 처리
@@ -59,7 +49,7 @@ public class EmpController {
             // res 성공적으로 등록(00) 여부 판단
             int res = empService.insertUser(empDTO);
             if (res > 0) {
-                code = "00";
+                code = Code.SUCCESS;
             }
             // ResponseEntity -> http에 해당하는 HttpHeader와 HttpBody를 포함하는 클래스
             return ResponseEntity.ok(code); // 코드 반환 00,99
@@ -85,13 +75,6 @@ public class EmpController {
      * 사원목록
      * update
      */
-/*    @Operation(summary = "사원 프로필 업데이트", description = "사원 프로필을 업데이트하는 API")
-    @PutMapping("/update")
-    public ResponseEntity<String> setEmplistUpdate(@Valid @RequestBody EmpDTO empDTO) {
-
-        empService.empListUpdate(empDTO);
-        return ResponseEntity.ok("업데이트");
-    }*/
     @Operation(summary = "사원 프로필 업데이트", description = "사원 프로필을 업데이트하는 API")
     @PutMapping("/update")
     public ResponseEntity<String> setEmplistUpdate(@Valid @RequestBody EmpDTO empDTO) {
@@ -104,23 +87,6 @@ public class EmpController {
         }
     }
 
-    /**
-     * 파일
-     * inputstream
-     */
-    @Operation(summary = "파일 업로드", description = "파일 업로드")
-    @PostMapping("/fileUpload")
-    public String fileUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        try {
-            FileVo fileVo = empService.uploadFile(file);
-            request.setAttribute("fileVo", fileVo);
-            return "success-page";
-        } catch (IOException e) {
-            request.setAttribute("error", "파일 업로드 중 오류가 발생했습니다.");
-            return "error-page";
-        }
-    }
-
 
     /**
      * 파일
@@ -128,19 +94,19 @@ public class EmpController {
      * isEmpty = 문자열 0인경우 true 리턴
      * IOException : throw(던지다)된 예외에 대한 기본 클래스
      * RequestParam - 요청 매개변수
-     * RequestPart -  multipart/form-data에 특화된 어노테이션
-     * setAttribute - 태그 속성 추가 하기
+     *
      */
+
+    //수정해야함.
     @Operation(summary = "파일 업로드", description = "파일 업로드")
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
-            FileVo fileVo = empService.uploadFile(file);
-            request.setAttribute("fileVo", fileVo);
-            return "success-page";
+            empService.uploadFile(file);
+            return ResponseEntity.ok(Code.SUCCESS);
         } catch (IOException e) {
-            request.setAttribute("error", "파일 업로드 중 오류가 발생했습니다.");
-            return "error-page";
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Code.FAIL);
         }
     }
 
@@ -148,40 +114,27 @@ public class EmpController {
     /**
      * 파일
      * losson
-     *
      * @PathVariable = 템플릿 변수 처리 {}
      */
     @Operation(summary = "Lesson", description = "Lesson")
     @GetMapping("/read-file/{fileName}")
-    public List<Lesson> readFile(@PathVariable String fileName) {
-        return empService.readFile(fileName);
+    public ResponseEntity<LessonRes> readFile(@PathVariable String fileName) {
+        LessonRes response;
+        String code;
+
+        try {
+            List<Lesson> lessonList = empService.readFile(fileName);
+            code = Code.SUCCESS;
+            response = new LessonRes(code, lessonList);
+            return ResponseEntity.ok(response);
+        } catch (LessonException e) {
+            e.printStackTrace();
+            code = Code.FAIL;
+            response = new LessonRes(code, null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
-    /**
-     * 파일
-     * lesson
-     * 횟수 별
-     * 인원 수
-     */
-    @Operation(summary = "Registered/인원수", description = "Registered/인원수")
-    @GetMapping("/read-file/registered/count/{fileName}")
-    public ResponseEntity<List<Lesson>> getRegisteredLessons(@PathVariable String fileName) {
-        List<Lesson> registeredLessons = empService.registered(fileName);
-        return ResponseEntity.ok(registeredLessons);
-    }
-
-    /**
-     * 파일
-     * lesson
-     * 횟수 별
-     * 등록된 사람들
-     */
-    @Operation(summary = "Registered/사람", description = "Registered/사람")
-    @GetMapping("/read-file/registered/person/{fileName}")
-    public ResponseEntity<Map<String, List<String>>> getRegisteredByCount(@PathVariable String fileName) {
-        Map<String, List<String>> registeredMap = empService.getRegisteredByCount(fileName);
-        return ResponseEntity.ok(registeredMap);
-    }
 
     /**
      * 엑셀

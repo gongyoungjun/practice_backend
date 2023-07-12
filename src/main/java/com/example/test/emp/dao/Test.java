@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class test {
+public class Test {
     private int id;
     private String nickname;
     private String password;

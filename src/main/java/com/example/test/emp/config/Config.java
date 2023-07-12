@@ -7,7 +7,7 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 
 @Configuration
-public class config {
+public class Config {
 
 
     /**
