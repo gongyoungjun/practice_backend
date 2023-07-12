@@ -85,7 +85,7 @@ public class EmpServiceImpl implements EmpService {
     public int empListUpdate(EmpDTO empDTO) {
         return empDao.empListUpdate(empDTO);
     }
-    
+
 
     /**
      * 사원목록
@@ -177,7 +177,7 @@ public class EmpServiceImpl implements EmpService {
             throw new LessonException("오류 발생");
         }
 
-        lessonRes = new LessonRes(Code.SUCCESS, lessonList, count10, count20);
+        lessonRes = new LessonRes(lessonList, count10, count20);
         return lessonRes;
     }
 

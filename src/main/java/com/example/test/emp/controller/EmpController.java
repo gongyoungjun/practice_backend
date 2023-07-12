@@ -120,20 +120,19 @@ public class EmpController {
     @Operation(summary = "Lesson", description = "Lesson")
     @GetMapping("/read-file/{fileName}")
     public ResponseEntity<LessonRes> readFile(@PathVariable String fileName) {
-        String code;
-        LessonRes lessonRes;
+        String code = Code.FAIL;;
+        LessonRes lessonRes = null;
         try {
             lessonRes = empService.readFile(fileName);
-            code = Code.FAIL; // 실패(99)
             if (lessonRes != null && !lessonRes.getLessonList().isEmpty()) {
                 code = Code.SUCCESS; // 실패(00)
             }
-            lessonRes = new LessonRes(code,lessonRes.getLessonList(), lessonRes.getCount10(), lessonRes.getCount20());
-            return ResponseEntity.ok(lessonRes);
+
         } catch (LessonException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            code = Code.SUCCESS;
         }
+        return ResponseEntity.ok(lessonRes);
     }
 
 
