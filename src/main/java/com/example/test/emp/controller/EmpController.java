@@ -3,7 +3,10 @@ package com.example.test.emp.controller;
 import com.example.test.emp.config.Code;
 import com.example.test.emp.dto.EmpDTO;
 import com.example.test.emp.service.EmpService;
-import com.example.test.emp.vo.*;
+import com.example.test.emp.vo.EmpReq;
+import com.example.test.emp.vo.EmpRes;
+import com.example.test.emp.vo.LessonException;
+import com.example.test.emp.vo.LessonRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -16,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 
 @RestController

@@ -85,19 +85,7 @@ public class EmpServiceImpl implements EmpService {
     public int empListUpdate(EmpDTO empDTO) {
         return empDao.empListUpdate(empDTO);
     }
-
-/*    public int empListUpdate(EmpDTO empDTO) {
-    if (StringUtils.mpty(empDTO.getEmpPwd())){
-        return 0;
-    }
-    if (StringUtils.isEmpty(empDTO.getEmpNm())){
-        return 0;
-    }
-    if (StringUtils.isEmpty(empDTO.getEmpPhn())){
-        return 0;
-    }
-    return empDao.empListUpdate(empDTO);
-}*/
+    
 
     /**
      * 사원목록
@@ -189,9 +177,10 @@ public class EmpServiceImpl implements EmpService {
             throw new LessonException("오류 발생");
         }
 
-       lessonRes = new LessonRes(Code.SUCCESS, lessonList, count10, count20);
+        lessonRes = new LessonRes(Code.SUCCESS, lessonList, count10, count20);
         return lessonRes;
     }
+
     /**
      * 엑셀
      * 업로드
