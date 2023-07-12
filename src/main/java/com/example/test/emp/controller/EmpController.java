@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -94,10 +95,8 @@ public class EmpController {
      * isEmpty = 문자열 0인경우 true 리턴
      * IOException : throw(던지다)된 예외에 대한 기본 클래스
      * RequestParam - 요청 매개변수
-     *
      */
 
-    //수정해야함.
     @Operation(summary = "파일 업로드", description = "파일 업로드")
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -114,24 +113,25 @@ public class EmpController {
     /**
      * 파일
      * losson
+     *
      * @PathVariable = 템플릿 변수 처리 {}
      */
     @Operation(summary = "Lesson", description = "Lesson")
     @GetMapping("/read-file/{fileName}")
     public ResponseEntity<LessonRes> readFile(@PathVariable String fileName) {
-        LessonRes response;
         String code;
-
+        LessonRes lessonRes;
         try {
-            List<Lesson> lessonList = empService.readFile(fileName);
-            code = Code.SUCCESS;
-            response = new LessonRes(code, lessonList);
-            return ResponseEntity.ok(response);
+            lessonRes = empService.readFile(fileName);
+            code = Code.FAIL; // 실패(99)
+            if (lessonRes != null && !lessonRes.getLessonList().isEmpty()) {
+                code = Code.SUCCESS; // 실패(00)
+            }
+            lessonRes = new LessonRes(code,lessonRes.getLessonList(), lessonRes.getCount10(), lessonRes.getCount20());
+            return ResponseEntity.ok(lessonRes);
         } catch (LessonException e) {
             e.printStackTrace();
-            code = Code.FAIL;
-            response = new LessonRes(code, null);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

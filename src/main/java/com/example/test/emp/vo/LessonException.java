@@ -6,7 +6,6 @@ import lombok.Data;
 public class LessonException extends RuntimeException{
 
 
-
     public LessonException() {
 
     }

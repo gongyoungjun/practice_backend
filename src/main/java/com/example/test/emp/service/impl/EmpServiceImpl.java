@@ -1,5 +1,6 @@
 package com.example.test.emp.service.impl;
 
+import com.example.test.emp.config.Code;
 import com.example.test.emp.dao.EmpDao;
 import com.example.test.emp.dto.EmpDTO;
 import com.example.test.emp.service.EmpService;
@@ -142,15 +143,16 @@ public class EmpServiceImpl implements EmpService {
      */
 
     @Override
-    public List<Lesson> readFile(String fileName) {
+    public LessonRes readFile(String fileName) {
         List<Lesson> lessonList = new ArrayList<>();
-        //bufferedReader 가 close() 메소드가 있다.
-        //안에 사용하면 별도로 close()메소드를 호출 해야함.
+        LessonRes lessonRes;
+        int count10 = 0;
+        int count20 = 0;
+        // bufferedReader 가 close() 메소드가 있다.
+        // 안에 사용하면 별도로 close()메소드를 호출 해야함.
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath + fileName))) {
             String line;
             Lesson lesson;
-            int count10 = 0;
-            int count20 = 0;
 
             while (!(line = bufferedReader.readLine()).isEmpty()) {
                 String[] tokens = line.split(" ");
@@ -172,34 +174,24 @@ public class EmpServiceImpl implements EmpService {
                 lesson.setRemainingLessons(remainingCount);
 
                 // 10회/20회 구분
-                if (remainingCount == 10) {
+                if (registeredLessons == 10) {
                     count10++;
-                } else if (remainingCount == 20) {
+                } else if (registeredLessons == 20) {
                     count20++;
                 }
 
                 lessonList.add(lesson);
-
             }
-
-            Lesson lesson10 = new Lesson();
-            lesson10.setName("Count 10");
-            lesson10.setRemainingLessons(count10);
-            lessonList.add(lesson10);
-
-            Lesson lesson20 = new Lesson();
-            lesson20.setName("Count 20");
-            lesson20.setRemainingLessons(count20);
-            lessonList.add(lesson20);
 
         } catch (IOException e) {
             e.printStackTrace();
             // 오류 처리
+            throw new LessonException("오류 발생");
         }
 
-        return lessonList;
+       lessonRes = new LessonRes(Code.SUCCESS, lessonList, count10, count20);
+        return lessonRes;
     }
-
     /**
      * 엑셀
      * 업로드

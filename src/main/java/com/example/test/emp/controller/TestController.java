@@ -1,11 +1,15 @@
 package com.example.test.emp.controller;
 
+import com.example.test.emp.config.Code;
 import com.example.test.emp.dto.TestDTO;
 import com.example.test.emp.dao.Test;
 import com.example.test.emp.vo.Lesson;
+import com.example.test.emp.vo.LessonException;
+import com.example.test.emp.vo.LessonRes;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -231,6 +232,41 @@ public class TestController {
         empService.empListUpdate(empDTO);
         return ResponseEntity.ok("업데이트");
     }*/
+    /**
+     * 파일
+     * losson
+     * @PathVariable = 템플릿 변수 처리 {}
+     */
+/*    @GetMapping("/read-file/{fileName}")
+    public ResponseEntity<LessonRes> readFile(@PathVariable String fileName) {
+        LessonRes response;
+        String code;
+
+        try {
+            LessonRes lessonRes = empService.readFile(fileName);
+            code = Code.SUCCESS;
+            response = new LessonRes(code, lessonRes.getLessonList(), lessonRes.getCount10(), lessonRes.getCount20());
+            return ResponseEntity.ok(response);
+        } catch (LessonException e) {
+            e.printStackTrace();
+            code = Code.FAIL;
+            response = new LessonRes(code, Collections.emptyList(), 0, 0);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }*/
+/*    @Operation(summary = "Lesson", description = "Lesson")
+    @GetMapping("/read-file/{fileName}")
+    public ResponseEntity<LessonRes> readFile(@PathVariable String fileName) {
+        try {
+            LessonRes lessonRes = empService.readFile(fileName);
+            return ResponseEntity.ok(new LessonRes(lessonRes.getLessonList(), lessonRes.getCount10(), lessonRes.getCount20()));
+        } catch (LessonException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }*/
+
+
 }
 
 

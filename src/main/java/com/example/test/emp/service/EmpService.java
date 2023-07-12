@@ -53,7 +53,7 @@ public interface EmpService {
      * 파일
      * lesson
      */
-    List<Lesson> readFile(String fileName);
+    LessonRes readFile(String fileName);
 
     /**
      * 엑셀
