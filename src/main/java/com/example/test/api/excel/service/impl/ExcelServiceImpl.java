@@ -65,15 +65,16 @@ public class ExcelServiceImpl implements ExcelService {
      */
     @Override
     public int downloadExcel(String filename) {
-        Workbook workbook = null;
-        Sheet sheet = null;
-        Row row = null;
-        Cell cell = null;
+        File file = new File(FILE_DOWNLOAD + filename + ".xlsx");
 
-        try {
+        Sheet sheet;
+        Row row;
+        Cell cell;
+
+        try (FileOutputStream fos = new FileOutputStream(file);
+             Workbook workbook = new XSSFWorkbook()) {
             int rowNo = 0; // 행의 갯수
 
-            workbook = new XSSFWorkbook();
             sheet = workbook.createSheet("워크시트1"); // 워크시트 이름 설정
 
             // 셀 병합
@@ -95,14 +96,6 @@ public class ExcelServiceImpl implements ExcelService {
             cell.setCellValue("셀3");
             cell = row.createCell(3);
             cell.setCellValue("셀4");
-
-            String localFile = FILE_DOWNLOAD + filename + ".xlsx";
-
-            File file = new File(localFile);
-            FileOutputStream fos = null;
-            fos = new FileOutputStream(file);
-            workbook.write(fos);
-            fos.close();
 
             return 1; // 파일 작성이 성공 1
         } catch (Exception e) {
