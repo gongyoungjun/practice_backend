@@ -1,6 +1,7 @@
 package com.example.test.api.excel.service.impl;
 
 import com.example.test.api.excel.service.ExcelService;
+import com.example.test.api.excel.vo.Excel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -12,6 +13,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -28,36 +31,42 @@ public class ExcelServiceImpl implements ExcelService {
      * @return
      */
     @Override
-    public int readExcel(String filename) {
+    public List<Excel> readExcel(String filename) {
         File file = new File(FILE_PATH + filename);
+        List<Excel> excelList = new ArrayList<>();
 
         try (FileInputStream fis = new FileInputStream(file);
-
-             // 엑셀 파일로 Workbook instance를 생성한다.
              Workbook workbook = WorkbookFactory.create(fis)) {
 
-            // 엑셀 파일에서 첫 번째 시트 가져오기
             Sheet sheet = workbook.getSheetAt(0);
+            DataFormatter dataFormatter = new DataFormatter();
 
-            // 각 행 조회
             for (Row row : sheet) {
-                // 각 셀 반복
-                for (Cell cell : row) {
-                    // 셀 내용 읽기
-                    String cellValue = cell.getStringCellValue();
+                Excel excel = new Excel();
 
-                    //\t 탭만큼
-                    System.out.print(cellValue + "\t");
+                excel.setNum(dataFormatter.formatCellValue(row.getCell(0)));
+                excel.setName(dataFormatter.formatCellValue(row.getCell(1)));
+                // registeredLessonsCell = rlc
+                Cell rlc = row.getCell(2);
+                if (rlc.getCellType() == CellType.NUMERIC) {
+                    excel.setRegisteredLessons((int) rlc.getNumericCellValue());
+                } else {
+                    excel.setRegisteredLessons(0); // 숫자가 아닌 경우 0으로 설정하거나 다른 처리 방식 선택
                 }
-                System.out.println();
-                return 1; // 파일 작성이 성공 1
+
+                excel.setReceivedLessons(dataFormatter.formatCellValue(row.getCell(3)));
+                excel.setRegisteredDate(dataFormatter.formatCellValue(row.getCell(4)));
+
+                excelList.add(excel);
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return 0;  // 예외나 실패 0
+        return excelList;
     }
+
 
     /**
      * 엑셀

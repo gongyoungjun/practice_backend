@@ -103,11 +103,11 @@ public class EmpController {
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             empService.uploadFile(file);
-            return ResponseEntity.ok(Code.SUCCESS);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Code.FAIL);
         }
+        return ResponseEntity.ok(Code.SUCCESS);
     }
 
 
