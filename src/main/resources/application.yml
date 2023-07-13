@@ -34,7 +34,7 @@ spring:
 
 mybatis:
   mapper-locations: mapper/*Mapper.xml
-  type-aliases-package: com.example.test.emp
+  type-aliases-package: com.example.test.api
 
   #카멜 케이스
 #  configuration:
