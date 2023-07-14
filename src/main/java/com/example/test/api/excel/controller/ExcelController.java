@@ -5,6 +5,7 @@ import com.example.test.api.excel.service.ExcelService;
 import com.example.test.api.excel.vo.Excel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -47,17 +48,14 @@ public class ExcelController {
      * 다운로드
      */
     @Operation(summary = "엑셀 다운로드", description = "엑셀 다운로드")
-    @GetMapping("/download")
-    public ResponseEntity<String> downloadExcel(@RequestParam String filename) {
-        String code = Code.FAIL;
-
-        int result = excelService.downloadExcel(filename);
-
-        if (result > 0) {
-            code = Code.SUCCESS;
+    @GetMapping("/get/excel/users")
+    public void excel(HttpServletResponse res) {
+        try {
+            // 엑셀 다운로드 함수
+            excelService.downloadExcel(res);
+        }catch(Exception e) {
+            e.printStackTrace();
         }
-
-        return ResponseEntity.ok(code);
     }
 
 }

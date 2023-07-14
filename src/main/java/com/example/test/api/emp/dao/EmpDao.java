@@ -25,6 +25,7 @@ public class EmpDao {
 
     /**
      * 사원 목록 조회
+     *
      * @param req 사원 요청 정보
      * @return 사원 목록
      */
@@ -34,6 +35,7 @@ public class EmpDao {
 
     /**
      * 사원 목록 개수 조회
+     *
      * @return 사원 목록 개수
      * @throws Exception 예외
      */
@@ -43,12 +45,14 @@ public class EmpDao {
 
     /**
      * 사원 목록 조회
+     *
      * @param res 사원 응답 정보
      * @return 사원 목록
      */
     public List<EmpDTO> empList(Pagination pagination) {
         return sqlSession.selectList("mapper.empMapper.empList", pagination);
     }
+
     /**
      * 사원목록
      * update
@@ -59,7 +63,6 @@ public class EmpDao {
     }
 
 
-
     /**
      * 사원목록
      * 전체
@@ -68,10 +71,6 @@ public class EmpDao {
         return sqlSession.selectOne("mapper.empMapper.selectBoardListCnt");
     }
 
-    /**
-     * 파일
-     * upload
-     */
 
 }
 

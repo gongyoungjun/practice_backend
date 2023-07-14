@@ -1,17 +1,17 @@
 package com.example.test.api.excel.service.impl;
 
+import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.excel.service.ExcelService;
 import com.example.test.api.excel.vo.Excel;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ExcelServiceImpl implements ExcelService {
 
     private static final String FILE_PATH = System.getProperty("user.dir") + "/src/main/resources/static/excel/";
-    private static final String FILE_DOWNLOAD = System.getProperty("user.dir") + "/src/main/resources/static/excel/";
+
 
     /**
      * 엑셀
@@ -73,44 +73,36 @@ public class ExcelServiceImpl implements ExcelService {
      * 다운로드
      */
     @Override
-    public int downloadExcel(String filename) {
-        File file = new File(FILE_DOWNLOAD + filename + ".xlsx");
+    public List<EmpDTO> downloadExcel(HttpServletResponse response) throws IOException {
+        List<EmpDTO> list = new ArrayList<>();
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet("게시판글들");
+        int rowNo = 0;
 
-        Sheet sheet;
-        Row row;
-        Cell cell;
+        Row headerRow = sheet.createRow(rowNo++);
+        headerRow.createCell(0).setCellValue("사원 번호");
+        headerRow.createCell(1).setCellValue("이름");
+        headerRow.createCell(2).setCellValue("전화번호");
+        headerRow.createCell(3).setCellValue("이메일");
 
-        try (FileOutputStream fos = new FileOutputStream(file);
-             Workbook workbook = new XSSFWorkbook()) {
-            int rowNo = 0; // 행의 갯수
 
-            sheet = workbook.createSheet("워크시트1"); // 워크시트 이름 설정
-
-            // 셀 병합
-            // 첫행, 마지막행, 첫열, 마지막열 병합
-            sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 3));
-
-            // 타이틀 생성
-            row = sheet.createRow(rowNo++); // 행 객체 추가
-            cell = row.createCell(0); // 추가한 행에 셀 객체 추가
-            cell.setCellValue("타이틀 입니다"); // 데이터 입력
-
-            sheet.createRow(rowNo++);
-            row = sheet.createRow(rowNo++);
-            cell = row.createCell(0);
-            cell.setCellValue("셀1");
-            cell = row.createCell(1);
-            cell.setCellValue("셀2");
-            cell = row.createCell(2);
-            cell.setCellValue("셀3");
-            cell = row.createCell(3);
-            cell.setCellValue("셀4");
-
-            return 1; // 파일 작성이 성공 1
-        } catch (Exception e) {
-            e.printStackTrace();
+/*      db 받는 곳
+        for (EmpDTO empDTO : list) {
+            Row row = sheet.createRow(rowNo++);
+            row.createCell(0).setCellValue(empDTO.getEmpNo());
+            row.createCell(1).setCellValue(empDTO.getEmpNm());
+            row.createCell(2).setCellValue(empDTO.getEmpPhn());
+            row.createCell(3).setCellValue(empDTO.getEmpEml());
         }
+*/
 
-        return 0; // 예외나 실패 0
+        response.setContentType("ms-vnd/excel");
+        response.setHeader("Content-Disposition", "attachment;filename=empList.xls");
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
+        return list;
     }
+
+
 }
