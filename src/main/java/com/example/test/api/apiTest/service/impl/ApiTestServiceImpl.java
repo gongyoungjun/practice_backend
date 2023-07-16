@@ -18,43 +18,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class ApiTestServiceImpl implements ApiTestService {
-    @Override
-    public List<ApiTestDTO> apiTestList() {
-        List<ApiTestDTO> dataList = new ArrayList<>();
 
-        try {
-            // API 엔드포인트 URL 설정
-            String apiUrl = "http://mjgolf.myqnapcloud.com/api/admin/memberList";
-
-            // HttpHeaders 설정
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9");
-            headers.setContentType(MediaType.APPLICATION_JSON);
-
-            // 요청 데이터 설정
-            Map<String, Object> requestData = new HashMap<>();
-            // requestData에 필요한 데이터 추가
-
-            // HttpEntity 설정
-            HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestData, headers);
-
-            // RestTemplate 사용하여 API 호출
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<ApiRes> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, ApiRes.class);
-            if (response.getStatusCode().is2xxSuccessful()) {
-                ApiRes apiRes = response.getBody();
-                if (apiRes != null && apiRes.getList() != null) {
-                    dataList = apiRes.getList();
-                }
-            } else {
-                System.out.println("HTTP request failed with response code: " + response.getStatusCodeValue());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return dataList;
-    }
 
 
 /*    @Override
