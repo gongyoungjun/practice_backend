@@ -3,16 +3,17 @@ package com.example.test.api.apiTest.service.impl;
 import com.example.test.api.apiTest.dto.ApiTestDTO;
 import com.example.test.api.apiTest.service.ApiTestService;
 import com.example.test.api.apiTest.vo.ApiRes;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -20,8 +21,7 @@ import java.util.Map;
 public class ApiTestServiceImpl implements ApiTestService {
 
 
-
-/*    @Override
+    @Override
     public List<ApiTestDTO> apiTestList() {
         List<ApiTestDTO> dataList = new ArrayList<>();
 
@@ -59,14 +59,15 @@ public class ApiTestServiceImpl implements ApiTestService {
                 ApiRes apiRes = objectMapper.readValue(responseData, ApiRes.class);
                 dataList = apiRes.getList(); // 데이터 리스트만 저장
 
-            } else {
-                System.out.println("HTTP request failed with response code: " + responseCode);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return dataList;
-    }*/
+    }
 
+
+
+    
 }
