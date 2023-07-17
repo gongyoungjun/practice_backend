@@ -1,6 +1,7 @@
 package com.example.test.api.apiTest.vo;
 
-import com.example.test.api.apiTest.dto.ApiTestDTO;
+import com.example.test.api.apiTest.dto.ApiLessonDTO;
+import com.example.test.api.apiTest.dto.ApiMemberDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.List;
 public class ApiRes {
 
     private Object data;
-    private List<ApiTestDTO> list;
+    private List<ApiMemberDTO> memberList;
 
+    private List<ApiLessonDTO> lessonList;
 
 }

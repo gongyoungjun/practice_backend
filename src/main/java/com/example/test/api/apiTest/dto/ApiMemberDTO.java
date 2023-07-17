@@ -3,7 +3,8 @@ package com.example.test.api.apiTest.dto;
 import lombok.Data;
 
 @Data
-public class ApiTestDTO {
+public class ApiMemberDTO {
+
         private int mbrNo;
         private String mbrNm;
         private String mbrPhn;
@@ -15,4 +16,5 @@ public class ApiTestDTO {
         private int lsnTtl;
         private String lsnStrDtm;
         private String lsnStrtDt;
+
 }
