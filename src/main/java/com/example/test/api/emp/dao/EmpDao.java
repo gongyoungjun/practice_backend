@@ -72,5 +72,8 @@ public class EmpDao {
     }
 
 
+    public List<EmpDTO> getEmpList() {
+        return sqlSession.selectList("mapper.empMapper.selectExcelList");
+    }
 }
 

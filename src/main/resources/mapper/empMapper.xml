@@ -105,8 +105,14 @@
         <include refid="sqlSelectBoardList"/>
     </select>
 
-    <!--파일 upload-->
+    <!--엑셀 download-->
 
-
+    <select id="selectExcelList" resultType="EmpDTO" parameterType="java.lang.Integer">
+        select EMP_NO  empno
+             , EMP_NM  empNm
+             , EMP_PHN empPhn
+             , EMP_EML empEml
+        from TB_EMPLOYEE
+    </select>
 
 </mapper>
