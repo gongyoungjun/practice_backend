@@ -1,9 +1,11 @@
 package com.example.test.api.excel.controller;
 
+import com.example.test.api.config.Code;
 import com.example.test.api.emp.dao.EmpDao;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.excel.service.ExcelService;
 import com.example.test.api.excel.vo.Excel;
+import com.example.test.api.excel.vo.ExcelRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +36,19 @@ public class ExcelController {
      */
     @Operation(summary = "엑셀 읽기", description = "엑셀 읽기")
     @GetMapping("/read")
-    public ResponseEntity<List<Excel>> readExcel(@RequestParam String filename) {
+    public ResponseEntity<ExcelRes> readExcel(@RequestParam String filename) {
         List<Excel> excelList = excelService.readExcel(filename);
-        return ResponseEntity.ok(excelList);
+
+        ExcelRes excelRes = new ExcelRes();
+        excelRes.setExcelList(excelList);
+
+        if (excelList.isEmpty()) {
+            excelRes.setCode(Code.FAIL); // 실패
+        } else {
+            excelRes.setCode(Code.SUCCESS); // 성공
+        }
+
+        return ResponseEntity.ok(excelRes);
     }
 
 
@@ -44,22 +56,25 @@ public class ExcelController {
      * 엑셀
      * 다운로드
      */
-
     @Operation(summary = "엑셀 다운로드", description = "엑셀 다운로드")
     @GetMapping("/download")
     public ResponseEntity<byte[]> downloadExcel() {
-
         List<EmpDTO> list = empDao.getEmpList();
         byte[] bytes = excelService.downloadExcel(list);
 
+        ExcelRes excelRes = new ExcelRes();
+        excelRes.setEmpList(list);
+
+        if (bytes != null && bytes.length > 0) {
+            excelRes.setCode(Code.SUCCESS); // 성공
+        } else {
+            excelRes.setCode(Code.FAIL); // 실패
+        }
+
         HttpHeaders headers = new HttpHeaders();
-        //contenttype을 설정
         headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
-        //attachment 설정 = 첨부 파일 형태로 다운로드 속성
         headers.setContentDispositionFormData("attachment", "data.xlsx");
-        //헤더정보
-        //바이트배열 응답본문
+
         return ResponseEntity.ok().headers(headers).body(bytes);
     }
-
 }

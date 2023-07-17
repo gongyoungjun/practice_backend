@@ -39,6 +39,9 @@ public class ApiTestServiceImpl implements ApiTestService {
         return ApiAndGetList(API_LESSON_URL, "lessonList");
     }
 
+    //제네릭 타입 T를 사용 리스트 반환 메서드
+    //apiUrl = API의 엔드포인트 URL
+    @Tag(name = "API 공통부분")
     public <T> List<T> ApiAndGetList(String apiUrl, String dataNodeName) {
         List<T> dataList = new ArrayList<>();
 
@@ -58,7 +61,11 @@ public class ApiTestServiceImpl implements ApiTestService {
             HttpEntity<String> requestEntity = new HttpEntity<>(requestData, headers);
 
             // API 호출 및 응답 수신
+            // exchange = HTTP 요청을 보내고 응답을 받는 기능을 수행
+            // apiUrl API의 엔드포인트 URL
+            // requestEntity: HttpEntity 객체 - 요청의 헤더와 본문 데이터
             ResponseEntity<ApiRes> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, ApiRes.class);
+            // getStatusCodeValue() = 응답 상태 코드값
             if (response.getStatusCodeValue() == HttpStatus.OK.value()) {
                 // 응답 데이터 처리
                 ApiRes apiRes = response.getBody();

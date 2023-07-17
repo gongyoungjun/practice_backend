@@ -10,6 +10,7 @@ import java.util.List;
 public class ApiRes {
 
     private Object data;
+
     private List<ApiMemberDTO> memberList;
 
     private List<ApiLessonDTO> lessonList;
