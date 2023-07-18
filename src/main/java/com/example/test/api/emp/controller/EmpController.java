@@ -121,7 +121,7 @@ public class EmpController {
     @GetMapping("/read-file/{fileName}")
     public ResponseEntity<LessonRes> readFile(@PathVariable String fileName) {
         String code = Code.FAIL;
-        ;
+
         LessonRes lessonRes = null;
         try {
             lessonRes = empService.readFile(fileName);
@@ -133,6 +133,7 @@ public class EmpController {
             e.printStackTrace();
             code = Code.SUCCESS;
         }
+        lessonRes.setCode(code);
         return ResponseEntity.ok(lessonRes);
     }
 

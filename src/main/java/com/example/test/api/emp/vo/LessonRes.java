@@ -9,7 +9,7 @@ public class LessonRes {
     private List<Lesson> lessonList;
     private int count10;
     private int count20;
-
+    private String code;
 
     public LessonRes() {
     }

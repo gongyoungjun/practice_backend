@@ -40,7 +40,7 @@ public class ExcelController {
         List<Excel> excelList = excelService.readExcel(filename);
 
         ExcelRes excelRes = new ExcelRes();
-        excelRes.setExcelList(excelList);
+        excelRes.setData(excelList);
 
         if (excelList.isEmpty()) {
             excelRes.setCode(Code.FAIL); // 실패
@@ -63,7 +63,7 @@ public class ExcelController {
         byte[] bytes = excelService.downloadExcel(list);
 
         ExcelRes excelRes = new ExcelRes();
-        excelRes.setEmpList(list);
+        excelRes.setData(list);
 
         if (bytes != null && bytes.length > 0) {
             excelRes.setCode(Code.SUCCESS); // 성공

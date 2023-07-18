@@ -13,9 +13,7 @@ public class ExcelRes {
     private String filename;
     @Schema(description = "에러메세지")
     private String code;
-
-    private List<EmpDTO> empList;
-    private List<Excel> excelList;
+    private Object data;
 
 }
 

@@ -9,10 +9,9 @@ import java.util.List;
 @Data
 public class ApiRes {
 
+    private String status;
+    private String code;
+    private String message;
     private Object data;
-
-    private List<ApiMemberDTO> memberList;
-
-    private List<ApiLessonDTO> lessonList;
 
 }
