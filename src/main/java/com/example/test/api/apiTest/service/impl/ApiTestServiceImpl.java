@@ -78,7 +78,7 @@ public class ApiTestServiceImpl implements ApiTestService {
                 }
             }
         } catch (Exception e) {
-            log.error("API 호출 및 응답 처리 중 오류 발생: {}", e.getMessage());
+            e.printStackTrace();
         }
 
         return dataList;
