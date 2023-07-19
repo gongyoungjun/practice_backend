@@ -12,10 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +28,6 @@ public class ApiTestController {
 
     /**
      * 회원 목록
-     *
      * @return
      */
     @Operation(summary = "외부 api 회원 목록", description = "외부 api 회원 목록")
@@ -52,14 +48,8 @@ public class ApiTestController {
 
         return ResponseEntity.ok(res);
     }
-
-/*        {
-            "nmKeyword": "이승엽"
-        }*/
-
     /**
      * 회원별 레슨 조회
-     *
      * @return
      */
     @Operation(summary = "외부 api 회원별 레슨 조회", description = "외부 api 회원별 레슨 조회")
@@ -78,9 +68,12 @@ public class ApiTestController {
 
         return ResponseEntity.ok(res);
     }
-
+    /**
+     * 사원 정보 목록
+     * @return
+     */
     @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
-    @PostMapping("/list")
+    @PostMapping("/emp/list")
     public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
         ApiRes res = new ApiRes();
         String code = Code.SUCCESS;
@@ -96,4 +89,26 @@ public class ApiTestController {
         return ResponseEntity.ok(res);
     }
 
+    /**
+     * 사원 정보 목록
+     * @return
+     */
+    @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
+    @GetMapping("/emp/search")
+    public ResponseEntity<ApiRes> detailEmployees(@RequestParam("empNo") int empNo) {
+        ApiRes res = new ApiRes();
+        String code = Code.SUCCESS;
+        List<ApiEmployeesDTO> list = null;
+        try {
+            list = apiTestService.detailEmployees(empNo);
+        } catch (Exception e) {
+            code = Code.FAIL;
+        }
+        res.setData(list);
+        res.setCode(code);
+
+        return ResponseEntity.ok(res);
+    }
 }
+
+

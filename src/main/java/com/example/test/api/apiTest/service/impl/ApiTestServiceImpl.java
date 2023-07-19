@@ -45,8 +45,8 @@ public class ApiTestServiceImpl implements ApiTestService {
 
     private static final String API_MEMBER_URL = "/admin/memberList";
     private static final String API_LESSON_URL = "/lesson/list";
-
     private static final String API_EMP_URL = "/emp/list";
+    private static final String API_EMP_NO_URL = "/emp/detailUser";
     private static final String AUTH_TOKEN = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODQ4MTA4OTAsInN1YiI6IjExMiIsImV4cCI6MTcxNjM0Njg5MH0.r98D7N7cdpoCVKpW_bUVTOXwHllgt83toirt_E6nCH8";
 //1
 //    상세조회 api 개발
@@ -65,33 +65,39 @@ public class ApiTestServiceImpl implements ApiTestService {
     @Tag(name = "RestTemplate - 회원목록")
     @Override
     public List<ApiMemberDTO> apiTestList() {
-        return apiAndGetList(API_MEMBER_URL, "list", null, null);
+        return apiAndGetList(API_MEMBER_URL, "list", null, null, HttpMethod.POST);
     }
 
     @Tag(name = "RestTemplate - 회원별 레슨")
     @Override
     public List<ApiLessonDTO> lessonMemberView() {
-        return apiAndGetList(API_LESSON_URL, "lessonList", null, null);
+        return apiAndGetList(API_LESSON_URL, "lessonList", null, null, HttpMethod.POST);
     }
 
-
-    @Tag(name = "RestTemplate - 사원 목록")
+    @Tag(name = "RestTemplate - 사원 목록 - 이름 조회")
     @Override
     public List<ApiEmployeesDTO> getEmployees(String nmKeyword) {
         ApiReq req = new ApiReq();
         req.setNmKeyword(nmKeyword);
-        return apiAndGetList(API_EMP_URL, "employeeList", null, req);
+        return apiAndGetList(API_EMP_URL, "employeeList", null, req, HttpMethod.POST);
     }
 
+    @Tag(name = "RestTemplate - 사원 목록 - no 조회")
+    @Override
+    public List<ApiEmployeesDTO> detailEmployees(int empNo) {
+        ApiReq req = new ApiReq();
+        req.setEmpNo(empNo);
+        return apiAndGetList(API_EMP_NO_URL, "detailemployeeList", null, req, HttpMethod.GET);
+    }
 
-
-    //제네릭 타입 T를 사용 리스트 반환 메서드
-    //apiUrl = API의 엔드포인트 URL
+    // 제네릭 타입 T를 사용하여 리스트 반환 메서드
+    // apiUrl = API의 엔드포인트 URL
     @Tag(name = "API 공통부분(list)")
-    public <T> List<T> apiAndGetList(String apiUrl, String dataNodeName, Map<String, String> additionalHeaders, ApiReq req) {
+    public <T> List<T> apiAndGetList(String apiUrl, String dataNodeName, Map<String, String> additionalHeaders, ApiReq req, HttpMethod httpMethod) {
         List<T> dataList = new ArrayList<>();
 
         try {
+
             // RestTemplate 객체 생성
             RestTemplate restTemplate = new RestTemplate();
 
@@ -117,8 +123,9 @@ public class ApiTestServiceImpl implements ApiTestService {
             // API 호출 및 응답 수신
             // exchange = HTTP 요청을 보내고 응답을 받는 기능을 수행
             // apiUrl: API의 엔드포인트 URL
+            // httpMethod: HTTP 메서드 (GET, POST, PUT 등)
             // requestEntity: HttpEntity 객체 - 요청의 헤더와 본문 데이터
-            ResponseEntity<ApiRes> response = restTemplate.exchange(ApiUrl.API_URL + apiUrl, HttpMethod.POST, requestEntity, ApiRes.class);
+            ResponseEntity<ApiRes> response = restTemplate.exchange(ApiUrl.API_URL + apiUrl, httpMethod, requestEntity, ApiRes.class);
             // getStatusCodeValue() = 응답 상태 코드값
             if (response.getStatusCodeValue() == HttpStatus.OK.value()) {
                 // 응답 데이터 처리
@@ -129,7 +136,8 @@ public class ApiTestServiceImpl implements ApiTestService {
                     JsonNode dataNode = objectMapper.valueToTree(apiRes.getData());
                     if (dataNode.has(dataNodeName)) {
                         // TypeReference = 제너릭 동적 유지
-                        dataList = objectMapper.readValue(dataNode.get(dataNodeName).toString(), new TypeReference<>() {});
+                        dataList = objectMapper.readValue(dataNode.get(dataNodeName).toString(), new TypeReference<>() {
+                        });
                     }
                 }
             }
@@ -190,7 +198,6 @@ public class ApiTestServiceImpl implements ApiTestService {
 
         return dataObject;
     }
-
 
 
 }

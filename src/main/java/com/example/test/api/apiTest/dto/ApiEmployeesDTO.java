@@ -27,4 +27,5 @@ public class ApiEmployeesDTO {
     private String vctnRsdCnt;
     private String empAuthCd;
 
+
 }
