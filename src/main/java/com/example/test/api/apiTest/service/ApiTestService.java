@@ -9,6 +9,7 @@ public interface ApiTestService {
 
     /**
      * 회원 목록
+     *
      * @return
      */
     List<ApiMemberDTO> apiTestList();
@@ -19,5 +20,6 @@ public interface ApiTestService {
      * @return
      */
     List<ApiLessonDTO> lessonMemberView();
+
 
 }

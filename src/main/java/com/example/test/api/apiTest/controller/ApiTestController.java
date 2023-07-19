@@ -33,6 +33,11 @@ public class ApiTestController {
     @Operation(summary = "외부 api 회원 목록", description = "외부 api 회원 목록")
     @PostMapping("/members")
     public ResponseEntity<ApiRes> getMembers() {
+
+/*        {
+            "nmKeyword": "이승엽"
+        }*/
+
         ApiRes res = new ApiRes();
         String code = Code.SUCCESS;
         List<ApiMemberDTO> list = null;
@@ -69,4 +74,7 @@ public class ApiTestController {
 
         return ResponseEntity.ok(res);
     }
+
+
+
 }
