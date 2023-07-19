@@ -1,8 +1,10 @@
 package com.example.test.api.apiTest.controller;
 
+import com.example.test.api.apiTest.dto.ApiEmployeesDTO;
 import com.example.test.api.apiTest.dto.ApiLessonDTO;
 import com.example.test.api.apiTest.dto.ApiMemberDTO;
 import com.example.test.api.apiTest.service.ApiTestService;
+import com.example.test.api.apiTest.vo.ApiReq;
 import com.example.test.api.apiTest.vo.ApiRes;
 import com.example.test.api.config.Code;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,9 +13,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,25 +37,25 @@ public class ApiTestController {
     @Operation(summary = "외부 api 회원 목록", description = "외부 api 회원 목록")
     @PostMapping("/members")
     public ResponseEntity<ApiRes> getMembers() {
-
-/*        {
-            "nmKeyword": "이승엽"
-        }*/
-
         ApiRes res = new ApiRes();
         String code = Code.SUCCESS;
-        List<ApiMemberDTO> list = null;
+        List<ApiMemberDTO> list = new ArrayList<>();
+
         try {
             list = apiTestService.apiTestList();
         } catch (Exception e) {
             code = Code.FAIL;
         }
+
         res.setData(list);
         res.setCode(code);
 
         return ResponseEntity.ok(res);
     }
 
+/*        {
+            "nmKeyword": "이승엽"
+        }*/
 
     /**
      * 회원별 레슨 조회
@@ -75,6 +79,21 @@ public class ApiTestController {
         return ResponseEntity.ok(res);
     }
 
+    @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
+    @PostMapping("/list")
+    public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
+        ApiRes res = new ApiRes();
+        String code = Code.SUCCESS;
+        List<ApiEmployeesDTO> list = null;
+        try {
+            list = apiTestService.getEmployees(req.getNmKeyword());
+        } catch (Exception e) {
+            code = Code.FAIL;
+        }
+        res.setData(list);
+        res.setCode(code);
 
+        return ResponseEntity.ok(res);
+    }
 
 }
