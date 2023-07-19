@@ -8,7 +8,6 @@ import com.example.test.api.config.ApiUrl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,6 +69,8 @@ public class ApiTestServiceImpl implements ApiTestService {
         return apiAndGetObject(API_LESSON_URL, List.class, requestBody);
     }
 
+
+
     //제네릭 타입 T를 사용 리스트 반환 메서드
     //apiUrl = API의 엔드포인트 URL
     @Tag(name = "API 공통부분")
@@ -89,6 +90,11 @@ public class ApiTestServiceImpl implements ApiTestService {
             // 요청 본문 데이터 생성
             String requestData = "{}"; // 요청 본문 데이터 설정
 
+/*            // Body set
+            MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+            String imageFileString = getBase64String(file);
+            body.add("filename", fileName);
+            body.add("image", imageFileString);*/
 
             // HttpEntity(http요청) 생성
             HttpEntity<String> requestEntity = new HttpEntity<>(requestData, headers);
@@ -133,9 +139,7 @@ public class ApiTestServiceImpl implements ApiTestService {
             headers.set("Authorization", AUTH_TOKEN);
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-/*            // POST로 보내는 경우 : body에 실어보낼 json데이터 생성
-            JSONObject jsonReq = new JSONPObject();
-            jsonReq.put("data1", "data1");*/
+            // POST로 보내는 경우 : body에 실어보낼 json데이터 생성
 
             // HttpEntity(http 요청) 생성
             HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
