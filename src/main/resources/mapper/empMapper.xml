@@ -69,8 +69,20 @@
             EMP_SLR    = IFNULL(#{empSlr}, EMP_SLR)
         WHERE EMP_NO = #{empNo}
     </update>
-
-
+    <!--로그인 구현-->
+    <select id="selectLogin" resultType="EmpDTO" parameterType="LoginReq">
+        SELECT EMP_NO empNo
+             , EMP_NM empNm
+             , EMP_PHN empPhn
+             , EMP_EML empEml
+             , EMP_ST_CD empStCd
+             , EMP_RNK_CD empRnkCd
+             , EMP_HR_DT empHrDt
+             , EMP_BRT_DT empBrtDt
+             , REG_DTM
+        FROM TB_EMPLOYEE
+        WHERE EMP_NM = #{empNm} AND EMP_PWD = #{empPwd}
+    </select>
     <!--사원 프로필 검색-->
     <select id="selectBoardList" resultType="EmpDTO" parameterType="EmpReq">
         select EMP_NO empno

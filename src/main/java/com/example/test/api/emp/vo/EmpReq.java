@@ -8,5 +8,6 @@ public class EmpReq extends PageParam {
     private int empNo;
     private String empNm;
     private String empPhn;
+    private String empPwd;
 }
 
