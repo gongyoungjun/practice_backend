@@ -11,6 +11,6 @@ public class LoginRes {
     private String code;
     private List<EmpDTO> data;
     private String message;
-
+    private String Total;
 
 }
