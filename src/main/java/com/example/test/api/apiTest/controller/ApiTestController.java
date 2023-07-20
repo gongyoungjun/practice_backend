@@ -72,7 +72,24 @@ public class ApiTestController {
      * 사원 정보 목록
      * @return
      */
+
     @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
+    @PostMapping("/emp/list")
+    public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
+        ApiRes res = new ApiRes();
+        String code = Code.SUCCESS;
+        Object data = null;
+        try {
+            data = apiTestService.getEmployees(req.getNmKeyword());
+        } catch (Exception e) {
+            code = Code.FAIL;
+        }
+        res.setData(data);
+        res.setCode(code);
+
+        return ResponseEntity.ok(res);
+    }
+/*    @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
     @PostMapping("/emp/list")
     public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
         ApiRes res = new ApiRes();
@@ -87,8 +104,7 @@ public class ApiTestController {
         res.setCode(code);
 
         return ResponseEntity.ok(res);
-    }
-
+    }*/
     /**
      * 사원 정보 목록
      * @return

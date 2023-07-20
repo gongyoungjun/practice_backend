@@ -24,7 +24,7 @@ public interface ApiTestService {
      * 사원 정보 목록
      * 이름
      */
-    List<ApiEmployeesDTO> getEmployees(String nmKeyword);
+    Object getEmployees(String nmKeyword);
 
     /**
      * 사원 정보 목록

@@ -13,13 +13,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,40 +27,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ApiTestServiceImpl implements ApiTestService {
 
-//    Config config = new Config();
+    @Value("${api.member.url}")
+    private String API_MEMBER_URL;
 
-    /*
-            try {
-                prop.load(new FileInputStream("config.properties"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    @Value("${api.lesson.url}")
+    private String API_LESSON_URL;
 
-            // URL 및 인증 토큰 가져오기
-            String apiMemberUrl = config.getProperty("api.member.url");
-            String apiLessonUrl = config.getProperty("api.lesson.url");
-            String authToken = config.getProperty("auth.token");
-*/
+    @Value("${api.emp.url}")
+    private String API_EMP_URL;
 
-    private static final String API_MEMBER_URL = "/admin/memberList";
-    private static final String API_LESSON_URL = "/lesson/list";
-    private static final String API_EMP_URL = "/emp/list";
-    private static final String API_EMP_NO_URL = "/emp/detailUser";
-    private static final String AUTH_TOKEN = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODQ4MTA4OTAsInN1YiI6IjExMiIsImV4cCI6MTcxNjM0Njg5MH0.r98D7N7cdpoCVKpW_bUVTOXwHllgt83toirt_E6nCH8";
-//1
-//    상세조회 api 개발
-//   emp/detailUser
-//   empNo=127
+    @Value("${api.emp.no.url}")
+    private String API_EMP_NO_URL;
 
-//2
-    //2순위
-    // dto -> map
+    @Value("${auth.token}")
+    private String AUTH_TOKEN;
 
-    //1순위
-    // dto ->string json
 
-    //HttpEntity에 vo 요청데이터 넣을수있도록
-//        HttpEntity<>(requestData, headers)
     @Tag(name = "RestTemplate - 회원목록")
     @Override
     public List<ApiMemberDTO> apiTestList() {
@@ -74,21 +55,30 @@ public class ApiTestServiceImpl implements ApiTestService {
         return apiAndGetList(API_LESSON_URL, "lessonList", null, null, HttpMethod.POST);
     }
 
-    @Tag(name = "RestTemplate - 사원 목록 - 이름 조회")
+/*    @Tag(name = "RestTemplate - 사원 목록 - 이름 조회 - list")
     @Override
     public List<ApiEmployeesDTO> getEmployees(String nmKeyword) {
         ApiReq req = new ApiReq();
         req.setNmKeyword(nmKeyword);
         return apiAndGetList(API_EMP_URL, "employeeList", null, req, HttpMethod.POST);
+    }*/
+
+
+    @Tag(name = "RestTemplate - 사원 목록 - 이름 조회 - object")
+    @Override
+    public Object getEmployees(String nmKeyword) {
+        ApiReq req = new ApiReq();
+        req.setNmKeyword(nmKeyword);
+        return apiAndGetObject(API_EMP_URL, null, req, HttpMethod.POST, Object.class);
     }
 
     @Tag(name = "RestTemplate - 사원 목록 - no 조회")
     @Override
     public List<ApiEmployeesDTO> detailEmployees(int empNo) {
-        ApiReq req = new ApiReq();
-        req.setEmpNo(empNo);
-        return apiAndGetList(API_EMP_NO_URL, "detailemployeeList", null, req, HttpMethod.GET);
+        String apiUrl = API_EMP_NO_URL + "?empNo=" + empNo;
+        return apiAndGetList(apiUrl, "data", null, null, HttpMethod.GET);
     }
+
 
     // 제네릭 타입 T를 사용하여 리스트 반환 메서드
     // apiUrl = API의 엔드포인트 URL
@@ -148,9 +138,8 @@ public class ApiTestServiceImpl implements ApiTestService {
         return dataList;
     }
 
-
     @Tag(name = "API 공통부분(object)")
-    public <T> T apiAndGetObject(String apiUrl, String dataNodeName, Map<String, String> additionalHeaders, ApiReq req, Class<T> responseType) {
+    public <T> T apiAndGetObject(String apiUrl, Map<String, String> additionalHeaders, ApiReq req, HttpMethod httpMethod, Class<T> responseType) {
         T dataObject = null;
 
         try {
@@ -177,19 +166,14 @@ public class ApiTestServiceImpl implements ApiTestService {
             HttpEntity<String> requestEntity = new HttpEntity<>(requestData, headers);
 
             // API 호출 및 응답 수신
-            ResponseEntity<ApiRes> response = restTemplate.exchange(ApiUrl.API_URL + apiUrl, HttpMethod.POST, requestEntity, ApiRes.class);
+            ResponseEntity<ApiRes> response = restTemplate.exchange(ApiUrl.API_URL + apiUrl, httpMethod, requestEntity, ApiRes.class);
             // getStatusCodeValue() = 응답 상태 코드값
             if (response.getStatusCodeValue() == HttpStatus.OK.value()) {
                 // 응답 데이터 처리
                 ApiRes apiRes = response.getBody();
                 if (apiRes != null && apiRes.getData() != null) {
-                    // JsonNode = 계층 구조를 표현
-                    // valueToTree = JsonNode를 객체로 변환
-                    JsonNode dataNode = objectMapper.valueToTree(apiRes.getData());
-                    if (dataNode.has(dataNodeName)) {
-                        // 단일 오브젝트로 변환
-                        dataObject = objectMapper.readValue(dataNode.get(dataNodeName).toString(), responseType);
-                    }
+                    // 단일 오브젝트로 변환
+                    dataObject = objectMapper.convertValue(apiRes.getData(), responseType);
                 }
             }
         } catch (Exception e) {
@@ -198,6 +182,5 @@ public class ApiTestServiceImpl implements ApiTestService {
 
         return dataObject;
     }
-
 
 }
