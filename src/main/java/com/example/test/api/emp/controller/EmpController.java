@@ -63,7 +63,6 @@ public class EmpController {
     /**
      * 사원 정보 검색
      * post
-     *
      * @RequestBody : 요청 본문
      */
     @Operation(summary = "사원 정보 검색", description = "사원 정보 검색 API")

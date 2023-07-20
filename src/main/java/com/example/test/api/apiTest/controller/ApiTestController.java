@@ -73,7 +73,7 @@ public class ApiTestController {
      * @return
      */
 
-    @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
+    @Operation(summary = "외부 api 사원 정보 목록(object)", description = "외부 api 사원 정보 목록(object)")
     @PostMapping("/emp/list")
     public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
         ApiRes res = new ApiRes();
@@ -89,7 +89,7 @@ public class ApiTestController {
 
         return ResponseEntity.ok(res);
     }
-/*    @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
+/*    @Operation(summary = "외부 api 사원 정보 목록(list)", description = "외부 api 사원 정보 목록(list)")
     @PostMapping("/emp/list")
     public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
         ApiRes res = new ApiRes();
