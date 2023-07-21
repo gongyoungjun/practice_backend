@@ -25,19 +25,19 @@ public class EmpDao {
 
     /**
      * 사원 목록 조회
-     *
-     * @param req 사원 요청 정보
-     * @return 사원 목록
      */
     public List<EmpDTO> selectBoardList(EmpReq req) {
         return sqlSession.selectList("mapper.empMapper.selectBoardList", req);
     }
-
+    /**
+     * 사원목록
+     * 전체
+     */
+    public int selectBoardListCnt(EmpReq req) {
+        return sqlSession.selectOne("mapper.empMapper.selectBoardListCnt");
+    }
     /**
      * 사원 목록 개수 조회
-     *
-     * @return 사원 목록 개수
-     * @throws Exception 예외
      */
     public int getBoardListCnt() throws Exception {
         return sqlSession.selectOne("mapper.empMapper.getBoardListCnt");
@@ -45,9 +45,6 @@ public class EmpDao {
 
     /**
      * 사원 목록 조회
-     *
-     * @param res 사원 응답 정보
-     * @return 사원 목록
      */
     public List<EmpDTO> empList(Pagination pagination) {
         return sqlSession.selectList("mapper.empMapper.empList", pagination);
@@ -63,13 +60,7 @@ public class EmpDao {
     }
 
 
-    /**
-     * 사원목록
-     * 전체
-     */
-    public int selectBoardListCnt(EmpReq req) {
-        return sqlSession.selectOne("mapper.empMapper.selectBoardListCnt");
-    }
+
 
 
     public List<EmpDTO> getEmpList() {

@@ -48,12 +48,7 @@
         SELECT count(*) as listCnt
         FROM TB_EMPLOYEE
     </select>
-    <!--    <select id="getTotalRow" resultType="java.lang.Integer" parameterType="java.util.Map">-->
-    <!--        SELECT COUNT(*)-->
-    <!--        FROM TB_EMPLOYEE-->
-    <!--        <if test="query !=null and data !=null">-->
-    <!--            and ${query} LIKE CONCAT('%', #{data}, '%')-->
-    <!--    </select>-->
+
 
     <!--    사원 프로필 업데이트-->
     <update id="empListUpdate" parameterType="EmpDTO">
@@ -111,11 +106,11 @@
     </sql>
 
     <!--목록 갯수-->
-    <select id="selectBoardListCnt" resultType="int" parameterType="EmpReq">
+`    <select id="selectBoardListCnt" resultType="int" parameterType="EmpReq">
         select count(*)
         from TB_EMPLOYEE
         <include refid="sqlSelectBoardList"/>
-    </select>
+    </select>`
 
     <!--엑셀 download-->
 

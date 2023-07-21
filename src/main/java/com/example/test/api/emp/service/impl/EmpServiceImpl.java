@@ -61,11 +61,15 @@ public class EmpServiceImpl implements EmpService {
         res.setPage(req.getPage());
         res.setListSize(req.getListSize());
 
-        int count = this.selectBoardListCnt(req);
-        res.setListCnt(count);
+        List<EmpDTO> empList = empDao.selectBoardList(req);
+        int totalCount = empDao.selectBoardListCnt(req); // 변경: 총 데이터 개수를 따로 조회
+        res.setListCnt(totalCount);
 
-        if (count > 0) {
-            res.setList(empDao.selectBoardList(req));
+        if (totalCount > 0) {
+            int startIndex = (req.getPage() - 1) * req.getListSize();
+            int endIndex = Math.min(startIndex + req.getListSize(), totalCount);
+            List<EmpDTO> paginatedList = empList.subList(startIndex, endIndex);
+            res.setList(paginatedList);
         }
 
         return res;
@@ -179,7 +183,6 @@ public class EmpServiceImpl implements EmpService {
         lessonRes = new LessonRes(lessonList, count10, count20);
         return lessonRes;
     }
-
 
 
 }
