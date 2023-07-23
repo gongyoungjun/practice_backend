@@ -29,6 +29,7 @@ public class LoginController {
 
     /**
      * 로그인
+     *
      * @param lReq
      * @return
      */
@@ -48,26 +49,9 @@ public class LoginController {
             }
             loginRes.setData(data);
             loginRes.setCode(code);
-            return ResponseEntity.ok(loginRes);
         } catch (Exception e) {
-            // 예외 발생 시 실패로 처리
-            loginRes.setCode(code);
-
-        }return ResponseEntity.ok(loginRes);
-    }
-/*    @Operation(summary = "로그인 Action", description = "로그인 처리 API")
-    @PostMapping("/login")
-    public ResponseEntity<LoginRes> login(@RequestBody LoginReq lReq) {
-        LoginRes loginRes = new LoginRes();
-        String code = Code.SUCCESS;
-        List<EmpDTO> data = null;
-        try {
-            data = loginService.selectLoginUser(lReq);
-        } catch (Exception e) {
-            code = Code.FAIL;
+            e.printStackTrace();
         }
-        loginRes.setData(data);
-        loginRes.setCode(code);
         return ResponseEntity.ok(loginRes);
-    }*/
+    }
 }

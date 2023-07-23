@@ -3,6 +3,7 @@ package com.example.test.api.emp.dao;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.Pagination;
+import com.example.test.api.login.vo.LoginReq;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -29,6 +30,7 @@ public class EmpDao {
     public List<EmpDTO> selectBoardList(EmpReq req) {
         return sqlSession.selectList("mapper.empMapper.selectBoardList", req);
     }
+
     /**
      * 사원목록
      * 전체
@@ -36,6 +38,7 @@ public class EmpDao {
     public int selectBoardListCnt(EmpReq req) {
         return sqlSession.selectOne("mapper.empMapper.selectBoardListCnt");
     }
+
     /**
      * 사원 목록 개수 조회
      */
@@ -60,11 +63,24 @@ public class EmpDao {
     }
 
 
-
-
-
+    /**
+     * 엑셀
+     * 다운로드
+     */
     public List<EmpDTO> getEmpList() {
         return sqlSession.selectList("mapper.empMapper.selectExcelList");
     }
+
+    /**
+     * 로그인
+     *
+     */
+
+    public List<EmpDTO> selectBoardList(LoginReq lReq) {
+        return sqlSession.selectList("mapper.empMapper.selectLogin", lReq);
+    }
+
+
+
 }
 
