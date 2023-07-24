@@ -13,12 +13,10 @@ public interface ApiTestService {
      */
     List<ApiMemberDTO> apiTestList();
 
-
     /**
      * 회원별 레슨 조회
      */
     List<ApiLessonDTO> lessonMemberView();
-
 
     /**
      * 사원 정보 목록
@@ -29,7 +27,8 @@ public interface ApiTestService {
     /**
      * 사원 정보 목록
      * no
+     * detail
      */
-    List<ApiEmployeesDTO> detailEmployees(int empNo);
+    Object detailEmployees(int empNo);
 
 }

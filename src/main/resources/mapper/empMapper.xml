@@ -122,4 +122,29 @@
         from TB_EMPLOYEE
     </select>
 
+    <!--엑셀 download-->
+    <select id="selectEmpInfo" parameterType="int" resultType="EmpDTO">
+        SELECT A.EMP_NO
+             , A.EMP_NM
+             , A.EMP_PHN
+             , A.EMP_EML
+             , D.IMG_NM
+             , A.EMP_HR_DT
+             , A.EMP_ACN_NMB
+             , A.EMP_SLR
+             , A.EMP_VCTN_TTL
+             , A.EMP_BRT_DT
+             , A.EMP_RNK_CD
+             , A.EMP_ST_CD
+             , A.EMP_AUTH_CD
+             , B.CD_VAL_NM AS RNK_NM
+             , C.CD_VAL_NM AS ST_NM
+             , COALESCE(A.EMP_VCTN_TTL -
+                        (SELECT SUM(VCTN_DAY_CNT) FROM TB_VACATION WHERE EMP_NO = A.EMP_NO AND VCTN_ST_CD = '02'), 0) AS VCTN_RSD_CNT
+        FROM TB_EMPLOYEE A
+                 LEFT JOIN TB_CODE B ON A.EMP_RNK_CD = B.CD_VAL AND B.CD_ID = 'EMP_RNK_CD'
+                 LEFT JOIN TB_CODE C ON A.EMP_ST_CD = C.CD_VAL AND C.CD_ID = 'EMP_ST_CD'
+                 LEFT JOIN TB_IMAGE D on A.IMG_NO = D.IMG_NO
+        WHERE A.EMP_NO = #{empNo}
+    </select>
 </mapper>

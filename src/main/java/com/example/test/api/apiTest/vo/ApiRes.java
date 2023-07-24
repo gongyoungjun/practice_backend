@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class ApiRes {
 
-    private String status;
     private String code;
     private String message;
     private Object data;

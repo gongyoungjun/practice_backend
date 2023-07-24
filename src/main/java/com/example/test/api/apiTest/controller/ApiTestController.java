@@ -91,20 +91,21 @@ public class ApiTestController {
 
     /**
      * 사원 정보 목록
-     * list
+     * no
+     * detail
      */
-    @Operation(summary = "외부 api 사원 정보 목록(list)", description = "외부 api 사원 정보 목록(list)")
-    @GetMapping("/emp/search")
+    @Operation(summary = "외부 api 사원 정보 목록(Object)", description = "외부 api 사원 정보 목록(Object)")
+    @PostMapping("/emp/search")
     public ResponseEntity<ApiRes> detailEmployees(@RequestParam("empNo") int empNo) {
         ApiRes res = new ApiRes();
         String code = Code.SUCCESS;
-        List<ApiEmployeesDTO> list = null;
+        Object data = null;
         try {
-            list = apiTestService.detailEmployees(empNo);
+            data = apiTestService.detailEmployees(empNo);
         } catch (Exception e) {
             code = Code.FAIL;
         }
-        res.setData(list);
+        res.setData(data);
         res.setCode(code);
 
         return ResponseEntity.ok(res);

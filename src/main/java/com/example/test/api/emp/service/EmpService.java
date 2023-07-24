@@ -22,6 +22,12 @@ public interface EmpService {
      */
     EmpRes getEmpListAndSearch(EmpReq req) throws Exception;
 
+    /**
+     * 사원목록
+     * 상세 조회
+     */
+    Object setEmpList(int empNo);
+
 
     /**
      * 사원목록

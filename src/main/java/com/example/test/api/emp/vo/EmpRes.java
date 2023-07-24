@@ -9,7 +9,8 @@ import java.util.List;
 public class EmpRes extends PageParam {
 
     private String query;
-    private String data;
+    private Object data;
+    private String code;
     private int startList;
 
     private List<EmpDTO> list;

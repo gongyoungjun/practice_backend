@@ -45,7 +45,12 @@ public class EmpDao {
     public int getBoardListCnt() throws Exception {
         return sqlSession.selectOne("mapper.empMapper.getBoardListCnt");
     }
-
+    /**
+     * 사원 상세 조회
+     */
+    public List<EmpDTO> estEmpList(int empNo) {
+        return sqlSession.selectList("mapper.empMapper.empList", empNo);
+    }
     /**
      * 사원 목록 조회
      */

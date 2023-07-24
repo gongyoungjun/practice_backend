@@ -57,20 +57,21 @@ public class EmpServiceImpl implements EmpService {
      */
     @Override
     public EmpRes getEmpListAndSearch(EmpReq req) {
+        List<EmpDTO> empList = null;
+        
         EmpRes res = new EmpRes();
         res.setPage(req.getPage());
         res.setListSize(req.getListSize());
 
-        List<EmpDTO> empList = empDao.selectBoardList(req);
-        int totalCount = empDao.selectBoardListCnt(req); // 변경: 총 데이터 개수를 따로 조회
-        res.setListCnt(totalCount);
 
-        if (totalCount > 0) {
-            int startIndex = (req.getPage() - 1) * req.getListSize();
-            int endIndex = Math.min(startIndex + req.getListSize(), totalCount);
-            List<EmpDTO> paginatedList = empList.subList(startIndex, endIndex);
-            res.setList(paginatedList);
+        int totalCount = empDao.selectBoardListCnt(req); // 변경: 총 데이터 개수를 따로 조회
+
+        if(totalCount > 0){
+            empList = empDao.selectBoardList(req);
         }
+
+        res.setListCnt(totalCount);
+        res.setList(empList);
 
         return res;
     }
@@ -89,6 +90,13 @@ public class EmpServiceImpl implements EmpService {
         return empDao.empListUpdate(empDTO);
     }
 
+    /**
+     * 사원
+     * 상세 목록
+     */
+    public Object setEmpList(int empNo) {
+        return empDao.estEmpList(empNo);
+    }
 
     /**
      * 사원목록

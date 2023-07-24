@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -71,6 +72,27 @@ public class EmpController {
     }
 
     /**
+     * 사원
+     * 상세 목록
+     */
+    @Operation(summary = "사원 상세 목록", description = "사원 상세 목록 API")
+    @PutMapping("/update")
+    public ResponseEntity<EmpRes> setEmpList(int empNo) {
+        EmpRes res = new EmpRes();
+        String code = Code.SUCCESS;
+        Object data = null;
+        try {
+           data = empService.setEmpList(empNo);
+        } catch (Exception e) {
+            code = Code.FAIL;
+        }
+        res.setData(data);
+        res.setCode(code);
+        return ResponseEntity.ok(res);
+    }
+
+
+    /**
      * 사원목록
      * update
      */
@@ -85,6 +107,19 @@ public class EmpController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MessageSourceAccessor.getMessage("profileFail"));
         }
     }
+/*    @Operation(summary = "사원 프로필 업데이트", description = "사원 프로필을 업데이트하는 API")
+    @PutMapping("/update")
+    public ResponseEntity<String> setEmplistUpdate(@Valid @RequestBody EmpDTO empDTO) {
+        String code = Code.FAIL;
+        String data = null;
+        try {
+            data = empService.empListUpdate(empDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.ok(code);
+    }*/
 
 
     /**
