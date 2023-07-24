@@ -29,8 +29,6 @@ public class LoginController {
 
     /**
      * 로그인
-     * @param lReq
-     * @return
      */
     //백엔드에서 로그인 성공여부 -> code / 조회 -> data
     //프론트에서 code -> 성공,실패 구분 / data 변수 받아서 성공

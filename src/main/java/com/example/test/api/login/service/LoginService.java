@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface LoginService {
 
-
     List<EmpDTO> selectLoginUser(LoginReq lReq) throws Exception;
 }

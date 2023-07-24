@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -63,7 +62,6 @@ public class ApiTestServiceImpl implements ApiTestService {
         return apiAndGetList(API_EMP_URL, "employeeList", null, req, HttpMethod.POST);
     }*/
 
-
     @Tag(name = "RestTemplate - 사원 목록 - 이름 조회 - object")
     @Override
     public Object getEmployees(String nmKeyword) {
@@ -79,7 +77,6 @@ public class ApiTestServiceImpl implements ApiTestService {
         return apiAndGetList(apiUrl, "data", HttpMethod.GET);
     }
 
-
     // 제네릭 타입 T를 사용하여 리스트 반환 메서드
     // apiUrl = API의 엔드포인트 URL
     @Tag(name = "API 공통부분(list)")
@@ -92,7 +89,7 @@ public class ApiTestServiceImpl implements ApiTestService {
             RestTemplate restTemplate = new RestTemplate();
 
             // HttpHeaders 설정
-            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", AUTH_TOKEN);
             headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -161,6 +158,8 @@ public class ApiTestServiceImpl implements ApiTestService {
                 ApiRes apiRes = response.getBody();
                 if (apiRes != null && apiRes.getData() != null) {
                     // 단일 오브젝트로 변환
+                    // object를 map으로 변환
+                    //convertValue - 다른 형식 객체 원하는 형식 객체로 변환
                     dataObject = objectMapper.convertValue(apiRes.getData(), responseType);
                 }
             }
