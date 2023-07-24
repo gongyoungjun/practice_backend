@@ -46,13 +46,13 @@ public class ApiTestServiceImpl implements ApiTestService {
     @Tag(name = "RestTemplate - 회원목록")
     @Override
     public List<ApiMemberDTO> apiTestList() {
-        return apiAndGetList(API_MEMBER_URL, "list", null, null, HttpMethod.POST);
+        return apiAndGetList(API_MEMBER_URL, "list", HttpMethod.POST);
     }
 
     @Tag(name = "RestTemplate - 회원별 레슨")
     @Override
     public List<ApiLessonDTO> lessonMemberView() {
-        return apiAndGetList(API_LESSON_URL, "lessonList", null, null, HttpMethod.POST);
+        return apiAndGetList(API_LESSON_URL, "lessonList",  HttpMethod.POST);
     }
 
 /*    @Tag(name = "RestTemplate - 사원 목록 - 이름 조회 - list")
@@ -76,14 +76,14 @@ public class ApiTestServiceImpl implements ApiTestService {
     @Override
     public List<ApiEmployeesDTO> detailEmployees(int empNo) {
         String apiUrl = API_EMP_NO_URL + "?empNo=" + empNo;
-        return apiAndGetList(apiUrl, "data", null, null, HttpMethod.GET);
+        return apiAndGetList(apiUrl, "data", HttpMethod.GET);
     }
 
 
     // 제네릭 타입 T를 사용하여 리스트 반환 메서드
     // apiUrl = API의 엔드포인트 URL
     @Tag(name = "API 공통부분(list)")
-    public <T> List<T> apiAndGetList(String apiUrl, String dataNodeName, Map<String, String> additionalHeaders, ApiReq req, HttpMethod httpMethod) {
+    public <T> List<T> apiAndGetList(String apiUrl, String dataNodeName,HttpMethod httpMethod) {
         List<T> dataList = new ArrayList<>();
 
         try {
@@ -96,19 +96,13 @@ public class ApiTestServiceImpl implements ApiTestService {
             headers.set("Authorization", AUTH_TOKEN);
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-            // 추가적인 헤더가 있는 경우 이를 HttpHeaders에 추가합니다.
-            if (additionalHeaders != null) {
-                for (Map.Entry<String, String> entry : additionalHeaders.entrySet()) {
-                    headers.set(entry.getKey(), entry.getValue());
-                }
-            }
-
-            // vo 객체를 JSON 문자열로 변환합니다.
+            // vo 객체를 JSON 문자열로 변환
             ObjectMapper objectMapper = new ObjectMapper();
-            String requestData = objectMapper.writeValueAsString(req);
+            //이름 조회 할때, req 필요.
+            //String requestData = objectMapper.writeValueAsString(req);
 
             // HttpEntity(http 요청) 생성
-            HttpEntity<String> requestEntity = new HttpEntity<>(requestData, headers);
+            HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 
             // API 호출 및 응답 수신
             // exchange = HTTP 요청을 보내고 응답을 받는 기능을 수행
@@ -139,7 +133,7 @@ public class ApiTestServiceImpl implements ApiTestService {
     }
 
     @Tag(name = "API 공통부분(object)")
-    public <T> T apiAndGetObject(String apiUrl, Map<String, String> additionalHeaders, ApiReq req, HttpMethod httpMethod, Class<T> responseType) {
+    public <T> T apiAndGetObject(String apiUrl, Map<String, String> addHeaders, ApiReq req, HttpMethod httpMethod, Class<T> responseType) {
         T dataObject = null;
 
         try {
@@ -147,18 +141,19 @@ public class ApiTestServiceImpl implements ApiTestService {
             RestTemplate restTemplate = new RestTemplate();
 
             // HttpHeaders 설정
-            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", AUTH_TOKEN);
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             // 추가적인 헤더가 있는 경우 이를 HttpHeaders에 추가합니다.
-            if (additionalHeaders != null) {
-                for (Map.Entry<String, String> entry : additionalHeaders.entrySet()) {
+            if (addHeaders != null) {
+                for (Map.Entry<String, String> entry : addHeaders.entrySet()) {
                     headers.set(entry.getKey(), entry.getValue());
                 }
             }
 
-            // vo 객체를 JSON 문자열로 변환합니다.
+            // vo 객체를 JSON 문자열로 변환
+            //writeValueAsString - string 변환 대상
             ObjectMapper objectMapper = new ObjectMapper();
             String requestData = objectMapper.writeValueAsString(req);
 

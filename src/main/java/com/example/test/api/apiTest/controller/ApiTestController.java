@@ -28,7 +28,6 @@ public class ApiTestController {
 
     /**
      * 회원 목록
-     * @return
      */
     @Operation(summary = "외부 api 회원 목록", description = "외부 api 회원 목록")
     @PostMapping("/members")
@@ -48,9 +47,9 @@ public class ApiTestController {
 
         return ResponseEntity.ok(res);
     }
+
     /**
      * 회원별 레슨 조회
-     * @return
      */
     @Operation(summary = "외부 api 회원별 레슨 조회", description = "외부 api 회원별 레슨 조회")
     @PostMapping("/lessons")
@@ -68,11 +67,11 @@ public class ApiTestController {
 
         return ResponseEntity.ok(res);
     }
+
     /**
      * 사원 정보 목록
-     * @return
+     * object
      */
-
     @Operation(summary = "외부 api 사원 정보 목록(object)", description = "외부 api 사원 정보 목록(object)")
     @PostMapping("/emp/list")
     public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
@@ -89,27 +88,12 @@ public class ApiTestController {
 
         return ResponseEntity.ok(res);
     }
-/*    @Operation(summary = "외부 api 사원 정보 목록(list)", description = "외부 api 사원 정보 목록(list)")
-    @PostMapping("/emp/list")
-    public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
-        ApiRes res = new ApiRes();
-        String code = Code.SUCCESS;
-        List<ApiEmployeesDTO> list = null;
-        try {
-            list = apiTestService.getEmployees(req.getNmKeyword());
-        } catch (Exception e) {
-            code = Code.FAIL;
-        }
-        res.setData(list);
-        res.setCode(code);
 
-        return ResponseEntity.ok(res);
-    }*/
     /**
      * 사원 정보 목록
-     * @return
+     * list
      */
-    @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
+    @Operation(summary = "외부 api 사원 정보 목록(list)", description = "외부 api 사원 정보 목록(list)")
     @GetMapping("/emp/search")
     public ResponseEntity<ApiRes> detailEmployees(@RequestParam("empNo") int empNo) {
         ApiRes res = new ApiRes();

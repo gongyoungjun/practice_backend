@@ -49,7 +49,6 @@
         FROM TB_EMPLOYEE
     </select>
 
-
     <!--    사원 프로필 업데이트-->
     <update id="empListUpdate" parameterType="EmpDTO">
         UPDATE TB_EMPLOYEE
@@ -66,21 +65,22 @@
     </update>
     <!--로그인 구현-->
     <select id="selectLogin" resultType="EmpDTO" parameterType="LoginReq">
-        SELECT EMP_NO empNo
-             , EMP_NM empNm
-             , EMP_PHN empPhn
-             , EMP_EML empEml
-             , EMP_ST_CD empStCd
+        SELECT EMP_NO     empNo
+             , EMP_NM     empNm
+             , EMP_PHN    empPhn
+             , EMP_EML    empEml
+             , EMP_ST_CD  empStCd
              , EMP_RNK_CD empRnkCd
-             , EMP_HR_DT empHrDt
+             , EMP_HR_DT  empHrDt
              , EMP_BRT_DT empBrtDt
              , REG_DTM
         FROM TB_EMPLOYEE
-        WHERE EMP_NM = #{empNm} AND EMP_PWD = #{empPwd}
+        WHERE EMP_NM = #{empNm}
+          AND EMP_PWD = #{empPwd}
     </select>
     <!--사원 프로필 검색-->
     <select id="selectBoardList" resultType="EmpDTO" parameterType="EmpReq">
-        select EMP_NO empno
+        select EMP_NO empNo
         , EMP_NM empNm
         , EMP_PHN empPhn
         , EMP_EML empEml
@@ -106,11 +106,11 @@
     </sql>
 
     <!--목록 갯수-->
-`    <select id="selectBoardListCnt" resultType="int" parameterType="EmpReq">
+    <select id="selectBoardListCnt" resultType="int" parameterType="EmpReq">
         select count(*)
         from TB_EMPLOYEE
         <include refid="sqlSelectBoardList"/>
-    </select>`
+    </select>
 
     <!--엑셀 download-->
 

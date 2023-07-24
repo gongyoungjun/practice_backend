@@ -94,7 +94,6 @@ public class EmpController {
      * IOException : throw(던지다)된 예외에 대한 기본 클래스
      * RequestParam - 요청 매개변수
      */
-
     @Operation(summary = "파일 업로드", description = "파일 업로드")
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {

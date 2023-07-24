@@ -73,13 +73,10 @@ public class EmpDao {
 
     /**
      * 로그인
-     *
      */
-
     public List<EmpDTO> selectBoardList(LoginReq lReq) {
         return sqlSession.selectList("mapper.empMapper.selectLogin", lReq);
     }
-
 
 
 }
