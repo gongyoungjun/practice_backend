@@ -69,7 +69,7 @@ public class ApiTestServiceImpl implements ApiTestService {
     public Object getEmployees(String nmKeyword) {
         ApiReq req = new ApiReq();
         req.setNmKeyword(nmKeyword);
-        return apiAndGetObject(API_EMP_URL, null, req, HttpMethod.POST, Object.class);
+        return apiAndGetObject(API_EMP_URL, req, HttpMethod.POST, Object.class);
     }
 
     @Tag(name = "RestTemplate - 사원 목록 - no 조회")
@@ -133,7 +133,7 @@ public class ApiTestServiceImpl implements ApiTestService {
     }
 
     @Tag(name = "API 공통부분(object)")
-    public <T> T apiAndGetObject(String apiUrl, Map<String, String> addHeaders, ApiReq req, HttpMethod httpMethod, Class<T> responseType) {
+    public <T> T apiAndGetObject(String apiUrl, ApiReq req, HttpMethod httpMethod, Class<T> responseType) {
         T dataObject = null;
 
         try {
@@ -144,13 +144,6 @@ public class ApiTestServiceImpl implements ApiTestService {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", AUTH_TOKEN);
             headers.setContentType(MediaType.APPLICATION_JSON);
-
-            // 추가적인 헤더가 있는 경우 이를 HttpHeaders에 추가합니다.
-            if (addHeaders != null) {
-                for (Map.Entry<String, String> entry : addHeaders.entrySet()) {
-                    headers.set(entry.getKey(), entry.getValue());
-                }
-            }
 
             // vo 객체를 JSON 문자열로 변환
             //writeValueAsString - string 변환 대상
