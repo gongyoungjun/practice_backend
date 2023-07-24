@@ -49,7 +49,7 @@
     </select>
 
     <!--    사원 목록 상세 조회-->
-    <select id="setEmpList" parameterType="int" resultType="EmpDTO">
+    <select id="getEmpByEmpNo" parameterType="int" resultType="EmpDTO">
         SELECT *
         FROM TB_EMPLOYEE
         WHERE EMP_NO = #{empNo}
@@ -139,4 +139,20 @@
                  LEFT JOIN TB_IMAGE D on A.IMG_NO = D.IMG_NO
         WHERE A.EMP_NO = #{empNo}
     </select>
+    <!--사원 정보 update -->
+    <update id="empListUpdate" parameterType="EmpDTO">
+        UPDATE TB_EMPLOYEE
+        SET emp_Nm    = #{empNm},
+            emp_Pwd   = #{empPwd},
+            emp_Phn   = #{empPhn},
+            emp_Eml   = #{empEml},
+            emp_St_Cd  = #{empStCd},
+            emp_Rnk_Cd = #{empRnkCd},
+            emp_Hr_Dt  = #{empHrDt},
+            emp_Slr   = #{empSlr},
+            emp_Brt_Dt = #{empBrtDt}
+        WHERE emp_No = #{empNo}
+    </update>
+
+
 </mapper>

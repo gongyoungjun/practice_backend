@@ -1,5 +1,6 @@
 package com.example.test.api.emp.controller;
 
+import com.example.test.api.apiTest.vo.ApiRes;
 import com.example.test.api.config.Code;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.service.EmpService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -73,17 +75,24 @@ public class EmpController {
 
     /**
      * 사원
-     * 상세 목록
+     * 상세 정보
      */
-    @Operation(summary = "사원 상세 목록", description = "사원 상세 목록 API")
+    @Operation(summary = "사원 상세 정보", description = "사원 상세 정보 API")
     @PostMapping("/setEmpList")
     public ResponseEntity<EmpRes> setEmpList(@RequestBody EmpReq req) {
-        EmpRes res = null;
+        EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
         List<EmpDTO> list = null;
 
         try {
-            list = empService.setEmpList(req);
+            // empService.getEmpByEmpNo 메서드에 empNo를 전달하여 특정 사원의 정보를 조회
+            if (req.getEmpNo() > 0) {
+                EmpDTO empDTO = empService.getEmpByEmpNo(req.getEmpNo());
+                if (empDTO != null) {
+                    list = new ArrayList<>();
+                    list.add(empDTO);
+                }
+            }
         } catch (Exception e) {
             code = Code.FAIL;
         }
@@ -93,57 +102,29 @@ public class EmpController {
         return ResponseEntity.ok(res);
     }
 
+
+
     /**
-     * 사원
-     * 수정하기
-     * 추후 관리자만 수정하게 empNo 비교해서.
+     * 사원 정보 수정 API
      */
     @Operation(summary = "사원 정보 수정", description = "사원 정보 수정 api")
-    @PostMapping("/setEmpList")
-    public ResponseEntity<EmpRes> empListUpdate(EmpReq req) {
-        EmpRes res = null;
+    @PutMapping("/edit")
+    public ResponseEntity<EmpRes> setEmpListUpdate(@Valid @RequestBody EmpDTO empDTO) {
+        EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
-        List<EmpDTO> list = null;
 
         try {
-            list = empService.setEmpList(req);
+            int result = empService.empListUpdate(empDTO);
+            if (result > 0) {
+                code = Code.SUCCESS;
+            }
         } catch (Exception e) {
             code = Code.FAIL;
         }
 
-        res.setList(list);
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
-
-    /**
-     * 사원목록
-     * update
-     */
-    @Operation(summary = "사원 정보 수정", description = "사원 정보 수정 api")
-    @PutMapping("/update")
-    public ResponseEntity<String> setEmpListUpdate(@Valid @RequestBody EmpDTO empDTO) {
-        int result = empService.empListUpdate(empDTO);
-
-        if (result > 0) {
-            return ResponseEntity.ok(MessageSourceAccessor.getMessage("profileSuccess"));
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MessageSourceAccessor.getMessage("profileFail"));
-        }
-    }
-/*    @Operation(summary = "사원 프로필 업데이트", description = "사원 프로필을 업데이트하는 API")
-    @PutMapping("/update")
-    public ResponseEntity<String> setEmplistUpdate(@Valid @RequestBody EmpDTO empDTO) {
-        String code = Code.FAIL;
-        String data = null;
-        try {
-            data = empService.empListUpdate(empDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return ResponseEntity.ok(code);
-    }*/
 
     /**
      * 파일

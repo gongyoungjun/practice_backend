@@ -48,16 +48,9 @@ public class EmpDao {
     /**
      * 사원 상세 조회
      */
-    public List<EmpDTO> setEmpList(EmpReq req) {
-        return sqlSession.selectList("mapper.empMapper.setEmpList",req);
+    public EmpDTO getEmpByEmpNo(int empNo) {
+        return sqlSession.selectOne("mapper.empMapper.getEmpByEmpNo", empNo);
     }
-    /**
-     * 사원 목록 조회
-     */
-    public List<EmpDTO> empList(Pagination pagination) {
-        return sqlSession.selectList("mapper.empMapper.empList", pagination);
-    }
-
     /**
      * 사원목록
      * update
