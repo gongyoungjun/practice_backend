@@ -8,6 +8,7 @@ import com.example.test.api.emp.vo.LessonRes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface EmpService {
 
@@ -26,7 +27,7 @@ public interface EmpService {
      * 사원목록
      * 상세 조회
      */
-    Object setEmpList(int empNo);
+    List<EmpDTO> setEmpList(EmpReq req);
 
 
     /**

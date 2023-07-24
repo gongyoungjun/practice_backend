@@ -29,7 +29,6 @@
 
     <!--    사원 목록 페이지-->
     <!--    사원 프로필 가져오기-->
-
     <select id="empList" resultType="EmpDTO" parameterType="java.lang.Integer">
         select EMP_NO     empno
              , EMP_NM     empNm
@@ -49,20 +48,12 @@
         FROM TB_EMPLOYEE
     </select>
 
-    <!--    사원 프로필 업데이트-->
-    <update id="empListUpdate" parameterType="EmpDTO">
-        UPDATE TB_EMPLOYEE
-        SET EMP_NM     = IFNULL(#{empNm}, EMP_NM),
-            EMP_PWD    = IFNULL(#{empPwd}, EMP_PWD),
-            EMP_PHN    = IFNULL(#{empPhn}, EMP_PHN),
-            EMP_EML    = IFNULL(#{empEml}, EMP_EML),
-            EMP_ST_CD  = IFNULL(#{empStCd}, EMP_ST_CD),
-            EMP_RNK_CD = IFNULL(#{empRnkCd}, EMP_RNK_CD),
-            EMP_HR_DT  = IFNULL(#{empHrDt}, EMP_HR_DT),
-            EMP_BRT_DT = IFNULL(#{empBrtDt}, EMP_BRT_DT),
-            EMP_SLR    = IFNULL(#{empSlr}, EMP_SLR)
+    <!--    사원 목록 상세 조회-->
+    <select id="setEmpList" parameterType="int" resultType="EmpDTO">
+        SELECT *
+        FROM TB_EMPLOYEE
         WHERE EMP_NO = #{empNo}
-    </update>
+    </select>
     <!--로그인 구현-->
     <select id="selectLogin" resultType="EmpDTO" parameterType="LoginReq">
         SELECT EMP_NO     empNo

@@ -94,8 +94,8 @@ public class EmpServiceImpl implements EmpService {
      * 사원
      * 상세 목록
      */
-    public Object setEmpList(int empNo) {
-        return empDao.estEmpList(empNo);
+    public List<EmpDTO> setEmpList(EmpReq req) {
+        return empDao.setEmpList(req);
     }
 
     /**

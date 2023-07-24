@@ -76,21 +76,22 @@ public class EmpController {
      * 상세 목록
      */
     @Operation(summary = "사원 상세 목록", description = "사원 상세 목록 API")
-    @PutMapping("/update")
-    public ResponseEntity<EmpRes> setEmpList(int empNo) {
-        EmpRes res = new EmpRes();
+    @PostMapping("/setEmpList")
+    public ResponseEntity<EmpRes> setEmpList(@RequestBody EmpReq req) {
+        EmpRes res = null;
         String code = Code.SUCCESS;
-        Object data = null;
+        List<EmpDTO> list = null;
+
         try {
-           data = empService.setEmpList(empNo);
+            list = empService.setEmpList(req);
         } catch (Exception e) {
             code = Code.FAIL;
         }
-        res.setData(data);
+
+        res.setList(list);
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
-
 
     /**
      * 사원목록
@@ -121,7 +122,6 @@ public class EmpController {
         return ResponseEntity.ok(code);
     }*/
 
-
     /**
      * 파일
      * upload
@@ -140,7 +140,6 @@ public class EmpController {
         }
         return ResponseEntity.ok(Code.SUCCESS);
     }
-
 
     /**
      * 파일
@@ -167,7 +166,6 @@ public class EmpController {
         lessonRes.setCode(code);
         return ResponseEntity.ok(lessonRes);
     }
-
 
 }
 
