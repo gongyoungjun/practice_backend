@@ -55,7 +55,7 @@
         WHERE EMP_NO = #{empNo}
     </select>
     <!--로그인 구현-->
-    <select id="selectLogin" resultType="EmpDTO" parameterType="LoginReq">
+    <select id="selectLogin" parameterType="LoginReq" resultType="EmpDTO">
         SELECT EMP_NO     empNo
              , EMP_NM     empNm
              , EMP_PHN    empPhn
@@ -70,7 +70,7 @@
           AND EMP_PWD = #{empPwd}
     </select>
     <!--사원 프로필 검색-->
-    <select id="selectBoardList" resultType="EmpDTO" parameterType="EmpReq">
+    <select id="selectBoardList" parameterType="EmpReq" resultType="EmpDTO">
         select EMP_NO empNo
         , EMP_NM empNm
         , EMP_PHN empPhn
@@ -97,7 +97,7 @@
     </sql>
 
     <!--목록 갯수-->
-    <select id="selectBoardListCnt" resultType="int" parameterType="EmpReq">
+    <select id="selectBoardListCnt" parameterType="EmpReq" resultType="int">
         select count(*)
         from TB_EMPLOYEE
         <include refid="sqlSelectBoardList"/>
@@ -114,7 +114,7 @@
     </select>
 
     <!--엑셀 download-->
-    <select id="selectEmpInfo" parameterType="int" resultType="EmpDTO">
+    <select id="selectEmpInfo" resultType="EmpDTO" parameterType="int">
         SELECT A.EMP_NO
              , A.EMP_NM
              , A.EMP_PHN
@@ -131,7 +131,8 @@
              , B.CD_VAL_NM AS RNK_NM
              , C.CD_VAL_NM AS ST_NM
              , COALESCE(A.EMP_VCTN_TTL -
-                        (SELECT SUM(VCTN_DAY_CNT) FROM TB_VACATION WHERE EMP_NO = A.EMP_NO AND VCTN_ST_CD = '02'), 0) AS VCTN_RSD_CNT
+                        (SELECT SUM(VCTN_DAY_CNT) FROM TB_VACATION WHERE EMP_NO = A.EMP_NO AND VCTN_ST_CD = '02'),
+                        0) AS VCTN_RSD_CNT
         FROM TB_EMPLOYEE A
                  LEFT JOIN TB_CODE B ON A.EMP_RNK_CD = B.CD_VAL AND B.CD_ID = 'EMP_RNK_CD'
                  LEFT JOIN TB_CODE C ON A.EMP_ST_CD = C.CD_VAL AND C.CD_ID = 'EMP_ST_CD'

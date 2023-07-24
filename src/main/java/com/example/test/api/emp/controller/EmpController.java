@@ -66,7 +66,7 @@ public class EmpController {
      */
     @Operation(summary = "사원 정보 검색", description = "사원 정보 검색 API")
     @PostMapping("/empList/search")
-    public ResponseEntity<EmpRes> getEmpListAndSearch(@RequestBody EmpReq req) throws Exception {
+    public ResponseEntity<EmpRes> getEmpListAndSearch(@RequestParam EmpReq req) throws Exception {
         EmpRes resultEmpRes = empService.getEmpListAndSearch(req);
         return ResponseEntity.ok(resultEmpRes);
     }
@@ -94,12 +94,35 @@ public class EmpController {
     }
 
     /**
+     * 사원
+     * 수정하기
+     * 추후 관리자만 수정하게 empNo 비교해서.
+     */
+    @Operation(summary = "사원 정보 수정", description = "사원 정보 수정 api")
+    @PostMapping("/setEmpList")
+    public ResponseEntity<EmpRes> empListUpdate(EmpReq req) {
+        EmpRes res = null;
+        String code = Code.SUCCESS;
+        List<EmpDTO> list = null;
+
+        try {
+            list = empService.setEmpList(req);
+        } catch (Exception e) {
+            code = Code.FAIL;
+        }
+
+        res.setList(list);
+        res.setCode(code);
+        return ResponseEntity.ok(res);
+    }
+
+    /**
      * 사원목록
      * update
      */
-    @Operation(summary = "사원 프로필 업데이트", description = "사원 프로필을 업데이트하는 API")
+    @Operation(summary = "사원 정보 수정", description = "사원 정보 수정 api")
     @PutMapping("/update")
-    public ResponseEntity<String> setEmplistUpdate(@Valid @RequestBody EmpDTO empDTO) {
+    public ResponseEntity<String> setEmpListUpdate(@Valid @RequestBody EmpDTO empDTO) {
         int result = empService.empListUpdate(empDTO);
 
         if (result > 0) {

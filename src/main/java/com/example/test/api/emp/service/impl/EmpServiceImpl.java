@@ -58,18 +58,16 @@ public class EmpServiceImpl implements EmpService {
     @Override
     public EmpRes getEmpListAndSearch(EmpReq req) {
         List<EmpDTO> empList = null;
-        
+
         EmpRes res = new EmpRes();
         res.setPage(req.getPage());
         res.setListSize(req.getListSize());
 
-
         int totalCount = empDao.selectBoardListCnt(req); // 변경: 총 데이터 개수를 따로 조회
 
-        if(totalCount > 0){
+        if (totalCount > 0) {
             empList = empDao.selectBoardList(req);
         }
-
         res.setListCnt(totalCount);
         res.setList(empList);
 
