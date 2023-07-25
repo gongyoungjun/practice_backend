@@ -44,14 +44,14 @@ public class ApiTestServiceImpl implements ApiTestService {
 
     @Tag(name = "RestTemplate - 회원목록")
     @Override
-    public List<ApiMemberDTO> apiTestList() {
-        return apiAndGetList(API_MEMBER_URL, null, "list", HttpMethod.POST);
+    public List<ApiMemberDTO> apiTestList(ApiReq req) {
+        return apiAndGetList(API_MEMBER_URL,req , "list", HttpMethod.POST);
     }
 
-    @Tag(name = "RestTemplate - 회원별 레슨")
+    @Tag(name = "RestTemplate - 레슨리스트")
     @Override
-    public List<ApiLessonDTO> lessonMemberView() {
-        return apiAndGetList(API_LESSON_URL, null, "lessonList", HttpMethod.POST);
+    public List<ApiLessonDTO> lessonMemberView(ApiReq req) {
+        return apiAndGetList(API_LESSON_URL,req , "lessonList", HttpMethod.POST);
     }
 
     @Tag(name = "RestTemplate - 사원 목록 - 이름 조회 - list")
@@ -62,20 +62,10 @@ public class ApiTestServiceImpl implements ApiTestService {
         return apiAndGetList(API_EMP_URL, req, "employeeList", HttpMethod.POST);
     }
 
-/*    @Tag(name = "RestTemplate - 사원 목록 - 이름 조회 - object")
-    @Override
-    public Object getEmployees(String nmKeyword) {
-        ApiReq req = new ApiReq();
-        req.setNmKeyword(nmKeyword);
-        return apiAndGetObject(API_EMP_URL, req, HttpMethod.POST, Object.class);
-    }*/
-
     @Tag(name = "RestTemplate - 사원 목록 - no로 가져오기")
     @Override
     public Object detailEmployees(int empNo) {
-        ApiReq req = new ApiReq();
-        req.setEmpNo(empNo);
-        return apiAndGetObject(API_EMP_NO_URL, req, HttpMethod.GET, Object.class);
+        return apiAndGetObject(API_EMP_NO_URL, null,HttpMethod.GET,Object.class);
     }
 
     // 제네릭 타입 T를 사용하여 리스트 반환 메서드
@@ -149,9 +139,6 @@ public class ApiTestServiceImpl implements ApiTestService {
     public ResponseEntity<ApiRes> apiExchange(String apiUrl, String req, HttpMethod httpMethod) {
         // RestTemplate 객체 생성
         RestTemplate restTemplate = new RestTemplate();
-
-/*        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();*/
 
         // HttpHeaders 설정
         HttpHeaders headers = new HttpHeaders();

@@ -1,6 +1,5 @@
 package com.example.test.api.emp.controller;
 
-import com.example.test.api.apiTest.vo.ApiRes;
 import com.example.test.api.config.Code;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.service.EmpService;
@@ -47,10 +46,13 @@ public class EmpController {
             String code = Code.FAIL;
             // 회원가입 로직 구현
             log.debug("회원가입 {}", empDTO);
+
+
             // 파일 업로드 처리
             if (!file.isEmpty()) {
                 empService.signUploadFile(file);
             }
+
             // res 성공적으로 등록(00) 여부 판단
             int res = empService.insertUser(empDTO);
             if (res > 0) {
@@ -101,7 +103,6 @@ public class EmpController {
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
-
 
 
     /**

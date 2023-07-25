@@ -1,5 +1,6 @@
 package com.example.test.api.apiTest.controller;
 
+import com.example.test.api.apiTest.dto.ApiEmployeesDTO;
 import com.example.test.api.apiTest.dto.ApiLessonDTO;
 import com.example.test.api.apiTest.dto.ApiMemberDTO;
 import com.example.test.api.apiTest.service.ApiTestService;
@@ -30,13 +31,13 @@ public class ApiTestController {
      */
     @Operation(summary = "외부 api 회원 목록", description = "외부 api 회원 목록")
     @PostMapping("/members")
-    public ResponseEntity<ApiRes> getMembers() {
+    public ResponseEntity<ApiRes> apiTestList(ApiReq req) {
         ApiRes res = new ApiRes();
         String code = Code.SUCCESS;
         List<ApiMemberDTO> list = new ArrayList<>();
 
         try {
-            list = apiTestService.apiTestList();
+            list = apiTestService.apiTestList(req);
         } catch (Exception e) {
             code = Code.FAIL;
         }
@@ -50,18 +51,18 @@ public class ApiTestController {
     /**
      * 회원별 레슨 조회
      */
-    @Operation(summary = "외부 api 회원별 레슨 조회", description = "외부 api 회원별 레슨 조회")
+    @Operation(summary = "외부 api 레슨 조회", description = "외부 api 레슨 조회")
     @PostMapping("/lessons")
-    public ResponseEntity<ApiRes> getLessons() {
+    public ResponseEntity<ApiRes> lessonMemberView(ApiReq req) {
         ApiRes res = new ApiRes();
         String code = Code.SUCCESS;
-        List<ApiLessonDTO> list = null;
+        List<ApiLessonDTO> lessonList = new ArrayList<>();
         try {
-            list = apiTestService.lessonMemberView();
+            lessonList = apiTestService.lessonMemberView(req);
         } catch (Exception e) {
             code = Code.FAIL;
         }
-        res.setData(list);
+        res.setData(lessonList);
         res.setCode(code);
 
         return ResponseEntity.ok(res);
@@ -71,7 +72,7 @@ public class ApiTestController {
      * 사원 정보 목록
      * object
      */
-    @Operation(summary = "외부 api 사원 정보 목록(object)", description = "외부 api 사원 정보 목록(object)")
+    @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
     @PostMapping("/emp/list")
     public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
         ApiRes res = new ApiRes();
@@ -98,7 +99,7 @@ public class ApiTestController {
     public ResponseEntity<ApiRes> detailEmployees(@RequestParam("empNo") int empNo) {
         ApiRes res = new ApiRes();
         String code = Code.SUCCESS;
-        Object data = null;
+        Object data = new ArrayList<>();
         try {
             data = apiTestService.detailEmployees(empNo);
         } catch (Exception e) {
@@ -110,5 +111,7 @@ public class ApiTestController {
         return ResponseEntity.ok(res);
     }
 }
+
+
 
 
