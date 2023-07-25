@@ -70,16 +70,15 @@ public class ApiTestController {
 
     /**
      * 사원 정보 목록
-     * object
      */
     @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
     @PostMapping("/emp/list")
     public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
         ApiRes res = new ApiRes();
         String code = Code.SUCCESS;
-        Object data = null;
+        List<ApiEmployeesDTO> data = null;
         try {
-            data = apiTestService.getEmployees(req.getNmKeyword());
+            data = apiTestService.getEmployees(req);
         } catch (Exception e) {
             code = Code.FAIL;
         }
@@ -96,10 +95,10 @@ public class ApiTestController {
      */
     @Operation(summary = "외부 api 사원 정보 목록(Object)", description = "외부 api 사원 정보 목록(Object)")
     @PostMapping("/emp/search")
-    public ResponseEntity<ApiRes> detailEmployees(@RequestParam("empNo") int empNo) {
+    public ResponseEntity<ApiRes> detailEmployees(int empNo) {
         ApiRes res = new ApiRes();
         String code = Code.SUCCESS;
-        Object data = new ArrayList<>();
+        ApiEmployeesDTO data = null;
         try {
             data = apiTestService.detailEmployees(empNo);
         } catch (Exception e) {

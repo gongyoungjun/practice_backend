@@ -4,11 +4,9 @@ import lombok.Data;
 
 @Data
 public class ApiReq {
-
-    private int empNo;
     private int offset;
+    private int empNo;
     private int cntPerPage;
-    private int page;
     private int mbrNo;
     private String mbrNm;
     private String mbrStCd;

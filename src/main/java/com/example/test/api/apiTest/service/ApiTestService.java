@@ -23,13 +23,13 @@ public interface ApiTestService {
      * 사원 정보 목록
      * 이름
      */
-    Object getEmployees(String nmKeyword);
+    List<ApiEmployeesDTO> getEmployees(ApiReq req);
 
     /**
      * 사원 정보 목록
      * no
      * detail
      */
-    Object detailEmployees(int empNo);
+    ApiEmployeesDTO detailEmployees(int empNo);
 
 }
