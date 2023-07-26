@@ -1,7 +1,7 @@
 package com.example.test.api.apiTest.vo;
 
-import lombok.Data;
 
+import lombok.Data;
 
 @Data
 public class ApiRes {
@@ -10,4 +10,5 @@ public class ApiRes {
     private String message;
     private Object data;
 
+    
 }

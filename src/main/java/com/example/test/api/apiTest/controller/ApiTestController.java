@@ -7,6 +7,7 @@ import com.example.test.api.apiTest.service.ApiTestService;
 import com.example.test.api.apiTest.vo.ApiReq;
 import com.example.test.api.apiTest.vo.ApiRes;
 import com.example.test.api.config.Code;
+import com.example.test.api.login.vo.EmpListReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +63,7 @@ public class ApiTestController {
         } catch (Exception e) {
             code = Code.FAIL;
         }
+
         res.setData(lessonList);
         res.setCode(code);
 
@@ -73,7 +75,8 @@ public class ApiTestController {
      */
     @Operation(summary = "외부 api 사원 정보 목록", description = "외부 api 사원 정보 목록")
     @PostMapping("/emp/list")
-    public ResponseEntity<ApiRes> getEmployees(@RequestBody ApiReq req) {
+    public ResponseEntity<ApiRes> getEmployees(ApiReq req) {
+
         ApiRes res = new ApiRes();
         String code = Code.SUCCESS;
         List<ApiEmployeesDTO> data = null;
