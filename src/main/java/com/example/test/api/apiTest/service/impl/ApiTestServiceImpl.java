@@ -112,7 +112,6 @@ public class ApiTestServiceImpl implements ApiTestService {
 
         // RestTemplate 객체 생성
         RestTemplate restTemplate = new RestTemplate();
-1
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             // 요청 데이터를 JSON으로 변환
