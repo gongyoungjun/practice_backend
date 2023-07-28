@@ -6,6 +6,7 @@ import com.example.test.api.emp.service.EmpService;
 import com.example.test.api.emp.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,9 +27,13 @@ public class EmpServiceImpl implements EmpService {
      * user.home = 사용자 홈 디렉토리
      * user.name = 사용자 계정
      */
-    private static final String FILE_UPLOAD_PATH = System.getProperty("user.dir") + "/src/main/resources/static/image/";
 
-    private final String filePath = System.getProperty("user.dir") + "/src/main/resources/static/file/";
+    @Value("${emp.file.upload}")
+    private String FILE_UPLOAD_PATH;
+
+    @Value("${emp.filePath}")
+    private String filePath;
+
 
     private final EmpDao empDao;
 
@@ -74,10 +79,6 @@ public class EmpServiceImpl implements EmpService {
         return res;
     }
 
-    @Override
-    public int selectBoardListCnt(EmpReq req) {
-        return empDao.selectBoardListCnt(req);
-    }
 
     /**
      * 사원목록
@@ -100,11 +101,13 @@ public class EmpServiceImpl implements EmpService {
      * 사원목록
      * 전체 가져오기
      */
+/*
     @Override
     public int getBoardListCnt() throws Exception {
         return empDao.getBoardListCnt();
 
     }
+*/
 
     /**
      * 파일

@@ -1,5 +1,6 @@
 package com.example.test.api.emp.vo;
 
+import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.emp.dto.EmpDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -19,4 +20,6 @@ public class EmpRes extends PageParam {
     private int startList;
     @Schema(description = "사원 목록")
     private List<EmpDTO> list;
+    @Schema(description = "휴가 목록")
+    private List<VacationDTO> vacationList;
 }

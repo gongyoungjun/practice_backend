@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
@@ -48,6 +49,16 @@ public class EmpDTO {
     private String imgNm;
     @Schema(description = "이미지 파일")
     private MultipartFile file;*/
+
+    /**
+     * 잔여 휴가일 계산
+     */
+    @Schema(description = "총 휴가일 수")
+    private int empVctnTtl;
+    @Schema(description = "휴가 신청일 수")
+    private BigDecimal vctnDayCnt;
+    @Schema(description = "잔여 휴가")
+    private BigDecimal vctnRsdCnt;
 
 
 }

@@ -26,15 +26,17 @@ public interface EmpService {
     /**
      * 사원목록
      * search
-     */
     int getBoardListCnt() throws Exception;
 
     int selectBoardListCnt(EmpReq req);
+
     /**
      * 사원
      * 상세 정보
      */
     EmpDTO getEmpByEmpNo(int empNo);
+
+
     /**
      * 사원목록
      * update
@@ -59,7 +61,6 @@ public interface EmpService {
      * lesson
      */
     LessonRes readFile(String fileName);
-
 
 
 }

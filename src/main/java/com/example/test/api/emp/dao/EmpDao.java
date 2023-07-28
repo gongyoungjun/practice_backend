@@ -1,8 +1,8 @@
 package com.example.test.api.emp.dao;
 
+import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.EmpReq;
-import com.example.test.api.emp.vo.Pagination;
 import com.example.test.api.login.vo.LoginReq;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -74,6 +74,7 @@ public class EmpDao {
     public List<EmpDTO> selectBoardList(LoginReq lReq) {
         return sqlSession.selectList("mapper.empMapper.selectLogin", lReq);
     }
+
 
 
 }

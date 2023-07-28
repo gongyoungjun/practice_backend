@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.vcMapper">
+
+    <!--  휴가 조회-->
+    <select id="getVcEmpNo" parameterType="EmpReq" resultType="VacationDTO">
+        SELECT v.EMP_NO       empNo,
+               v.VCTN_DAY_CNT vctnDayCnt,
+               v.VCTN_RSN     vctnRsn,
+               v.VCTN_RSD_CNT vctnRsdCnt,
+               e.EMP_NM       empNm,
+               e.EMP_VCTN_TTL empVctnTtl
+        FROM TB_VACATION v
+                 INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
+            LIMIT #{startList}
+           , #{listSize};
+    </select>
+
+    <!--  휴가 신청 -->
+    <insert id="insertUser" parameterType="VacationDTO">
+        INSERT INTO TB_VACATION (EMP_NO,
+                                 VCTN_DAY_CNT,
+                                 VCTN_RSN,
+                                 VCTN_RSD_CNT,
+                                 VCTN_APL_DTM)
+        VALUES (#{empNo},
+                #{vctnDayCnt},
+                #{vctnRsn},
+                #{vctnRsdCnt},
+                sysdate());
+    </insert>
+
+
+</mapper>
