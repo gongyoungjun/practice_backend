@@ -19,18 +19,43 @@
     </select>
 
     <!--  휴가 신청 -->
-    <insert id="insertUser" parameterType="VacationDTO">
+    <insert id="insertUser" parameterType="VcCreate">
         INSERT INTO TB_VACATION (EMP_NO,
+                                 VCTN_STR_DT,
+                                 VCTN_END_DT,
+                                 VCTN_KND_CD,
+                                 VCTN_ST_CD,
                                  VCTN_DAY_CNT,
                                  VCTN_RSN,
                                  VCTN_RSD_CNT,
                                  VCTN_APL_DTM)
         VALUES (#{empNo},
+                #{vctnStrDt},
+                #{vctnEndDt},
+                #{vctnKndCd},
+                #{vctnStNm},
                 #{vctnDayCnt},
                 #{vctnRsn},
                 #{vctnRsdCnt},
                 sysdate());
     </insert>
 
+    <!--  휴가 조회-->
+    <select id="getVacation" parameterType="EmpReq" resultType="VacationDTO">
+        SELECT VCTN_NO      vctnNo,
+               EMP_NO       empNo,
+               VCTN_DAY_CNT vctnDayCnt,
+               VCTN_RSN     vctnRsn,
+               VCTN_RSD_CNT vctnRsdCnt
+        FROM TB_VACATION
+        WHERE VCTN_NO = #{vctnNo}
+    </select>
+
+    <!--  휴가 승인 취소-->
+    <update id="updateVacationStatus" parameterType="VacationDTO">
+        UPDATE TB_VACATION
+        SET VCTN_ST_CD = #{vctnStNm}
+        WHERE VCTN_NO = #{vctnNo}
+    </update>
 
 </mapper>

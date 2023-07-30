@@ -1,14 +1,16 @@
 package com.example.test.api.vacation.service.impl;
 
+import com.example.test.api.emp.vo.EmpReq;
+import com.example.test.api.emp.vo.EmpRes;
 import com.example.test.api.vacation.dao.VctnDao;
 import com.example.test.api.vacation.service.EmpVcService;
 import com.example.test.api.vacation.vo.VacationDTO;
-import com.example.test.api.emp.dao.EmpDao;
-import com.example.test.api.emp.vo.EmpReq;
-import com.example.test.api.emp.vo.EmpRes;
+import com.example.test.api.vacation.vo.VcCreate;
+import com.example.test.api.vacation.vo.VcReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -40,13 +42,30 @@ public class EmpVcServiceImpl implements EmpVcService {
 
         return res;
     }
+
     /**
      * 휴가
-     * 목록 조회
+     * 신청
      */
     @Override
-    public List<VacationDTO> createVacation(VacationDTO vacationDTO) {
-        return vctnDao.createVacation(vacationDTO);
+    public int createVacation(VcCreate vcCreate) {
+        return vctnDao.createVacation(vcCreate);
     }
+
+    /**
+     * 휴가
+     * 승인
+     */
+    @Override
+    public VacationDTO approveVc(VcReq req) {
+        VacationDTO vacationDTO = vctnDao.getVacation(req);
+        if (vacationDTO != null) {
+            vacationDTO.setVctnStNm(req.getVctnStNm());
+            vctnDao.updateVacationStatus(vacationDTO);
+        }
+        return vacationDTO;
+    }
+
+
 
 }

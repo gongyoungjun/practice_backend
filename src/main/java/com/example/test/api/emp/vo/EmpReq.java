@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class EmpReq extends PageParam {
 
+    private int vctnNo;
     private int empNo;
     private String empNm;
     private String empPhn;

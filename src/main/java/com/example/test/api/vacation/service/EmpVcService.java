@@ -3,11 +3,12 @@ package com.example.test.api.vacation.service;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.EmpRes;
 import com.example.test.api.vacation.vo.VacationDTO;
+import com.example.test.api.vacation.vo.VcCreate;
+import com.example.test.api.vacation.vo.VcReq;
 
 import java.util.List;
 
 public interface EmpVcService {
-
 
 
     /**
@@ -16,16 +17,16 @@ public interface EmpVcService {
      */
     EmpRes getVacation(EmpReq req) throws Exception;
 
-
-
     /**
      * 휴가
      * 신청 등록
      */
-    List<VacationDTO> createVacation(VacationDTO vacationDTO) throws Exception;
+    int createVacation(VcCreate vcCreate) throws Exception;
+
     /**
      * 휴가
      * 승인
      */
+    VacationDTO approveVc(VcReq req);
 
 }

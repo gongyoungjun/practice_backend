@@ -2,6 +2,8 @@ package com.example.test.api.vacation.dao;
 
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.vacation.vo.VacationDTO;
+import com.example.test.api.vacation.vo.VcCreate;
+import com.example.test.api.vacation.vo.VcReq;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,7 @@ public class VctnDao {
     public List<VacationDTO> getVcEmpNo(EmpReq req) {
         return sqlSession.selectList("mapper.vcMapper.getVcEmpNo", req);
     }
+
     /**
      * 사원목록
      * 전체
@@ -31,8 +34,24 @@ public class VctnDao {
      * 휴가
      * 신청
      */
-    public List<VacationDTO> createVacation(VacationDTO vacationDTO) {
-        return sqlSession.selectList("mapper.vcMapper.getVcEmpNo", vacationDTO);
+    public int createVacation(VcCreate vcCreate) {
+        return sqlSession.insert("mapper.vcMapper.insertUser", vcCreate);
+    }
+
+    /**
+     * 휴가
+     * 목록
+     */
+    public VacationDTO getVacation(VcReq req) {
+        return sqlSession.selectOne("mapper.vcMapper.getVacation", req);
+    }
+
+    /**
+     * 휴가
+     * 승인,취소
+     */
+    public int updateVacationStatus(VacationDTO vacationDTO) {
+        return sqlSession.update("mapper.vcMapper.updateVacationStatus", vacationDTO);
     }
 
 }
