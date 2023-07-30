@@ -13,10 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -71,16 +68,52 @@ public class EmpVcController {
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
+    /**
+     * 휴가
+     * 상세 페이지
+     */
+    @Operation(summary = "휴가 상세 페이지 조회", description = "휴가 상세 페이지 조회")
+    @GetMapping("/detail/{vctnNo}")
+    public ResponseEntity<EmpRes> getVacationDetail(@PathVariable int vctnNo) {
+        EmpRes res = new EmpRes();
+        String code = Code.FAIL;
+
+        try {
+            VacationDTO vacationDTO = empVcService.getVcDetail(vctnNo);
+            if (vacationDTO != null) {
+                code = Code.SUCCESS;
+                res.setData(vacationDTO); // 휴가 상세 정보를 반환
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        res.setCode(code);
+        return ResponseEntity.ok(res);
+    }
 
     /**
      * 휴가
-     * 신청
+     * 승인 취소
      */
     @Operation(summary = "휴가 승인,취소", description = "휴가 승인,취소")
-    @PostMapping("/approve")
-    public ResponseEntity<VacationDTO> approveVacation(@RequestBody VcReq req) {
-        VacationDTO approvedVacation = empVcService.approveVc(req);
-        return ResponseEntity.ok(approvedVacation);
+    @PutMapping("/approve/{vctnNo}")
+    public ResponseEntity<EmpRes> approveVacation(@RequestBody VcReq req) {
+        EmpRes res = new EmpRes();
+        String code = Code.FAIL;
+
+        try {
+            VacationDTO approvedVacation = empVcService.approveVc(req);
+            if (approvedVacation != null) {
+                code = Code.SUCCESS;
+            }
+            res.setData(approvedVacation); // 승인된 휴가 정보를 반환
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        res.setCode(code);
+        return ResponseEntity.ok(res);
     }
 
 }

@@ -22,4 +22,6 @@ public class EmpRes extends PageParam {
     private List<EmpDTO> list;
     @Schema(description = "휴가 목록")
     private List<VacationDTO> vacationList;
+
+
 }

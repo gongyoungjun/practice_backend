@@ -25,6 +25,12 @@ public interface EmpVcService {
 
     /**
      * 휴가
+     * 상세 페이지
+     */
+    VacationDTO getVcDetail(int vctnNo);
+
+    /**
+     * 휴가
      * 승인
      */
     VacationDTO approveVc(VcReq req);

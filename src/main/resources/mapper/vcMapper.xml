@@ -6,17 +6,47 @@
 
     <!--  휴가 조회-->
     <select id="getVcEmpNo" parameterType="EmpReq" resultType="VacationDTO">
-        SELECT v.EMP_NO       empNo,
-               v.VCTN_DAY_CNT vctnDayCnt,
-               v.VCTN_RSN     vctnRsn,
-               v.VCTN_RSD_CNT vctnRsdCnt,
-               e.EMP_NM       empNm,
-               e.EMP_VCTN_TTL empVctnTtl
+        SELECT v.VCTN_NO vctnNo,
+        v.EMP_NO empNo,
+        v.VCTN_DAY_CNT vctnDayCnt,
+        v.VCTN_RSN vctnRsn,
+        v.VCTN_RSD_CNT vctnRsdCnt,
+        v.VCTN_ST_CD vctnStNm,
+        e.EMP_NM empNm,
+        e.EMP_PHN empPhn,
+        e.EMP_VCTN_TTL empVctnTtl
+
         FROM TB_VACATION v
-                 INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
-            LIMIT #{startList}
-           , #{listSize};
+        INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
+        <include refid="sqlSelectBoardList"/>
+        LIMIT #{startList}
+        , #{listSize};
     </select>
+    <!-- 검색 조건(이름,전화번호) -->
+    <sql id="sqlSelectBoardList">
+        <where>
+            <if test="empNm != null and empNm != ''">
+                and EMP_NM LIKE CONCAT('%', #{empNm}, '%')
+            </if>
+            <if test="empPhn != null and empPhn != ''">
+                and EMP_PHN LIKE CONCAT('%', #{empPhn}, '%')
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectBoardListCnt" parameterType="EmpReq" resultType="int">
+        select count(*)
+        from TB_VACATION
+        <include refid="sqlSelectBoardList"/>
+    </select>
+
+    <!-- 휴가 정보 상세 페이지 -->
+    <select id="getVcDetail" parameterType="EmpReq" resultType="VacationDTO">
+        select *
+        from TB_VACATION
+        where VCTN_NO = #{vctnNo};
+    </select>
+
 
     <!--  휴가 신청 -->
     <insert id="insertUser" parameterType="VcCreate">

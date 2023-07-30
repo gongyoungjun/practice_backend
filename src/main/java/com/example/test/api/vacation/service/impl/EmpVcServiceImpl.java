@@ -10,7 +10,6 @@ import com.example.test.api.vacation.vo.VcReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -51,6 +50,16 @@ public class EmpVcServiceImpl implements EmpVcService {
     public int createVacation(VcCreate vcCreate) {
         return vctnDao.createVacation(vcCreate);
     }
+
+    /**
+     * 휴가
+     * 상세 페이지
+     */
+    @Override
+    public VacationDTO getVcDetail(int vctnNo){
+        return vctnDao.getVcDetail(vctnNo);
+    }
+
 
     /**
      * 휴가

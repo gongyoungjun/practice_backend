@@ -27,7 +27,7 @@ public class VctnDao {
      * 전체
      */
     public int selectBoardListCnt(EmpReq req) {
-        return sqlSession.selectOne("mapper.empMapper.selectBoardListCnt");
+        return sqlSession.selectOne("mapper.empMapper.selectBoardListCnt", req);
     }
 
     /**
@@ -45,7 +45,13 @@ public class VctnDao {
     public VacationDTO getVacation(VcReq req) {
         return sqlSession.selectOne("mapper.vcMapper.getVacation", req);
     }
-
+    /**
+     * 휴가
+     * 상세페이지
+     */
+    public VacationDTO getVcDetail(int vctnNo) {
+        return sqlSession.selectOne("mapper.vcMapper.getVcDetail", vctnNo);
+    }
     /**
      * 휴가
      * 승인,취소
