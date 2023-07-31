@@ -41,13 +41,9 @@ public class EmpVcServiceImpl implements EmpVcService {
 
         return res;
     }
-
-    private List<VacationDTO> getVacationList_v2(EmpReq req) {
-        return vctnDao.getVcEmpNo(req);
-    }
     /**
      * 휴가
-     * 목록 조회
+     * 목록조회
      */
     private List<VacationDTO> getVacationList(EmpReq req) {
         return vctnDao.getVcEmpNo(req);

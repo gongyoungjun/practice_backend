@@ -80,7 +80,8 @@ public class EmpVcController {
             VacationDTO vacationDTO = empVcService.getVcDetail(vctnNo);
             if (vacationDTO != null) {
                 code = Code.SUCCESS;
-                res.setData(vacationDTO); // 휴가 상세 정보를 반환
+                // 휴가 상세 정보를 반환하고, 사원 정보를 함께 설정
+                res.setData(vacationDTO);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,6 +90,7 @@ public class EmpVcController {
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
+
 
     /**
      * 휴가

@@ -16,7 +16,8 @@ public class VctnDao {
     private final SqlSessionTemplate sqlSession;
 
     /**
-     * 휴가  조회
+     * 휴가
+     * 조회
      */
     public List<VacationDTO> getVcEmpNo(EmpReq req) {
         return sqlSession.selectList("mapper.vcMapper.getVcEmpNo", req);

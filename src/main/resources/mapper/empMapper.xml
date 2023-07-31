@@ -48,7 +48,15 @@
 
     <!--    사원 목록 상세 조회-->
     <select id="getEmpByEmpNo" parameterType="int" resultType="EmpDTO">
-        SELECT *
+        SELECT EMP_NO     empNo
+             , EMP_NM     empNm
+             , EMP_PHN    empPhn
+             , EMP_EML    empEml
+             , EMP_ST_CD  empStCd
+             , EMP_RNK_CD empRnkCd
+             , EMP_HR_DT  empHrDt
+             , EMP_BRT_DT empBrtDt
+             , REG_DTM
         FROM TB_EMPLOYEE
         WHERE EMP_NO = #{empNo}
     </select>

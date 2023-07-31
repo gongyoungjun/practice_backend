@@ -82,15 +82,12 @@ public class EmpController {
         return ResponseEntity.ok(resultEmpRes);
     }
 
-
-
-
     /**
      * 사원
      * 상세 정보
      */
     @Operation(summary = "사원 상세 정보", description = "사원 상세 정보 API")
-    @PostMapping("/setEmpList")
+    @PostMapping("/setEmpList/{empNo}")
     public ResponseEntity<EmpRes> setEmpList(@RequestBody EmpReq req) {
         EmpRes res = new EmpRes();
         String code = Code.SUCCESS;

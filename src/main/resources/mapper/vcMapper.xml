@@ -41,11 +41,22 @@
     </select>
 
     <!-- 휴가 정보 상세 페이지 -->
-    <select id="getVcDetail" parameterType="EmpReq" resultType="VacationDTO">
-        select *
-        from TB_VACATION
-        where VCTN_NO = #{vctnNo};
+    <select id="getVcDetail" parameterType="int" resultType="VacationDTO">
+        SELECT
+            v.VCTN_NO vctnNo,
+            v.EMP_NO empNo,
+            v.VCTN_DAY_CNT vctnDayCnt,
+            v.VCTN_RSN vctnRsn,
+            v.VCTN_RSD_CNT vctnRsdCnt,
+            v.VCTN_ST_CD vctnStNm,
+            e.EMP_NM empNm,
+            e.EMP_PHN empPhn,
+            e.EMP_VCTN_TTL empVctnTtl
+        FROM TB_VACATION v
+                 INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
+        WHERE v.VCTN_NO = #{vctnNo};
     </select>
+
 
 
     <!--  휴가 신청 -->

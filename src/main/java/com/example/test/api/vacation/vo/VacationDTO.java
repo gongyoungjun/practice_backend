@@ -1,6 +1,6 @@
 package com.example.test.api.vacation.vo;
 
-import com.example.test.api.emp.vo.PageParam;
+import com.example.test.api.emp.dto.EmpDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class VacationDTO extends PageParam {
+public class VacationDTO {
 
     @Schema(description = "휴가 신청 인덱스")
     private int vctnNo;
@@ -38,4 +38,7 @@ public class VacationDTO extends PageParam {
     private BigDecimal vctnRsdCnt;
     @Schema(description = "신청 날짜")
     private String vctnAplDtm;
+
+
+
 }
