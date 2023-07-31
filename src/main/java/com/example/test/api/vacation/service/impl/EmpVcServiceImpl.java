@@ -34,7 +34,7 @@ public class EmpVcServiceImpl implements EmpVcService {
         int totalCount = vctnDao.selectBoardListCnt(req);
 
         if (totalCount > 0) {
-            vcList = vctnDao.getVcEmpNo(req);
+            vcList = this.getVacationList(req);
         }
         res.setListCnt(totalCount);
         res.setVacationList(vcList);
@@ -42,13 +42,25 @@ public class EmpVcServiceImpl implements EmpVcService {
         return res;
     }
 
+    private List<VacationDTO> getVacationList_v2(EmpReq req) {
+        return vctnDao.getVcEmpNo(req);
+    }
+    /**
+     * 휴가
+     * 목록 조회
+     */
+    private List<VacationDTO> getVacationList(EmpReq req) {
+        return vctnDao.getVcEmpNo(req);
+    }
+
+
     /**
      * 휴가
      * 신청
      */
     @Override
-    public int createVacation(VcCreate vcCreate) {
-        return vctnDao.createVacation(vcCreate);
+    public int insertVacation(VcCreate vcCreate) {
+        return vctnDao.insertVacation(vcCreate);
     }
 
     /**

@@ -6,8 +6,6 @@ import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.vacation.vo.VcCreate;
 import com.example.test.api.vacation.vo.VcReq;
 
-import java.util.List;
-
 public interface EmpVcService {
 
 
@@ -21,7 +19,7 @@ public interface EmpVcService {
      * 휴가
      * 신청 등록
      */
-    int createVacation(VcCreate vcCreate) throws Exception;
+    int insertVacation(VcCreate vcCreate) throws Exception;
 
     /**
      * 휴가

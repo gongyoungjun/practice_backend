@@ -49,7 +49,7 @@
 
 
     <!--  휴가 신청 -->
-    <insert id="insertUser" parameterType="VcCreate">
+    <insert id="insertVacation" parameterType="VcCreate">
         INSERT INTO TB_VACATION (EMP_NO,
                                  VCTN_STR_DT,
                                  VCTN_END_DT,

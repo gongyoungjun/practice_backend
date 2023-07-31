@@ -34,8 +34,8 @@ public class VctnDao {
      * 휴가
      * 신청
      */
-    public int createVacation(VcCreate vcCreate) {
-        return sqlSession.insert("mapper.vcMapper.insertUser", vcCreate);
+    public int insertVacation(VcCreate vcCreate) {
+        return sqlSession.insert("mapper.vcMapper.insertVacation", vcCreate);
     }
 
     /**

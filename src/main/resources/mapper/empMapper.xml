@@ -13,7 +13,6 @@
                                 , EMP_RNK_CD
                                 , EMP_HR_DT
                                 , EMP_BRT_DT
-                                , IMG_NM
                                 , REG_DTM)
         VALUES ( #{empNm}
                , #{empPwd}
@@ -23,7 +22,6 @@
                , #{empRnkCd}
                , #{empHrDt}
                , #{empBrtDt}
-               , #{imgNm}
                , sysdate())
     </insert>
 

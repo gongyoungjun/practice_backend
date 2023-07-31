@@ -15,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -57,7 +55,7 @@ public class EmpVcController {
         String code = Code.FAIL;
 
         try {
-            int result = empVcService.createVacation(vcCreate);
+            int result = empVcService.insertVacation(vcCreate);
             if (result > 0) {
                 code = Code.SUCCESS;
             }
