@@ -69,7 +69,7 @@ public class EmpController {
      * 사원 정보 검색
      */
     @Operation(summary = "사원 정보 검색", description = "사원 정보 검색 API")
-    @PostMapping("/empList/search")
+    @PostMapping("/emp/list")
     public ResponseEntity<EmpRes> getEmpListAndSearch(@RequestBody EmpReq req) throws Exception {
         EmpRes resultEmpRes = new EmpRes();
         String code = Code.SUCCESS;
@@ -87,7 +87,7 @@ public class EmpController {
      * 상세 정보
      */
     @Operation(summary = "사원 상세 정보", description = "사원 상세 정보 API")
-    @PostMapping("/setEmpList/{empNo}")
+    @PostMapping("/emp/detail")
     public ResponseEntity<EmpRes> setEmpList(@RequestBody EmpReq req) {
         EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
@@ -116,7 +116,7 @@ public class EmpController {
      * 사원 정보 수정 API
      */
     @Operation(summary = "사원 정보 수정", description = "사원 정보 수정 api")
-    @PutMapping("/edit")
+    @PutMapping("/emp/update")
     public ResponseEntity<EmpRes> setEmpListUpdate(@Valid @RequestBody EmpDTO empDTO) {
         EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
