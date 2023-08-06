@@ -11,7 +11,7 @@
         v.VCTN_DAY_CNT vctnDayCnt,
         v.VCTN_RSN vctnRsn,
         v.VCTN_RSD_CNT vctnRsdCnt,
-        v.VCTN_ST_CD vctnStNm,
+        v.VCTN_ST_CD vctnStCd,
         e.EMP_NM empNm,
         e.EMP_PHN empPhn,
         e.EMP_VCTN_TTL empVctnTtl
@@ -48,7 +48,7 @@
             v.VCTN_DAY_CNT vctnDayCnt,
             v.VCTN_RSN vctnRsn,
             v.VCTN_RSD_CNT vctnRsdCnt,
-            v.VCTN_ST_CD vctnStNm,
+            v.VCTN_ST_CD vctnStCd,
             e.EMP_NM empNm,
             e.EMP_PHN empPhn,
             e.EMP_VCTN_TTL empVctnTtl
@@ -74,7 +74,7 @@
                 #{vctnStrDt},
                 #{vctnEndDt},
                 #{vctnKndCd},
-                #{vctnStNm},
+                #{vctnStCd},
                 #{vctnDayCnt},
                 #{vctnRsn},
                 #{vctnRsdCnt},
@@ -95,7 +95,7 @@
     <!--  휴가 승인 취소-->
     <update id="updateVacationStatus" parameterType="VacationDTO">
         UPDATE TB_VACATION
-        SET VCTN_ST_CD = #{vctnStNm}
+        SET VCTN_ST_CD = #{vctnStCd}
         WHERE VCTN_NO = #{vctnNo}
     </update>
 

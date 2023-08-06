@@ -90,14 +90,14 @@
         <include refid="sqlSelectBoardList"/>
         LIMIT #{startList}, #{listSize}
     </select>
-    <!-- 검색 조건(이름,전화번호) -->
+    <!-- 검색 조건(이름,empNo) -->
     <sql id="sqlSelectBoardList">
         <where>
             <if test="empNm != null and empNm != ''">
                 and EMP_NM LIKE CONCAT('%', #{empNm}, '%')
             </if>
-            <if test="empPhn != null and empPhn != ''">
-                and EMP_PHN LIKE CONCAT('%', #{empPhn}, '%')
+            <if test="empNo != null and empNo != ''">
+                and EMP_NO LIKE CONCAT('%', #{empNo}, '%')
             </if>
         </where>
     </sql>

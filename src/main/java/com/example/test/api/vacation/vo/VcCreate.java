@@ -32,6 +32,6 @@ public class VcCreate extends PageParam {
     @Schema(description = "휴가 종류")
     private String vctnKndNm;
     @Schema(description = "승인 상태")
-    private String vctnStNm;
+    private String vctnStCd;
 
 }

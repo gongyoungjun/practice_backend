@@ -8,7 +8,7 @@ public class VcReq extends PageParam {
 
     private int vctnNo;
     private int empNo;
-    private String vctnStNm;
+    private String vctnStCd;
 
 
 }

@@ -68,7 +68,6 @@ public class EmpVcServiceImpl implements EmpVcService {
         return vctnDao.getVcDetail(vctnNo);
     }
 
-
     /**
      * 휴가
      * 승인
@@ -77,7 +76,7 @@ public class EmpVcServiceImpl implements EmpVcService {
     public VacationDTO approveVc(VcReq req) {
         VacationDTO vacationDTO = vctnDao.getVacation(req);
         if (vacationDTO != null) {
-            vacationDTO.setVctnStNm(req.getVctnStNm());
+            vacationDTO.setVctnStCd(req.getVctnStCd());
             vctnDao.updateVacationStatus(vacationDTO);
         }
         return vacationDTO;
