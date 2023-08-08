@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +48,40 @@ public class LoginController {
 
                 // JWT 토큰 생성 (jjwt 사용)
                 String jwtToken = JwtUtil.generateToken(data.get(0).getEmpNm());
+
+                // 응답 헤더에 토큰 설정
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Authorization", "Bearer " + jwtToken);
+
+                loginRes.setToken(jwtToken);  // Token을 응답에 추가
+                loginRes.setData(data);
+                loginRes.setCode(code);
+
+                return new ResponseEntity<>(loginRes, headers, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(loginRes);
+    }
+
+}
+
+/*
+    @Operation(summary = "로그인 Action", description = "로그인 처리 API")
+    @PostMapping("/login")
+    public ResponseEntity<LoginRes> login(@RequestBody LoginReq lReq) {
+        LoginRes loginRes = new LoginRes();
+        String code = Code.FAIL; // 기본적으로 실패로 설정
+
+        try {
+            List<EmpDTO> data = loginService.selectLoginUser(lReq);
+            if (data != null && !data.isEmpty()) {
+                // 사용자 정보가 존재하면 로그인 성공으로 처리
+                code = Code.SUCCESS;
+
+                // JWT 토큰 생성 (jjwt 사용)
+                String jwtToken = JwtUtil.generateToken(data.get(0).getEmpNm());
                 loginRes.setToken(jwtToken);  // Token을 응답에 추가
             }
             loginRes.setData(data);
@@ -55,4 +91,4 @@ public class LoginController {
         }
         return ResponseEntity.ok(loginRes);
     }
-}
+}*/

@@ -23,11 +23,21 @@ public class JwtUtil {
                 .compact();
     }
 
-    public static String validateToken(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.getSubject();
+    /**
+     * 토큰의 유효성 검사 (만료 여부 및 서명 확인)
+     * @param token 확인할 토큰 문자열
+     * @return 토큰이 유효하면 true, 아니면 false
+     */
+    public static boolean isTokenValid(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody();
+            return claims.getExpiration().after(new Date());
+        } catch (Exception e) {
+            // 토큰 파싱 실패, 만료되었거나 잘못된 서명 등의 이유
+            return false;
+        }
     }
 }

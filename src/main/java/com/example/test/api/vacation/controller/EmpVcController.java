@@ -35,6 +35,7 @@ public class EmpVcController {
     @Operation(summary = "휴가 목록 조회", description = "휴가 목록 조회 API")
     @PostMapping("/vacation/list")
     public ResponseEntity<EmpRes> getEmpListAndSearch(@RequestBody EmpReq req) {
+        log.info("Received EmpReq: " + req.toString());
         EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
         try {

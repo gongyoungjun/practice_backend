@@ -7,6 +7,7 @@ import lombok.Data;
 public class VcReq extends PageParam {
 
     private int vctnNo;
+    private String empNm;
     private int empNo;
     private String vctnStCd;
 

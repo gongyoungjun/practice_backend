@@ -28,7 +28,7 @@ public class VctnDao {
      * 전체
      */
     public int selectBoardListCnt(EmpReq req) {
-        return sqlSession.selectOne("mapper.empMapper.selectBoardListCnt", req);
+        return sqlSession.selectOne("mapper.vcMapper.selectVcListCnt", req);
     }
 
     /**

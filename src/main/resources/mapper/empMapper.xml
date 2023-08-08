@@ -97,7 +97,7 @@
                 and EMP_NM LIKE CONCAT('%', #{empNm}, '%')
             </if>
             <if test="empNo != null and empNo != ''">
-                and EMP_NO LIKE CONCAT('%', #{empNo}, '%')
+                and EMP_NO = #{empNo}
             </if>
         </where>
     </sql>
