@@ -2,6 +2,7 @@ package com.example.test.api.login.controller;
 
 import com.example.test.api.config.Code;
 import com.example.test.api.emp.dto.EmpDTO;
+import com.example.test.api.jwt.JwtUtil;
 import com.example.test.api.login.service.LoginService;
 import com.example.test.api.login.vo.LoginReq;
 import com.example.test.api.login.vo.LoginRes;
@@ -42,6 +43,10 @@ public class LoginController {
             if (data != null && !data.isEmpty()) {
                 // 사용자 정보가 존재하면 로그인 성공으로 처리
                 code = Code.SUCCESS;
+
+                // JWT 토큰 생성 (jjwt 사용)
+                String jwtToken = JwtUtil.generateToken(data.get(0).getEmpNm());
+                loginRes.setToken(jwtToken);  // Token을 응답에 추가
             }
             loginRes.setData(data);
             loginRes.setCode(code);

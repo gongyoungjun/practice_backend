@@ -8,6 +8,7 @@ public class LoginRes {
     private String code;
     private Object data;
     private String message;
-    private String Total;
+    private String total;
+    private String token;
 
 }
