@@ -13,6 +13,9 @@
         v.VCTN_RSN vctnRsn,
         v.VCTN_RSD_CNT vctnRsdCnt,
         v.VCTN_ST_CD vctnStCd,
+        v.VCTN_STR_DT vctnStrDt,
+        v.VCTN_END_DT vctnEndDt,
+        v.VCTN_APL_DTM vctnAplDtm,
         e.EMP_NM empNm,
         e.EMP_PHN empPhn,
         e.EMP_VCTN_TTL empVctnTtl
@@ -23,16 +26,27 @@
         LIMIT #{startList}, #{listSize};
     </select>
 
-    <!-- 검색 조건(vcno, 이름) -->
+    <!-- 검색 조건(vcno, 이름, 날짜 범위, 신청일) -->
     <sql id="sqlSelectBoardList">
         <where>
-<!--            <if test="vctnNo != 0">-->
             <if test="vctnNo != null and vctnNo != ''">
                 and v.VCTN_NO = #{vctnNo}
             </if>
             <if test="empNm != null and empNm != ''">
                 and e.EMP_NM LIKE CONCAT('%', #{empNm}, '%')
-            </if>
+           </if>
+            <!--  <if test="strDt != null and strDt != '' and endDt != null and endDt != ''">
+                 and v.VCTN_STR_DT &gt;= #{strDt} and v.VCTN_END_DT &lt;= #{endDt}
+             </if>
+             <if test="strDt != null and strDt != '' and (endDt == null or endDt == '')">
+                 and v.VCTN_STR_DT &gt;= #{strDt}
+             </if>
+             <if test="endDt != null and endDt != '' and (strDt == null or strDt == '')">
+                 and v.VCTN_END_DT &lt;= #{endDt}
+             </if>
+             <if test="vctnAplDtm != null and vctnAplDtm != ''">
+                 and v.VCTN_APL_DTM = #{vctnAplDtm}
+             </if>-->
         </where>
     </sql>
 
@@ -43,6 +57,8 @@
         <include refid="sqlSelectBoardList"/>
     </select>
 
+
+
     <!-- 휴가 정보 상세 페이지 -->
     <select id="getVcDetail" parameterType="int" resultType="VacationDTO">
         SELECT
@@ -52,6 +68,9 @@
             v.VCTN_RSN vctnRsn,
             v.VCTN_RSD_CNT vctnRsdCnt,
             v.VCTN_ST_CD vctnStCd,
+            v.VCTN_STR_DT vctnStrDt,
+            v.VCTN_END_DT vctnEndDt,
+            v.VCTN_APL_DTM vctnAplDtm,
             e.EMP_NM empNm,
             e.EMP_PHN empPhn,
             e.EMP_VCTN_TTL empVctnTtl
