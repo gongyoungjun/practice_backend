@@ -34,24 +34,36 @@
             </if>
             <if test="empNm != null and empNm != ''">
                 and e.EMP_NM LIKE CONCAT('%', #{empNm}, '%')
-           </if>
-            <!--  <if test="strDt != null and strDt != '' and endDt != null and endDt != ''">
-                 and v.VCTN_STR_DT &gt;= #{strDt} and v.VCTN_END_DT &lt;= #{endDt}
-             </if>
-             <if test="strDt != null and strDt != '' and (endDt == null or endDt == '')">
-                 and v.VCTN_STR_DT &gt;= #{strDt}
-             </if>
-             <if test="endDt != null and endDt != '' and (strDt == null or strDt == '')">
-                 and v.VCTN_END_DT &lt;= #{endDt}
-             </if>
-             <if test="vctnAplDtm != null and vctnAplDtm != ''">
-                 and v.VCTN_APL_DTM = #{vctnAplDtm}
-             </if>-->
+            </if>
+            <!-- 시작일 또는 종료일이 검색 범위에 포함되는 날짜 검색 -->
+            <if test="vctnStrDt != null and vctnStrDt != ''">
+                and (
+                v.VCTN_STR_DT &gt;= STR_TO_DATE(#{vctnStrDt}, '%Y-%m-%d')
+                or
+                v.VCTN_END_DT &gt;= STR_TO_DATE(#{vctnStrDt}, '%Y-%m-%d')
+                )
+            </if>
+
+            <if test="vctnEndDt != null and vctnEndDt != ''">
+                and (
+                v.VCTN_STR_DT &lt;= STR_TO_DATE(#{vctnEndDt}, '%Y-%m-%d')
+                or
+                v.VCTN_END_DT &lt;= STR_TO_DATE(#{vctnEndDt}, '%Y-%m-%d')
+                )
+            </if>
+<!--            <if test="vctnStrDt != null and vctnStrDt != '' and vctnEndDt != null and vctnEndDt != ''">
+                and v.VCTN_STR_DT &lt;= STR_TO_DATE(#{vctnEndDt}, '%Y-%m-%d')
+                and v.VCTN_END_DT &gt;= STR_TO_DATE(#{vctnStrDt}, '%Y-%m-%d')
+            </if>
+            <if test="vctnAplDtm != null and vctnAplDtm != ''">
+                and v.VCTN_APL_DTM = STR_TO_DATE(#{vctnAplDtm}, '%Y-%m-%d')
+            </if>-->
         </where>
     </sql>
 
+    <!--목록 갯수-->
     <select id="selectVcListCnt" parameterType="EmpReq" resultType="int">
-        SELECT count(*) AS total
+        SELECT count(*)
         FROM TB_VACATION v
         INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
         <include refid="sqlSelectBoardList"/>

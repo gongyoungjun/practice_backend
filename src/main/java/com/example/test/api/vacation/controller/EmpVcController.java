@@ -36,6 +36,7 @@ public class EmpVcController {
     @PostMapping("/vacation/list")
     public ResponseEntity<EmpRes> getEmpListAndSearch(@RequestBody EmpReq req) {
         log.info("Received EmpReq: " + req.toString());
+        log.info("Received dates - strDt: " + req.getVctnStrDt() + ", endDt: " + req.getVctnEndDt() + ", vctnAplDtm: " + req.getVctnAplDtm());
         EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
         try {
