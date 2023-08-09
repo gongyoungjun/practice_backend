@@ -51,7 +51,7 @@ public class LoginController {
 
                 // 응답 헤더에 토큰 설정
                 HttpHeaders headers = new HttpHeaders();
-                headers.set("Authorization", "Bearer " + jwtToken);
+                headers.set("Authorization", jwtToken);
 
                 loginRes.setToken(jwtToken);  // Token을 응답에 추가
                 loginRes.setData(data);

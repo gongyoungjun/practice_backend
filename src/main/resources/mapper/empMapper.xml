@@ -72,7 +72,7 @@
              , EMP_BRT_DT empBrtDt
              , REG_DTM
         FROM TB_EMPLOYEE
-        WHERE EMP_NM = #{empNm}
+        WHERE EMP_PHN = #{empPhn}
           AND EMP_PWD = #{empPwd}
     </select>
     <!--사원 프로필 검색-->

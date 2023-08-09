@@ -10,10 +10,12 @@ import java.util.concurrent.TimeUnit;
 public class JwtUtil {
     private static final String SECRET_KEY = "1234567890abcdEFGH1234567890abcdEFGH123456789123456789123456789";
 
-    public static String generateToken(String empNm) { // 토큰 생성
+    public static String generateToken(String empPhn) { // 토큰 생성
         return Jwts.builder()
-                // user 객체의 id 지정
-                .setSubject(empNm)
+/*                // user 객체의 id 지정
+                .setSubject(empNm)*/
+                // 유저 전화번호
+                .setSubject(empPhn)
                 //JWT 발급한 시간
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 // 만료시간 지정
@@ -25,6 +27,7 @@ public class JwtUtil {
 
     /**
      * 토큰의 유효성 검사 (만료 여부 및 서명 확인)
+     *
      * @param token 확인할 토큰 문자열
      * @return 토큰이 유효하면 true, 아니면 false
      */
@@ -36,7 +39,6 @@ public class JwtUtil {
                     .getBody();
             return claims.getExpiration().after(new Date());
         } catch (Exception e) {
-            // 토큰 파싱 실패, 만료되었거나 잘못된 서명 등의 이유
             return false;
         }
     }
