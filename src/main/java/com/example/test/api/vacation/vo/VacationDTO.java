@@ -23,7 +23,10 @@ public class VacationDTO {
     private LocalDate vctnEndDt;
     @Schema(description = "승인 상태")
     private String vctnStCd;
-
+    @Schema(description = "휴가 시작 날짜 검색")
+    private String strDt;
+    @Schema(description = "휴가 종료 날짜 검색")
+    private String endDt;
     /**
      * 잔여 휴가일 계산
      */
