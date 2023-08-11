@@ -5,23 +5,8 @@ spring:
     username: suk
     password: ghdtjr2@
     driver-class-name: org.mariadb.jdbc.Driver
-  jpa:
-    open-in-view: false
-    generate-ddl: true
-    show-sql: true
-    hibernate:
-      ddl-auto: update
 
-  mvc:
-    cors:
-      # 프론트엔드 도메인(Origin)을 허용합니다.
-      allowed-origins: http://localhost:3000
-      # 허용할 HTTP 메서드를 지정합니다.
-      allowed-methods: GET, POST, PUT, DELETE, OPTIONS
-      # 허용할 HTTP 헤더를 지정합니다.
-      allowed-headers: Origin, Content-Type, Accept, Authorization
-      # "Access-Control-Allow-Credentials" 헤더를 허용할지 여부를 지정합니다.
-      allow-credentials: true
+
 
 
   # 멀티파트 요청 처리

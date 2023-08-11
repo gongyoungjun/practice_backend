@@ -49,23 +49,20 @@
             </if>
         </where>
     </sql>
-
-
-
 <!--            &lt;!&ndash; 시작일만 주어졌을 경우 &ndash;&gt;
-            <if test="vctnStrDt != null and vctnStrDt != '' and (vctnEndDt == null or vctnEndDt == '')">
+            <if test="strDt != null and strDt != '' and (strDt == null or endDt == '')">
                 and (
-                v.VCTN_STR_DT &gt;= STR_TO_DATE(#{vctnStrDt}, '%Y-%m-%d')
+                v.VCTN_STR_DT &gt;= STR_TO_DATE(#{strDt}, '%Y-%m-%d')
                 or
                 v.VCTN_END_DT &gt;= STR_TO_DATE(#{vctnStrDt}, '%Y-%m-%d')
                 )
             </if>
             &lt;!&ndash; 종료일만 주어졌을 경우 &ndash;&gt;
-            <if test="vctnEndDt != null and vctnEndDt != '' and (vctnStrDt == null or vctnStrDt == '')">
+            <if test="endDt != null and endDt != '' and (endDt == null or strDt == '')">
                 and (
-                v.VCTN_STR_DT &lt;= STR_TO_DATE(#{vctnEndDt}, '%Y-%m-%d')
+                v.VCTN_STR_DT &lt;= STR_TO_DATE(#{endDt}, '%Y-%m-%d')
                 or
-                v.VCTN_END_DT &lt;= STR_TO_DATE(#{vctnEndDt}, '%Y-%m-%d')
+                v.VCTN_END_DT &lt;= STR_TO_DATE(#{endDt}, '%Y-%m-%d')
                 )
             </if>-->
 
