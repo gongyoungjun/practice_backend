@@ -1,5 +1,6 @@
 package com.example.test.api.emp.dao;
 
+import com.example.test.api.emp.dto.EmpCommuteDTO;
 import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.EmpReq;
@@ -74,7 +75,12 @@ public class EmpDao {
     public List<EmpDTO> selectBoardList(LoginReq lReq) {
         return sqlSession.selectList("mapper.empMapper.selectLogin", lReq);
     }
-
+    /**
+     * 출퇴근
+     */
+    public int insertCommute(EmpCommuteDTO empCommuteDTO) {
+        return sqlSession.insert("mapper.empMapper.insertCommute", empCommuteDTO);
+    }
 
 
 }

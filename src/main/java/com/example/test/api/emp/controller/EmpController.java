@@ -1,17 +1,20 @@
 package com.example.test.api.emp.controller;
 
 import com.example.test.api.config.Code;
+import com.example.test.api.emp.dto.EmpCommuteDTO;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.service.EmpService;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.EmpRes;
 import com.example.test.api.emp.vo.LessonException;
 import com.example.test.api.emp.vo.LessonRes;
+import com.example.test.api.jwt.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -177,6 +180,30 @@ public class EmpController {
         }
         lessonRes.setCode(code);
         return ResponseEntity.ok(lessonRes);
+    }
+
+    /**
+     * 출퇴근
+     */
+    @Operation(summary = "출퇴근", description = "출퇴근")
+    @PostMapping("/emp/commute")
+    public ResponseEntity<EmpRes> insertCommute(@RequestHeader("Authorization") String jwtToken, @RequestBody EmpCommuteDTO empCommuteDTO) {
+        EmpRes res = new EmpRes();
+        String code = Code.FAIL;
+
+        try {
+            int empNo = JwtUtil.extractEmpNo(jwtToken);
+            empCommuteDTO.setEmpNo(empNo);
+
+            int result = empService.insertCommute(empCommuteDTO);
+            if (result > 0) {
+                code = Code.SUCCESS;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        res.setCode(code);
+        return ResponseEntity.ok(res);
     }
 
 }

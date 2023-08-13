@@ -1,6 +1,7 @@
 package com.example.test.api.emp.service.impl;
 
 import com.example.test.api.emp.dao.EmpDao;
+import com.example.test.api.emp.dto.EmpCommuteDTO;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.service.EmpService;
 import com.example.test.api.emp.vo.*;
@@ -191,6 +192,13 @@ public class EmpServiceImpl implements EmpService {
 
         lessonRes = new LessonRes(lessonList, count10, count20);
         return lessonRes;
+    }
+    /**
+     * 출퇴근
+     */
+    @Override
+    public int insertCommute(EmpCommuteDTO empCommuteDTO) {
+        return empDao.insertCommute(empCommuteDTO);
     }
 
 

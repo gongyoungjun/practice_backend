@@ -47,7 +47,7 @@ public class LoginController {
                 code = Code.SUCCESS;
 
                 // JWT 토큰 생성 (jjwt 사용)
-                String jwtToken = JwtUtil.generateToken(data.get(0).getEmpNm());
+                String jwtToken = JwtUtil.generateToken(data.get(0).getEmpNm(), data.get(0).getEmpNo());
 
                 // 응답 헤더에 토큰 설정
                 HttpHeaders headers = new HttpHeaders();
@@ -66,29 +66,3 @@ public class LoginController {
     }
 
 }
-
-/*
-    @Operation(summary = "로그인 Action", description = "로그인 처리 API")
-    @PostMapping("/login")
-    public ResponseEntity<LoginRes> login(@RequestBody LoginReq lReq) {
-        LoginRes loginRes = new LoginRes();
-        String code = Code.FAIL; // 기본적으로 실패로 설정
-
-        try {
-            List<EmpDTO> data = loginService.selectLoginUser(lReq);
-            if (data != null && !data.isEmpty()) {
-                // 사용자 정보가 존재하면 로그인 성공으로 처리
-                code = Code.SUCCESS;
-
-                // JWT 토큰 생성 (jjwt 사용)
-                String jwtToken = JwtUtil.generateToken(data.get(0).getEmpNm());
-                loginRes.setToken(jwtToken);  // Token을 응답에 추가
-            }
-            loginRes.setData(data);
-            loginRes.setCode(code);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok(loginRes);
-    }
-}*/

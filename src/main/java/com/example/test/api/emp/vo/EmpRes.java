@@ -1,5 +1,6 @@
 package com.example.test.api.emp.vo;
 
+import com.example.test.api.emp.dto.EmpCommuteDTO;
 import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.emp.dto.EmpDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,7 @@ public class EmpRes extends PageParam {
     private List<EmpDTO> list;
     @Schema(description = "휴가 목록")
     private List<VacationDTO> vacationList;
-
+    @Schema(description = "출근 목록")
+    private List<EmpCommuteDTO> empCommuteDTO;
 
 }

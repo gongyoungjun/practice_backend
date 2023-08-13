@@ -161,4 +161,20 @@
     </update>
 
 
+    <!-- 출퇴근 -->
+    <insert id="insertCommute" parameterType="EmpCommuteDTO">
+        INSERT INTO TB_ATNDN (EMP_NO,
+                              ADRES,
+                              GEO_LOC,
+                              TIME,
+                              WORK_TYPE)
+        VALUES ( #{empNo}
+               , #{address}
+               , ST_GeomFromText(#{geoLoc})
+               , NOW()
+               , #{workType})
+    </insert>
+
+
+
 </mapper>

@@ -1,5 +1,6 @@
 package com.example.test.api.emp.service;
 
+import com.example.test.api.emp.dto.EmpCommuteDTO;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.EmpRes;
 import com.example.test.api.emp.vo.FileVo;
@@ -63,4 +64,8 @@ public interface EmpService {
     LessonRes readFile(String fileName);
 
 
+    /**
+     * 출퇴근
+     */
+    int insertCommute(EmpCommuteDTO empCommuteDTO);
 }
