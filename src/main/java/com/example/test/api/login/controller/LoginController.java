@@ -28,6 +28,8 @@ import java.util.List;
 public class LoginController {
 
     private final LoginService loginService;
+    private final String KAKAO_USERINFO_ENDPOINT = "https://kapi.kakao.com/v2/user/me";
+
 
     /**
      * 로그인
@@ -64,5 +66,6 @@ public class LoginController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(loginRes);
     }
+
 
 }

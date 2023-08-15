@@ -1,0 +1,49 @@
+    private final String KAKAO_USERINFO_ENDPOINT = "https://kapi.kakao.com/v2/user/me";
+    private final String KAKAO_MESSAGE_SEND_ENDPOINT = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
+
+    @Override
+    public boolean validateToken(String accessToken) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(KAKAO_USERINFO_ENDPOINT, HttpMethod.GET, entity, String.class);
+
+        return response.getStatusCode() == HttpStatus.OK;
+    }
+    @Override
+    public void sendMessage(KakaoReq kReq) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + kReq.getAccessToken());
+
+        String messageBody = "{ \"object_type\": \"text\", \"text\": \"Hello, Kakao Talk!\", \"link\": { \"web_url\": \"https://www.example.com\" }}";
+        HttpEntity<String> messageEntity = new HttpEntity<>(messageBody, headers);
+        restTemplate.exchange(KAKAO_MESSAGE_SEND_ENDPOINT, HttpMethod.POST, messageEntity, String.class);
+    }
+
+
+
+        @PostMapping("/send-message")
+        public ResponseEntity<String> sendMessage(@RequestBody KakaoReq kReq) {
+            // 1. 토큰 유효성 검증
+            if (!kakaoService.validateToken(kReq.getAccessToken())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+            }
+
+            // 2. 메시지 전송
+            kakaoService.sendMessage(kReq);
+
+            return ResponseEntity.ok("메세지 성공");
+        }
+
+        @PostMapping("/send-token")
+        public ResponseEntity<String> sendToken(@RequestBody Map<String, String> tokenMap) {
+            String accessToken = tokenMap.get("accessToken");
+
+            if (kakaoService.validateToken(accessToken)) {
+                return ResponseEntity.ok("Valid token");
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+            }
+        }
