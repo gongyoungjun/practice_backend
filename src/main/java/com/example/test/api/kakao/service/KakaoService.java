@@ -7,4 +7,5 @@ import java.util.List;
 public interface KakaoService {
 
     List<KakaoFriend> getFriendsList(String accessToken) throws Exception;
+
 }

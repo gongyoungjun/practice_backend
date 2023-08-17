@@ -69,6 +69,29 @@ public class EmpController {
     }
 
     /**
+     * 카카오 회원가입
+     */
+    @Operation(summary = "카카오 회원가입", description = "카카오 회원가입 API")
+    @PostMapping("/kakao/signup")
+    public ResponseEntity<EmpRes> insertKakaoUser(@RequestBody EmpDTO empDTO) {
+        EmpRes res = new EmpRes();
+        String code = Code.SUCCESS;
+        try {
+            int result = empService.insertKakaoUser(empDTO);
+            if (result > 0) {
+                code = Code.SUCCESS;
+            }
+
+        } catch (Exception e) {
+            code = Code.FAIL;
+        }
+
+        res.setCode(code);
+        return ResponseEntity.ok(res);
+    }
+
+
+    /**
      * 사원 정보 검색
      */
     @Operation(summary = "사원 정보 검색", description = "사원 정보 검색 API")
@@ -205,6 +228,38 @@ public class EmpController {
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
+
+
+    /**
+     * 사원 이메일
+     * 가입 확인
+     */
+    @Operation(summary = "사원 이메일 확인", description = "사원 이메일 존재 여부 확인 API")
+    @PostMapping("/emp/emailCheck")
+    public ResponseEntity<EmpRes> checkEmpEmail(@RequestBody EmpReq req) {
+        EmpRes res = new EmpRes();
+        String code = Code.SUCCESS;
+        List<EmpDTO> list = null;
+
+        try {
+            if (req.getEmpEml() != null && !req.getEmpEml().isEmpty()) {
+                EmpDTO empDTO = empService.getEmpByEmpEml(req.getEmpEml());
+                if (empDTO != null) {
+                    list = new ArrayList<>();
+                    list.add(empDTO);
+                }
+            } else {
+                code = Code.FAIL;
+            }
+        } catch (Exception e) {
+            code = Code.FAIL;
+        }
+
+        res.setList(list);
+        res.setCode(code);
+        return ResponseEntity.ok(res);
+    }
+
 
 }
 

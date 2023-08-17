@@ -19,6 +19,11 @@ public interface EmpService {
     int insertUser(EmpDTO empDTO);
 
     /**
+     * 카카오 회원가입
+     */
+    int insertKakaoUser(EmpDTO empDTO);
+
+    /**
      * 사원목록
      * 검색 및 목록
      */
@@ -69,5 +74,10 @@ public interface EmpService {
      */
     int insertCommute(EmpCommuteDTO empCommuteDTO);
 
+
+    /**
+     * 출퇴근
+     */
+    EmpDTO getEmpByEmpEml(String empEml);
 
 }

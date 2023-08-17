@@ -47,6 +47,14 @@ public class EmpServiceImpl implements EmpService {
         return empDao.insertUser(empDTO);
     }
 
+    /**
+     * 카카오 회원가입
+     */
+    @Override
+    public int insertKakaoUser(EmpDTO empDTO) {
+        return empDao.insertKakaoUser(empDTO);
+    }
+
     @Override
     public FileVo signUploadFile(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
@@ -200,5 +208,15 @@ public class EmpServiceImpl implements EmpService {
     public int insertCommute(EmpCommuteDTO empCommuteDTO) {
         return empDao.insertCommute(empCommuteDTO);
     }
+
+
+    /**
+     * 이메일 가입여부
+     */
+    public EmpDTO getEmpByEmpEml(String empEml) {
+        return empDao.getEmpByEmpEml(empEml);
+    }
+
+
 
 }

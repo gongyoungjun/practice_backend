@@ -45,6 +45,15 @@ public class EmpDTO {
     private int empSlr;
     @Schema(description = "생년월일")
     private LocalDate empBrtDt;
+    @Schema(description = "권한")
+    private String empAuthCd;
+
+    @Schema(description = "sns 로그인")
+    private int snsCd;
+    @Schema(description = "sns 키")
+    private String snsKey;
+
+
 /*    @Schema(description = "이미지 이름")
     private String imgNm;
     @Schema(description = "이미지 파일")

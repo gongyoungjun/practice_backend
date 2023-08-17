@@ -12,6 +12,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtInterceptor())
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/login");  // 로그인 경로는 JWT 검증제외
+                .excludePathPatterns("/api/login")  // 로그인 경로는 JWT 검증제외
+                .excludePathPatterns("/api/emp/emailCheck") // 회원가입 JWT 검증제외
+                .excludePathPatterns("/api/kakao/signup")
+                .excludePathPatterns("/api/signup");
     }
 }

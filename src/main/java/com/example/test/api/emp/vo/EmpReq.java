@@ -14,6 +14,7 @@ public class EmpReq extends PageParam {
     private String empNm;
     private String empPhn;
     private String empPwd;
+    private String empEml;
     private LocalDate vctnStrDt;
     private LocalDate vctnEndDt;
     private String vctnAplDtm;

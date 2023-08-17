@@ -167,12 +167,48 @@
                               ADRES,
                               GEO_LOC,
                               TIME,
-                              WORK_TYPE)
+                              WORK_CD)
         VALUES ( #{empNo}
                , #{address}
                , ST_GeomFromText(#{geoLoc})
                , NOW()
-               , #{workType})
+               , #{workcd})
+    </insert>
+
+    <!-- 사원 목록 이메일 여부-->
+
+    <select id="getEmpByEmpEml"  parameterType="String" resultType="EmpDTO">
+        select EMP_EML empEml
+        FROM TB_EMPLOYEE
+        WHERE EMP_EML = #{empEml}
+    </select>
+
+    <!--카카오 회원가입-->
+    <insert id="insertKakaoUser" parameterType="EmpDTO">
+        INSERT INTO TB_EMPLOYEE ( EMP_NM
+                                , EMP_PWD
+                                , EMP_PHN
+                                , EMP_EML
+                                , EMP_ST_CD
+                                , EMP_RNK_CD
+                                , EMP_HR_DT
+                                , EMP_AUTH_CD
+                                , SNS_CD
+                                , SNS_KEY
+                                , EMP_BRT_DT
+                                , REG_DTM)
+        VALUES ( #{empNm}
+               , #{empPwd}
+               , #{empPhn}
+               , #{empEml}
+               , #{empStCd}
+               , #{empRnkCd}
+               , #{empHrDt}
+               , #{empAuthCd}
+               , #{snsCd}
+               , #{snsKey}
+               , #{empBrtDt}
+               , sysdate())
     </insert>
 
 

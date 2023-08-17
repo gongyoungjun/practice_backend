@@ -1,5 +1,6 @@
 package com.example.test.api.kakao.controller;
 
+import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.kakao.service.KakaoService;
 import com.example.test.api.kakao.vo.KakaoFriend;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,17 @@ public class KakaoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    /**
+     * 카카오 친구목록
+     */
+/*    @PostMapping("/signup")
+    public ResponseEntity<List<EmpDTO>> getLogin(@RequestParam String accessToken) {
+        try {
+            List<EmpDTO> friendsList = kakaoService.getFriendsList(accessToken);
+            return ResponseEntity.ok(friendsList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }*/
 
 }

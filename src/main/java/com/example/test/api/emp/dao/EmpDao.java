@@ -1,6 +1,7 @@
 package com.example.test.api.emp.dao;
 
 import com.example.test.api.emp.dto.EmpCommuteDTO;
+import com.example.test.api.emp.vo.EmpRes;
 import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.EmpReq;
@@ -23,6 +24,13 @@ public class EmpDao {
      */
     public int insertUser(EmpDTO empDTO) {
         return sqlSession.insert("mapper.empMapper.insertUser", empDTO);
+    }
+
+    /**
+     * 카카오 회원가입 페이지 > 회원가입 > 데이터 넣기
+     */
+    public int insertKakaoUser(EmpDTO empDTO) {
+        return sqlSession.insert("mapper.empMapper.insertKakaoUser", empDTO);
     }
 
     /**
@@ -80,6 +88,13 @@ public class EmpDao {
      */
     public int insertCommute(EmpCommuteDTO empCommuteDTO) {
         return sqlSession.insert("mapper.empMapper.insertCommute", empCommuteDTO);
+    }
+
+    /**
+     * 이메일 가입여부
+     */
+    public EmpDTO getEmpByEmpEml(String empEml) {
+        return sqlSession.selectOne("mapper.empMapper.getEmpByEmpEml", empEml);
     }
 
 
