@@ -6,5 +6,7 @@ import lombok.Data;
 @Data
 public class KakaoReq {
     private String accessToken;
+    private String authCode;
+
 
 }

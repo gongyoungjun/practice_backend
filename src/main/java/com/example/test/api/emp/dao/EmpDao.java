@@ -96,7 +96,14 @@ public class EmpDao {
     public EmpDTO getEmpByEmpEml(String empEml) {
         return sqlSession.selectOne("mapper.empMapper.getEmpByEmpEml", empEml);
     }
-
-
+    /**
+     * id 토큰 있는지
+     */
+    public String getIdToken(String idToken) {
+        return sqlSession.selectOne("mapper.empMapper.getIdToken", idToken);
+    }
+    public boolean isSnsKeyExists(String snsKey) {
+        return sqlSession.selectOne("mapper.empMapper.isSnsKeyExists", snsKey);
+    }
 }
 
