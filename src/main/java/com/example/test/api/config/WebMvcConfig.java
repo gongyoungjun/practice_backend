@@ -15,6 +15,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/api/login")  // 로그인 경로는 JWT 검증제외
                 .excludePathPatterns("/api/emp/emailCheck") // 회원가입 JWT 검증제외
                 .excludePathPatterns("/api/kakao/signup")
+                .excludePathPatterns("/api/kakao/token")
+                .excludePathPatterns("/api/kakao/snsKey")
                 .excludePathPatterns("/api/signup");
     }
 }

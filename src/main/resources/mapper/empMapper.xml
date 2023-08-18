@@ -212,7 +212,7 @@
     </insert>
 
     <!-- id Token  -->
-    <select id="getIdToken" resultType="String">
+    <select id="selectSnsKey" resultType="String">
         SELECT SNS_KEY FROM TB_EMPLOYEE WHERE SNS_KEY = #{snsKey}
     </select>
 

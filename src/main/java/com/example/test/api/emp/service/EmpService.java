@@ -18,10 +18,7 @@ public interface EmpService {
      */
     int insertUser(EmpDTO empDTO);
 
-    /**
-     * 카카오 회원가입
-     */
-    int insertKakaoUser(EmpDTO empDTO);
+
 
     /**
      * 사원목록

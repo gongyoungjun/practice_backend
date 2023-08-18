@@ -32,6 +32,8 @@ public class EmpReq extends PageParam {
     private String strDt;
     @Schema(description = "휴가 종료 날짜 검색")
     private String endDt;
+    @Schema(description = "snsKey")
+    private String snsKey;
 
 }
 

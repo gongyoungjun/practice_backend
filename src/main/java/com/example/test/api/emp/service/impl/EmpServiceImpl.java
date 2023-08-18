@@ -47,13 +47,6 @@ public class EmpServiceImpl implements EmpService {
         return empDao.insertUser(empDTO);
     }
 
-    /**
-     * 카카오 회원가입
-     */
-    @Override
-    public int insertKakaoUser(EmpDTO empDTO) {
-        return empDao.insertKakaoUser(empDTO);
-    }
 
     @Override
     public FileVo signUploadFile(MultipartFile file) throws IOException {

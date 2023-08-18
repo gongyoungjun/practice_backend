@@ -68,27 +68,6 @@ public class EmpController {
         }
     }
 
-    /**
-     * 카카오 회원가입
-     */
-    @Operation(summary = "카카오 회원가입", description = "카카오 회원가입 API")
-    @PostMapping("/kakao/signup")
-    public ResponseEntity<EmpRes> insertKakaoUser(@RequestBody EmpDTO empDTO) {
-        EmpRes res = new EmpRes();
-        String code = Code.SUCCESS;
-        try {
-            int result = empService.insertKakaoUser(empDTO);
-            if (result > 0) {
-                code = Code.SUCCESS;
-            }
-
-        } catch (Exception e) {
-            code = Code.FAIL;
-        }
-
-        res.setCode(code);
-        return ResponseEntity.ok(res);
-    }
 
 
     /**
@@ -259,6 +238,9 @@ public class EmpController {
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
+
+
+
 
 
 }

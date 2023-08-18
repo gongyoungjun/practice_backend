@@ -102,8 +102,9 @@ public class EmpDao {
     public String getIdToken(String idToken) {
         return sqlSession.selectOne("mapper.empMapper.getIdToken", idToken);
     }
-    public boolean isSnsKeyExists(String snsKey) {
-        return sqlSession.selectOne("mapper.empMapper.isSnsKeyExists", snsKey);
+
+    public  EmpDTO selectSnsKey(String snsKey) {
+        return sqlSession.selectOne("mapper.empMapper.selectSnsKey", snsKey);
     }
 }
 
