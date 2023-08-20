@@ -145,6 +145,7 @@
                  LEFT JOIN TB_IMAGE D on A.IMG_NO = D.IMG_NO
         WHERE A.EMP_NO = #{empNo}
     </select>
+
     <!--사원 정보 update -->
     <update id="empListUpdate" parameterType="EmpDTO">
         UPDATE TB_EMPLOYEE
@@ -185,7 +186,8 @@
 
     <!--카카오 회원가입-->
     <insert id="insertKakaoUser" parameterType="EmpDTO">
-        INSERT INTO TB_EMPLOYEE ( EMP_NM
+        INSERT INTO TB_EMPLOYEE ( EMP_NO
+                                , EMP_NM
                                 , EMP_PWD
                                 , EMP_PHN
                                 , EMP_EML
@@ -197,7 +199,8 @@
                                 , SNS_KEY
                                 , EMP_BRT_DT
                                 , REG_DTM)
-        VALUES ( #{empNm}
+        VALUES ( #{empNo}
+               , #{empNm}
                , #{empPwd}
                , #{empPhn}
                , #{empEml}
@@ -211,9 +214,42 @@
                , sysdate())
     </insert>
 
-    <!-- id Token  -->
-    <select id="selectSnsKey" resultType="String">
-        SELECT SNS_KEY FROM TB_EMPLOYEE WHERE SNS_KEY = #{snsKey}
+    <!-- 카카오 가입 update -->
+    <update id="kakaoUpdate" parameterType="EmpDTO">
+        UPDATE TB_EMPLOYEE
+        SET EMP_NM     = #{empNm},
+            EMP_PWD    = #{empPwd},
+            EMP_PHN    = #{empPhn},
+            EMP_EML    = #{empEml},
+            EMP_ST_CD  = #{empStCd},
+            EMP_RNK_CD = #{empRnkCd},
+            EMP_HR_DT  = #{empHrDt},
+            EMP_SLR    = #{empSlr},
+            EMP_BRT_DT = #{empBrtDt}
+        WHERE SNS_KEY = #{snsKey}
+    </update>
+
+
+
+    <!-- snskey로 확인  -->
+    <select id="selectSnsKey" parameterType="String" resultType="EmpDTO">
+        SELECT EMP_NO     empNo
+             , EMP_NM     empNm
+             , EMP_PHN    empPhn
+             , EMP_EML    empEml
+             , EMP_ST_CD  empStCd
+             , EMP_RNK_CD empRnkCd
+             , EMP_HR_DT  empHrDt
+             , EMP_BRT_DT empBrtDt
+             , SNS_KEY    snsKey
+             , REG_DTM
+        FROM TB_EMPLOYEE
+        WHERE SNS_KEY = #{snsKey}
     </select>
+
+
+
+
+
 
 </mapper>

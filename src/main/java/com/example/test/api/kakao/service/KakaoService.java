@@ -21,6 +21,12 @@ public interface KakaoService {
     String getIdToken(String jwtToken);
 
     /**
+     * 사원목록
+     * update
+     */
+    int kakaoEmpUpdate(EmpDTO empDTO);
+
+    /**
      * snsKey가 있는지 체크
      */
 
@@ -31,7 +37,11 @@ public interface KakaoService {
      */
     int insertKakaoUser(EmpDTO empDTO);
 
-
+    /**
+     * 사원
+     * 상세 정보
+     */
+    EmpDTO UpdateSnsKey(String snsKey);
 
 
 }

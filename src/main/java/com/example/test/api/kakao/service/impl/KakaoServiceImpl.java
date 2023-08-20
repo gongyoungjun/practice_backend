@@ -102,54 +102,23 @@ public class KakaoServiceImpl implements KakaoService {
         return empDao.insertKakaoUser(empDTO);
     }
 
+    /**
+     * 사원목록
+     * update
+     */
+    @Override
+    public int kakaoEmpUpdate(EmpDTO empDTO) {
+        return empDao.kakaoEmpUpdate(empDTO);
+    }
 
+    /**
+     * 사원
+     * 상세 목록
+     */
+    public EmpDTO UpdateSnsKey(String snsKey) {
+        return empDao.UpdateSnsKey(snsKey);
+    }
 
 
 }
 
-
-/*    public String getKaKaoCode(String authcode) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        // 토큰 요청 파라미터 설정
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-        parameters.add("grant_type", "authorization_code");
-        parameters.add("client_id", REST_API);
-        parameters.add("redirect_uri", REDIRECT_URI);
-        parameters.add("code", authcode);
-
-        ResponseEntity<String> response = restTemplate.postForEntity(KAKAO_TOKEN_URL, parameters, String.class);
-        log.info("Kakao token response: {}", response.getBody());
-
-
-        return response.getBody();
-    }*/
-
-/*    public EmpRes getAccessToken(String authCode) {
-        EmpRes empRes = new EmpRes();
-        RestTemplate restTemplate = new RestTemplate();
-
-        // 토큰 요청 파라미터 설정
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-        parameters.add("grant_type", "authorization_code");
-        parameters.add("client_id", REST_API);
-        parameters.add("redirect_uri", REDIRECT_URI);
-        parameters.add("code", authCode);
-
-        //토큰 요청을 보내고 응답
-        ResponseEntity<String> response = restTemplate.postForEntity(KAKAO_TOKEN_URL, parameters, String.class);
-        log.info("Kakao token : {}", response.getBody());
-
-        // 액세스 토큰 정보를 empRes에 설정
-        empRes.setAccessToken(response.getBody());
-
-        return empRes;
-    }*/        //String idToken = getIdToken(response.getBody());
-
-
-// access_token과 id_token을 Map으로 담아 반환
-/*        Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", response.getBody());
-        tokens.put("id_token", idToken);
-
-        return tokens;*/

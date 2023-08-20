@@ -17,6 +17,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/api/kakao/signup")
                 .excludePathPatterns("/api/kakao/token")
                 .excludePathPatterns("/api/kakao/snsKey")
+                .excludePathPatterns("/api/kakao/detail")
+                .excludePathPatterns("/api/kakao/update")
                 .excludePathPatterns("/api/signup");
     }
 }

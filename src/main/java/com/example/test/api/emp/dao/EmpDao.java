@@ -54,16 +54,17 @@ public class EmpDao {
     public int getBoardListCnt() throws Exception {
         return sqlSession.selectOne("mapper.empMapper.getBoardListCnt");
     }
+
     /**
      * 사원 상세 조회
      */
     public EmpDTO getEmpByEmpNo(int empNo) {
         return sqlSession.selectOne("mapper.empMapper.getEmpByEmpNo", empNo);
     }
+
     /**
      * 사원목록
      * update
-     * 수정예정
      */
     public int empListUpdate(EmpDTO empDTO) {
         return sqlSession.update("mapper.empMapper.empListUpdate", empDTO);
@@ -83,6 +84,7 @@ public class EmpDao {
     public List<EmpDTO> selectBoardList(LoginReq lReq) {
         return sqlSession.selectList("mapper.empMapper.selectLogin", lReq);
     }
+
     /**
      * 출퇴근
      */
@@ -96,6 +98,7 @@ public class EmpDao {
     public EmpDTO getEmpByEmpEml(String empEml) {
         return sqlSession.selectOne("mapper.empMapper.getEmpByEmpEml", empEml);
     }
+
     /**
      * id 토큰 있는지
      */
@@ -103,8 +106,27 @@ public class EmpDao {
         return sqlSession.selectOne("mapper.empMapper.getIdToken", idToken);
     }
 
-    public  EmpDTO selectSnsKey(String snsKey) {
+    /**
+     * sns키 있는지
+     */
+    public EmpDTO selectSnsKey(String  snsKey) {
         return sqlSession.selectOne("mapper.empMapper.selectSnsKey", snsKey);
+    }
+
+
+    /**
+     * sns키로 update
+     */
+    public EmpDTO UpdateSnsKey(String snsKey) {
+        return sqlSession.selectOne("mapper.empMapper.selectSnsKey", snsKey);
+    }
+
+
+    /**
+     * sns키로 update
+     */
+    public int kakaoEmpUpdate(EmpDTO empDTO) {
+        return sqlSession.update("mapper.empMapper.kakaoUpdate", empDTO);
     }
 }
 

@@ -20,6 +20,8 @@ public class EmpRes extends PageParam {
     private Object data;
     @Schema(description = "응답 코드")
     private String code;
+    @Schema(description = "로그인 토큰")
+    private String token;
     @Schema(description = "리스트 시작 위치")
     private int startList;
     @Schema(description = "사원 목록")
