@@ -216,17 +216,17 @@ public class EmpController {
      * list
      */
     @Operation(summary = "사원 정보 검색", description = "사원 정보 검색 API")
-    @PostMapping("/emp/commute/list")
-    public ResponseEntity<EmpRes> selectCommuteList(@RequestBody EmpReq req) throws Exception {
-        EmpRes resultEmpRes = new EmpRes();
+    @PostMapping("/emp/commuteList")
+    public ResponseEntity<EmpRes> selectCommuteList(@RequestBody EmpReq req) {
+        EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
         try {
-            resultEmpRes = empService.selectCommuteList(req);
+            res = empService.selectCommuteList(req);
         } catch (Exception e) {
             code = Code.FAIL;
         }
-        resultEmpRes.setCode(code);
-        return ResponseEntity.ok(resultEmpRes);
+        res.setCode(code);
+        return ResponseEntity.ok(res);
     }
 
 

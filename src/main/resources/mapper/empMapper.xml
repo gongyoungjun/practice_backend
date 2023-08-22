@@ -177,22 +177,22 @@
                , #{address}
                , ST_GeomFromText(#{geoLoc})
                , NOW()
-               , #{workcd})
+               , #{workCd})
     </insert>
     <!--    출퇴근 리스트 가져오기-->
     <select id="selectCommuteList"  parameterType="EmpReq" resultType="EmpCommuteDTO">
         select A.ATNDN_NO atndnNo
-             , A.EMP_NO   empNo
-             , B.EMP_NM   empNm
-             , A.ADRES    address
-             , A.GEO_LOC  geoLoc
-             , A.WORK_CD  workcd
-             , A.time     time
+        , A.EMP_NO empNo
+        , B.EMP_NM empNm
+        , A.ADRES address
+        , A.GEO_LOC geoLoc
+        , A.WORK_CD workCd
+        , A.TIME time
         FROM TB_ATNDN A
-                 JOIN TB_EMPLOYEE B
-                     ON A.EMP_NO = B.EMP_NO
-        ORDER BY A.time DESC
+        JOIN TB_EMPLOYEE B
+        ON A.EMP_NO = B.EMP_NO
         <include refid="sqlSelectBoardList"/>
+        ORDER BY A.time DESC
         LIMIT #{startList}, #{listSize}
     </select>
 

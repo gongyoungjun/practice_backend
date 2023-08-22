@@ -19,6 +19,6 @@ public class EmpCommuteDTO {
     @Schema(description = "시간")
     private LocalDateTime time;
     @Schema(description = "출퇴근 여부")
-    private String workcd;
+    private String workCd;
 
 }
