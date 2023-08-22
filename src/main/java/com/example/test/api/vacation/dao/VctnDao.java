@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -40,25 +41,41 @@ public class VctnDao {
     }
 
     /**
+     * 총 휴가 일수
+     */
+    public int getEmpVcTotal(VacationDTO vacationDTO) {
+        return sqlSession.update("mapper.vcMapper.getEmpVcTotal", vacationDTO);
+    }
+
+    /**
      * 휴가
      * 목록
      */
-    public VacationDTO getVacation(VcReq req) {
-        return sqlSession.selectOne("mapper.vcMapper.getVacation", req);
+    public VacationDTO getVacation(VcCreate vcCreate) {
+        return sqlSession.selectOne("mapper.vcMapper.getVacation", vcCreate);
     }
+
     /**
      * 휴가
      * 상세페이지
      */
-    public VacationDTO getVcDetail(int vctnNo) {
+    public VacationDTO getUsedVc(int vctnNo) {
         return sqlSession.selectOne("mapper.vcMapper.getVcDetail", vctnNo);
     }
+    public VacationDTO getVcDetail(int vctnNo) {
+        return sqlSession.selectOne("mapper.vcMapper.getUsedVc", vctnNo);
+    }
+
+
     /**
      * 휴가
      * 승인,취소
      */
-    public int updateVacationStatus(VacationDTO vacationDTO) {
-        return sqlSession.update("mapper.vcMapper.updateVacationStatus", vacationDTO);
+    public int updateVc(VacationDTO vacationDTO) {
+        return sqlSession.update("mapper.vcMapper.updateVc", vacationDTO);
     }
+
+
+
 
 }

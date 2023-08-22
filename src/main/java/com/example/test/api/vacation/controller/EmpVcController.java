@@ -55,10 +55,9 @@ public class EmpVcController {
      */
     @Operation(summary = "휴가 신청", description = "휴가 신청")
     @PostMapping("/vctn/insert")
-    public ResponseEntity<EmpRes> createVacation(@Valid @RequestBody VcCreate vcCreate) {
+    public ResponseEntity<EmpRes> createVacation(@RequestBody VcCreate vcCreate) {
         EmpRes res = new EmpRes();
         String code = Code.FAIL;
-
         try {
             int result = empVcService.insertVacation(vcCreate);
             if (result > 0) {
@@ -71,6 +70,9 @@ public class EmpVcController {
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
+
+
+
     /**
      * 휴가
      * 상세 페이지
@@ -105,12 +107,12 @@ public class EmpVcController {
      */
     @Operation(summary = "휴가 승인,취소", description = "휴가 승인,취소")
     @PutMapping("/approve")
-    public ResponseEntity<EmpRes> approveVacation(@RequestBody VcReq req) {
+    public ResponseEntity<EmpRes> approveVacation(@RequestBody VcCreate vcCreate) {
         EmpRes res = new EmpRes();
         String code = Code.FAIL;
 
         try {
-            VacationDTO approvedVacation = empVcService.approveVc(req);
+            VacationDTO approvedVacation = empVcService.approveVc(vcCreate);
             if (approvedVacation != null) {
                 code = Code.SUCCESS;
             }

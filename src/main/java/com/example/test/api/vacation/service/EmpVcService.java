@@ -31,6 +31,6 @@ public interface EmpVcService {
      * 휴가
      * 승인
      */
-    VacationDTO approveVc(VcReq req);
+    VacationDTO approveVc(VcCreate vcCreate);
 
 }

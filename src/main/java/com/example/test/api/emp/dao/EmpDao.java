@@ -87,10 +87,19 @@ public class EmpDao {
 
     /**
      * 출퇴근
+     * 카카오톡 나에게 전송
      */
     public int insertCommute(EmpCommuteDTO empCommuteDTO) {
         return sqlSession.insert("mapper.empMapper.insertCommute", empCommuteDTO);
     }
+    /**
+     * 출퇴근
+     * list
+     */
+    public List<EmpCommuteDTO> selectCommuteList(EmpReq req) {
+        return sqlSession.selectList("mapper.empMapper.selectCommuteList", req);
+    }
+
 
     /**
      * 이메일 가입여부
@@ -100,17 +109,10 @@ public class EmpDao {
     }
 
     /**
-     * id 토큰 있는지
-     */
-    public String getIdToken(String idToken) {
-        return sqlSession.selectOne("mapper.empMapper.getIdToken", idToken);
-    }
-
-    /**
      * sns키 있는지
      */
-    public EmpDTO selectSnsKey(String  snsKey) {
-        return sqlSession.selectOne("mapper.empMapper.selectSnsKey", snsKey);
+    public EmpDTO selectSnsKey(EmpReq req) {
+        return sqlSession.selectOne("mapper.empMapper.selectSnsKey", req);
     }
 
 

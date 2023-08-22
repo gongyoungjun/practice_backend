@@ -1,6 +1,7 @@
 package com.example.test.api.kakao.service;
 
 import com.example.test.api.emp.dto.EmpDTO;
+import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.EmpRes;
 import com.example.test.api.kakao.vo.KakaoFriend;
 import com.example.test.api.kakao.vo.KakaoReq;
@@ -30,7 +31,7 @@ public interface KakaoService {
      * snsKey가 있는지 체크
      */
 
-    EmpDTO selectSnsKey(String snsKey);
+    EmpDTO selectSnsKey(EmpReq req);
 
     /**
      * 카카오 회원가입

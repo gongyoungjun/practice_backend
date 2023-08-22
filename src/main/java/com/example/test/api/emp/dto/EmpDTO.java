@@ -64,6 +64,8 @@ public class EmpDTO {
      */
     @Schema(description = "총 휴가일 수")
     private int empVctnTtl;
+    @Schema(description = "반차 신청일 수")
+    private BigDecimal vctnHalfCnt;
     @Schema(description = "휴가 신청일 수")
     private BigDecimal vctnDayCnt;
     @Schema(description = "잔여 휴가")

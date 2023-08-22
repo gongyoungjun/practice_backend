@@ -32,6 +32,8 @@ public class VacationDTO {
      */
     @Schema(description = "총 휴가일 수")
     private int empVctnTtl;
+    @Schema(description = "휴가 종류 코드")
+    private String vctnKndCd;
     @Schema(description = "반차 신청일 수")
     private BigDecimal vctnHalfCnt;
     @Schema(description = "휴가 신청일 수")
@@ -40,6 +42,10 @@ public class VacationDTO {
     private BigDecimal vctnRsdCnt;
     @Schema(description = "신청 날짜")
     private String vctnAplDtm;
+    @Schema(description = "휴가 종류")
+    private String vctnKndNm;
+    @Schema(description = "승인 상태")
+    private String vctnStNm;
 
 
 

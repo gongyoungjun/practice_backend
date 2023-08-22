@@ -21,7 +21,7 @@ private static final Algorithm algorithmHS = Algorithm.HMAC256(SECRET_KEY);
                 //JWT 발급한 시간
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 // 만료시간 지정
-                .withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(1)))
+                .withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(10)))
                 .sign(algorithmHS); // 개인키 -> Signature 생성
     }
 

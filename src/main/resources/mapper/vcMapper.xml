@@ -6,23 +6,26 @@
 
     <!-- 휴가 조회 -->
     <select id="getVcEmpNo" parameterType="EmpReq" resultType="VacationDTO">
-        SELECT
-        v.VCTN_NO vctnNo,
+        SELECT v.VCTN_NO vctnNo,
         v.EMP_NO empNo,
         v.VCTN_DAY_CNT vctnDayCnt,
         v.VCTN_RSN vctnRsn,
-        v.VCTN_RSD_CNT vctnRsdCnt,
+        v.VCTN_KND_CD vctnKndCd,
         v.VCTN_ST_CD vctnStCd,
         v.VCTN_STR_DT vctnStrDt,
         v.VCTN_END_DT vctnEndDt,
         v.VCTN_APL_DTM vctnAplDtm,
         e.EMP_NM empNm,
         e.EMP_PHN empPhn,
-        e.EMP_VCTN_TTL empVctnTtl
+        e.EMP_VCTN_TTL empVctnTtl,
+        C.CD_VAL_NM AS vctnKndNm,
+        D.CD_VAL_NM AS vctnStNm
         FROM TB_VACATION v
         INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
+        LEFT JOIN TB_CODE C ON v.VCTN_KND_CD = C.CD_VAL AND C.CD_ID = 'VCTN_KND_CD'
+        LEFT JOIN TB_CODE D ON v.VCTN_ST_CD = D.CD_VAL AND D.CD_ID = 'VCTN_ST_CD'
         <include refid="sqlSelectBoardList"/>
-
+        ORDER BY v.VCTN_APL_DTM DESC
         LIMIT #{startList}, #{listSize};
     </select>
 
@@ -49,22 +52,6 @@
             </if>
         </where>
     </sql>
-<!--            &lt;!&ndash; 시작일만 주어졌을 경우 &ndash;&gt;
-            <if test="strDt != null and strDt != '' and (strDt == null or endDt == '')">
-                and (
-                v.VCTN_STR_DT &gt;= STR_TO_DATE(#{strDt}, '%Y-%m-%d')
-                or
-                v.VCTN_END_DT &gt;= STR_TO_DATE(#{vctnStrDt}, '%Y-%m-%d')
-                )
-            </if>
-            &lt;!&ndash; 종료일만 주어졌을 경우 &ndash;&gt;
-            <if test="endDt != null and endDt != '' and (endDt == null or strDt == '')">
-                and (
-                v.VCTN_STR_DT &lt;= STR_TO_DATE(#{endDt}, '%Y-%m-%d')
-                or
-                v.VCTN_END_DT &lt;= STR_TO_DATE(#{endDt}, '%Y-%m-%d')
-                )
-            </if>-->
 
     <!--목록 갯수-->
     <select id="selectVcListCnt" parameterType="EmpReq" resultType="int">
@@ -74,53 +61,78 @@
         <include refid="sqlSelectBoardList"/>
     </select>
 
-
-
-    <!-- 휴가 정보 상세 페이지 -->
-    <select id="getVcDetail" parameterType="int" resultType="VacationDTO">
-        SELECT
-            v.VCTN_NO vctnNo,
-            v.EMP_NO empNo,
-            v.VCTN_DAY_CNT vctnDayCnt,
-            v.VCTN_RSN vctnRsn,
-            v.VCTN_RSD_CNT vctnRsdCnt,
-            v.VCTN_ST_CD vctnStCd,
-            v.VCTN_STR_DT vctnStrDt,
-            v.VCTN_END_DT vctnEndDt,
-            v.VCTN_APL_DTM vctnAplDtm,
-            e.EMP_NM empNm,
-            e.EMP_PHN empPhn,
-            e.EMP_VCTN_TTL empVctnTtl
+    <!-- 휴가 정보 상세 페이지 getUsedVc -->
+    <select id="getUsedVc" parameterType="int" resultType="VacationDTO">
+        SELECT v.VCTN_NO                   vctnNo,
+               v.EMP_NO                    empNo,
+               v.VCTN_DAY_CNT              vctnDayCnt,
+               v.VCTN_RSN                  vctnRsn,
+               v.VCTN_KND_CD               vctnKndCd,
+               (SELECT a.EMP_VCTN_TTL - IFNULL(b.cnt, 0)
+                FROM TB_EMPLOYEE a
+                         LEFT OUTER JOIN (SELECT IFNULL(SUM(z.VCTN_DAY_CNT), 0) cnt, z.EMP_NO
+                                          FROM TB_VACATION z
+                                          WHERE VCTN_ST_CD = '02'
+                                          GROUP BY z.EMP_NO) b ON a.EMP_NO = b.EMP_NO
+                WHERE a.EMP_NO = v.EMP_NO) vctnRsdCnt,
+               v.VCTN_ST_CD                vctnStCd,
+               v.VCTN_STR_DT               vctnStrDt,
+               v.VCTN_END_DT               vctnEndDt,
+               v.VCTN_APL_DTM              vctnAplDtm,
+               e.EMP_NM                    empNm,
+               e.EMP_PHN                   empPhn,
+               e.EMP_VCTN_TTL              empVctnTtl
         FROM TB_VACATION v
                  INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
-        WHERE v.VCTN_NO = #{vctnNo};
+        WHERE v.VCTN_NO = #{vctnNo}
+        ORDER BY v.VCTN_APL_DTM DESC;
     </select>
-
-
 
     <!--  휴가 신청 -->
     <insert id="insertVacation" parameterType="VcCreate">
-        INSERT INTO TB_VACATION (EMP_NO,
-                                 VCTN_STR_DT,
-                                 VCTN_END_DT,
-                                 VCTN_KND_CD,
-                                 VCTN_ST_CD,
-                                 VCTN_DAY_CNT,
-                                 VCTN_RSN,
-                                 VCTN_RSD_CNT,
-                                 VCTN_APL_DTM)
-        VALUES (#{empNo},
-                #{vctnStrDt},
-                #{vctnEndDt},
-                #{vctnKndCd},
-                #{vctnStCd},
-                #{vctnDayCnt},
-                #{vctnRsn},
-                #{vctnRsdCnt},
-                sysdate());
+        INSERT INTO TB_VACATION
+        (
+        EMP_NO,
+        VCTN_STR_DT,
+        VCTN_END_DT,
+        VCTN_KND_CD,
+        VCTN_RSN,
+        VCTN_RSD_CNT,
+        VCTN_APL_DTM,
+        VCTN_DAY_CNT
+        )
+        VALUES
+        (
+        #{empNo},
+        #{vctnStrDt},
+        #{vctnEndDt},
+        #{vctnKndCd},
+        #{vctnRsn},
+        (
+        SELECT a.EMP_VCTN_TTL - IFNULL(b.cnt, 0)
+        FROM TB_EMPLOYEE a
+        LEFT OUTER JOIN (
+        SELECT IFNULL(SUM(z.VCTN_DAY_CNT), 0) cnt, z.EMP_NO
+        FROM TB_VACATION z
+        WHERE VCTN_ST_CD = '02'
+        GROUP BY z.EMP_NO
+        ) b ON a.EMP_NO = b.EMP_NO
+        WHERE a.EMP_NO = #{empNo}
+        ),
+        NOW(),
+        <choose>
+            <when test='vctnKndCd == "02" or vctnKndCd == "03"'>
+                #{vctnHalfCnt}
+            </when>
+            <otherwise>
+                #{vctnDayCnt}
+            </otherwise>
+        </choose>
+        )
     </insert>
 
-    <!--  휴가 조회-->
+
+    <!-- 휴가 조회 -->
     <select id="getVacation" parameterType="EmpReq" resultType="VacationDTO">
         SELECT VCTN_NO      vctnNo,
                EMP_NO       empNo,
@@ -129,13 +141,20 @@
                VCTN_RSD_CNT vctnRsdCnt
         FROM TB_VACATION
         WHERE VCTN_NO = #{vctnNo}
+        ORDER BY VCTN_APL_DTM DESC;
     </select>
 
-    <!--  휴가 승인 취소-->
-    <update id="updateVacationStatus" parameterType="VacationDTO">
+    <!-- 휴가 승인 취소 -->
+    <update id="updateVc" parameterType="VacationDTO">
         UPDATE TB_VACATION
         SET VCTN_ST_CD = #{vctnStCd}
         WHERE VCTN_NO = #{vctnNo}
     </update>
+
+
+
+
+
+
 
 </mapper>

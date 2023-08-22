@@ -136,15 +136,17 @@ public class KakaoController {
         List<EmpDTO> list = null;
 
         try {
-            if (req.getSnsKey() != null && !req.getSnsKey().isEmpty()) {
-                EmpDTO empDTO = kakaoService.selectSnsKey(req.getSnsKey());
+            // snsKey와 empNm 모두 확인
+            if (req.getSnsKey() != null && !req.getSnsKey().isEmpty()
+                  //  && req.getEmpPhn() != null && !req.getEmpPhn().isEmpty()
+            ){
+
+                EmpDTO empDTO = kakaoService.selectSnsKey(req);
                 if (empDTO != null) {
                     list = new ArrayList<>();
                     list.add(empDTO);
-
                     // snsKey가 유효하면 JWT 토큰을 생성
                     String jwtToken = JwtUtil.generateToken(empDTO.getEmpNm(), empDTO.getEmpNo());
-
                     // 응답 헤더에 토큰 설정
                     HttpHeaders headers = new HttpHeaders();
                     headers.set("Authorization", jwtToken);

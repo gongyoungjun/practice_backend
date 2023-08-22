@@ -202,6 +202,28 @@ public class EmpServiceImpl implements EmpService {
         return empDao.insertCommute(empCommuteDTO);
     }
 
+    /**
+     * 출퇴근
+     * list
+     */
+    @Override
+    public EmpRes selectCommuteList(EmpReq req) {
+        List<EmpCommuteDTO> empCommuteDTO = null;
+
+        EmpRes res = new EmpRes();
+        res.setPage(req.getPage());
+        res.setListSize(req.getListSize());
+
+        int totalCount = empDao.selectBoardListCnt(req);
+
+        if (totalCount > 0) {
+            empCommuteDTO = empDao.selectCommuteList(req);
+        }
+        res.setListCnt(totalCount);
+        res.setEmpCommuteDTO(empCommuteDTO);
+
+        return res;
+    }
 
     /**
      * 이메일 가입여부

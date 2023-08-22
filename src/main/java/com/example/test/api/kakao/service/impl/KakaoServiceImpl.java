@@ -1,5 +1,6 @@
 package com.example.test.api.kakao.service.impl;
 
+import com.example.test.api.emp.vo.EmpReq;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -90,8 +91,8 @@ public class KakaoServiceImpl implements KakaoService {
      * 카카오 snskey 비교
      */
     @Override
-    public EmpDTO selectSnsKey(String snsKey) {
-        return empDao.selectSnsKey(snsKey);
+    public EmpDTO selectSnsKey(EmpReq req) {
+        return empDao.selectSnsKey(req);
     }
 
     /**
