@@ -27,7 +27,7 @@
 
     <!--    사원 목록 페이지-->
     <!--    사원 프로필 가져오기-->
-    <select id="empList" resultType="EmpDTO" parameterType="java.lang.Integer">
+    <select id="empList" resultType="EmpDTO" parameterType="int">
         select EMP_NO       empno
              , EMP_NM       empNm
              , EMP_PHN      empPhn
@@ -114,7 +114,7 @@
 
     <!--엑셀 download-->
 
-    <select id="selectExcelList" resultType="EmpDTO" parameterType="java.lang.Integer">
+    <select id="selectExcelList" resultType="EmpDTO" parameterType="int">
         select EMP_NO  empno
              , EMP_NM  empNm
              , EMP_PHN empPhn
@@ -191,7 +191,14 @@
         FROM TB_ATNDN A
         JOIN TB_EMPLOYEE B
         ON A.EMP_NO = B.EMP_NO
-        <include refid="sqlSelectBoardList"/>
+        <where>
+            <if test="empNm != null and empNm != ''">
+                and EMP_NM LIKE CONCAT('%', #{empNm}, '%')
+            </if>
+            <if test="empNo != null and empNo != ''">
+                and A.EMP_NO = #{empNo}
+            </if>
+        </where>
         ORDER BY A.time DESC
         LIMIT #{startList}, #{listSize}
     </select>
@@ -214,7 +221,6 @@
                                 , EMP_ST_CD
                                 , EMP_RNK_CD
                                 , EMP_HR_DT
-                                , EMP_AUTH_CD
                                 , SNS_CD
                                 , SNS_KEY
                                 , EMP_BRT_DT
@@ -227,7 +233,6 @@
                , #{empStCd}
                , #{empRnkCd}
                , #{empHrDt}
-               , #{empAuthCd}
                , #{snsCd}
                , #{snsKey}
                , #{empBrtDt}

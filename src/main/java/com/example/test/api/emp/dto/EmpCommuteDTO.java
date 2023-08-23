@@ -12,6 +12,8 @@ public class EmpCommuteDTO {
     private int atndnNo;
     @Schema(description = "사번")
     private int empNo;
+    @Schema(description = "사번")
+    private String empNm;
     @Schema(description = "현재 위치")
     private String address;
     @Schema(description = "위도 경도")
