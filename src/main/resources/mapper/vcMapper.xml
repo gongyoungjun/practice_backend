@@ -68,13 +68,7 @@
                v.VCTN_DAY_CNT              vctnDayCnt,
                v.VCTN_RSN                  vctnRsn,
                v.VCTN_KND_CD               vctnKndCd,
-               (SELECT a.EMP_VCTN_TTL - IFNULL(b.cnt, 0)
-                FROM TB_EMPLOYEE a
-                         LEFT OUTER JOIN (SELECT IFNULL(SUM(z.VCTN_DAY_CNT), 0) cnt, z.EMP_NO
-                                          FROM TB_VACATION z
-                                          WHERE VCTN_ST_CD = '02'
-                                          GROUP BY z.EMP_NO) b ON a.EMP_NO = b.EMP_NO
-                WHERE a.EMP_NO = v.EMP_NO) vctnRsdCnt,
+               (e.EMP_VCTN_TTL - IFNULL(vc.cnt, 0)) vctnRsdCnt,
                v.VCTN_ST_CD                vctnStCd,
                v.VCTN_STR_DT               vctnStrDt,
                v.VCTN_END_DT               vctnEndDt,
@@ -83,7 +77,13 @@
                e.EMP_PHN                   empPhn,
                e.EMP_VCTN_TTL              empVctnTtl
         FROM TB_VACATION v
-                 INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
+        INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
+        left outer join (
+            SELECT IFNULL(SUM(z.VCTN_DAY_CNT), 0) cnt, z.EMP_NO
+            FROM TB_VACATION z
+            WHERE VCTN_ST_CD = '02'
+            GROUP BY z.EMP_NO
+        )  vc on e.EMP_NO = vc.EMP_NO
         WHERE v.VCTN_NO = #{vctnNo}
         ORDER BY v.VCTN_APL_DTM DESC;
     </select>
