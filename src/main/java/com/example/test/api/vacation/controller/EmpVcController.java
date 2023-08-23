@@ -1,6 +1,7 @@
 package com.example.test.api.vacation.controller;
 
 import com.example.test.api.config.Code;
+import com.example.test.api.emp.vo.VctnDetailRes;
 import com.example.test.api.vacation.service.EmpVcService;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.EmpRes;
@@ -79,23 +80,17 @@ public class EmpVcController {
      */
     @Operation(summary = "휴가 상세 페이지 조회", description = "휴가 상세 페이지 조회")
     @PostMapping("/vctn/detail")
-    public ResponseEntity<EmpRes> getVacationDetail(@RequestBody EmpReq req) {
-        EmpRes res = new EmpRes();
+    public ResponseEntity<VctnDetailRes> getVacationDetail(@RequestBody EmpReq req) {
+        VctnDetailRes res = new VctnDetailRes();
         String code = Code.SUCCESS;
-        List<VacationDTO> vacationList = null;
 
         try {
             if(req.getVctnNo()>0) {
-                VacationDTO vcDTO = empVcService.getVcDetail(req.getVctnNo());
-                if (vcDTO != null) {
-                    vacationList = new ArrayList<>();
-                    vacationList.add(vcDTO);
-                }
+                res.setData(empVcService.getVcDetail(req.getVctnNo()));
             }
         } catch (Exception e) {
             code = Code.FAIL;
         }
-        res.setVacationList(vacationList);
         res.setCode(code);
         return ResponseEntity.ok(res);
     }

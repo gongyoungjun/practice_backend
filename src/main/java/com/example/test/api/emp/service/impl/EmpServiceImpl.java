@@ -75,7 +75,7 @@ public class EmpServiceImpl implements EmpService {
         if (totalCount > 0) {
             empList = empDao.selectBoardList(req);
         }
-        res.setListCnt(totalCount);
+        res.setTotal(totalCount);
         res.setList(empList);
 
         return res;
@@ -219,7 +219,7 @@ public class EmpServiceImpl implements EmpService {
         if (totalCount > 0) {
             empCommuteDTO = empDao.selectCommuteList(req);
         }
-        res.setListCnt(totalCount);
+        res.setTotal(totalCount);
         res.setEmpCommuteDTO(empCommuteDTO);
 
         return res;

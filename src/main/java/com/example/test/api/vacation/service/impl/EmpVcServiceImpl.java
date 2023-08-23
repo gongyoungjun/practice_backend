@@ -40,7 +40,7 @@ public class EmpVcServiceImpl implements EmpVcService {
         if (totalCount > 0) {
             vcList = this.getVacationList(req);
         }
-        res.setListCnt(totalCount);
+        res.setTotal(totalCount);
         res.setVacationList(vcList);
 
         return res;

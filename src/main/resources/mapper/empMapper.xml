@@ -89,6 +89,7 @@
         , EMP_HR_DT empHrDt
         , EMP_BRT_DT empBrtDt
         , REG_DTM
+        , EMP_VCTN_TTL empVctnTtl
         from TB_EMPLOYEE
         <include refid="sqlSelectBoardList"/>
         LIMIT #{startList}, #{listSize}

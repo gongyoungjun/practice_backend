@@ -4,10 +4,7 @@ import com.example.test.api.config.Code;
 import com.example.test.api.emp.dto.EmpCommuteDTO;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.service.EmpService;
-import com.example.test.api.emp.vo.EmpReq;
-import com.example.test.api.emp.vo.EmpRes;
-import com.example.test.api.emp.vo.LessonException;
-import com.example.test.api.emp.vo.LessonRes;
+import com.example.test.api.emp.vo.*;
 import com.example.test.api.jwt.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -93,25 +90,18 @@ public class EmpController {
      */
     @Operation(summary = "사원 상세 정보", description = "사원 상세 정보 API")
     @PostMapping("/emp/detail")
-    public ResponseEntity<EmpRes> setEmpList(@RequestBody EmpReq req) {
-        EmpRes res = new EmpRes();
+    public ResponseEntity<EmpDetailRes> setEmpList(@RequestBody EmpReq req) {
+        EmpDetailRes res = new EmpDetailRes();
         String code = Code.SUCCESS;
         List<EmpDTO> list = null;
 
         try {
             // empService.getEmpByEmpNo 메서드에 empNo를 전달하여 특정 사원의 정보를 조회
-            if (req.getEmpNo() > 0) {
-                EmpDTO empDTO = empService.getEmpByEmpNo(req.getEmpNo());
-                if (empDTO != null) {
-                    list = new ArrayList<>();
-                    list.add(empDTO);
-                }
-            }
+            res.setData(empService.getEmpByEmpNo(req.getEmpNo()));
         } catch (Exception e) {
             code = Code.FAIL;
         }
 
-        res.setList(list);
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
