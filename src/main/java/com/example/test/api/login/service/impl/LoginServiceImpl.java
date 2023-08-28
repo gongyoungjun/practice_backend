@@ -17,7 +17,12 @@ public class LoginServiceImpl implements LoginService {
     private final EmpDao empDao;
 
     @Override
-    public List<EmpDTO> selectLoginUser(LoginReq lReq) throws Exception {
+    public EmpDTO selectLoginUser(LoginReq lReq){
         return empDao.selectBoardList(lReq);
+    }
+
+    @Override
+    public EmpDTO findUser(LoginReq lReq) {
+        return empDao.findUser(lReq);
     }
 }

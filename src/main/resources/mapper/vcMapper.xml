@@ -9,6 +9,7 @@
         SELECT v.VCTN_NO vctnNo,
         v.EMP_NO empNo,
         v.VCTN_DAY_CNT vctnDayCnt,
+        (e.EMP_VCTN_TTL - IFNULL(vc.cnt, 0)) vctnRsdCnt,
         v.VCTN_RSN vctnRsn,
         v.VCTN_KND_CD vctnKndCd,
         v.VCTN_ST_CD vctnStCd,
@@ -24,8 +25,14 @@
         INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
         LEFT JOIN TB_CODE C ON v.VCTN_KND_CD = C.CD_VAL AND C.CD_ID = 'VCTN_KND_CD'
         LEFT JOIN TB_CODE D ON v.VCTN_ST_CD = D.CD_VAL AND D.CD_ID = 'VCTN_ST_CD'
+        LEFT OUTER JOIN (
+        SELECT IFNULL(SUM(z.VCTN_DAY_CNT), 0) cnt, z.EMP_NO
+        FROM TB_VACATION z
+        WHERE VCTN_ST_CD = '02'
+        GROUP BY z.EMP_NO
+        )  vc on e.EMP_NO = vc.EMP_NO
         <include refid="sqlSelectBoardList"/>
-        ORDER BY v.VCTN_APL_DTM DESC
+        ORDER BY v.VCTN_NO DESC
         LIMIT #{startList}, #{listSize};
     </select>
 
@@ -62,7 +69,7 @@
     </select>
 
     <!-- 휴가 정보 상세 페이지 getUsedVc -->
-    <select id="getUsedVc" parameterType="int" resultType="VacationDTO">
+    <select id="selectUsedVc" parameterType="int" resultType="VacationDTO">
         SELECT v.VCTN_NO                   vctnNo,
                v.EMP_NO                    empNo,
                v.VCTN_DAY_CNT              vctnDayCnt,
@@ -85,7 +92,7 @@
             GROUP BY z.EMP_NO
         )  vc on e.EMP_NO = vc.EMP_NO
         WHERE v.VCTN_NO = #{vctnNo}
-        ORDER BY v.VCTN_APL_DTM DESC;
+        ORDER BY v.VCTN_NO DESC;
     </select>
 
     <!--  휴가 신청 -->
@@ -130,18 +137,37 @@
         </choose>
         )
     </insert>
-
+<!--    <insert id="insertVacation" parameterType="VcCreate">
+        INSERT INTO TB_VACATION
+        (
+        EMP_NO,
+        VCTN_STR_DT,
+        VCTN_END_DT,
+        VCTN_KND_CD,
+        VCTN_RSN,
+        VCTN_DAY_CNT
+        )
+        VALUES
+        (
+        #{empNo},
+        #{vctnStrDt},
+        #{vctnEndDt},
+        #{vctnKndCd},
+        #{vctnRsn})
+    </insert>-->
 
     <!-- 휴가 조회 -->
-    <select id="getVacation" parameterType="EmpReq" resultType="VacationDTO">
+    <select id="selectVacation" parameterType="EmpReq" resultType="VacationDTO">
         SELECT VCTN_NO      vctnNo,
                EMP_NO       empNo,
                VCTN_DAY_CNT vctnDayCnt,
                VCTN_RSN     vctnRsn,
                VCTN_RSD_CNT vctnRsdCnt
         FROM TB_VACATION
-        WHERE VCTN_NO = #{vctnNo}
-        ORDER BY VCTN_APL_DTM DESC;
+        WHERE EMP_NO = #{empNo}
+        ORDER BY VCTN_NO DESC
+            LIMIT 1;
+
     </select>
 
     <!-- 휴가 승인 취소 -->

@@ -1,5 +1,6 @@
 package com.example.test.api.vacation.dao;
 
+import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.vacation.vo.VcCreate;
@@ -39,6 +40,12 @@ public class VctnDao {
     public int insertVacation(VcCreate vcCreate) {
         return sqlSession.insert("mapper.vcMapper.insertVacation", vcCreate);
     }
+    /**
+     * 사원 상세 조회
+     */
+    public VacationDTO selectVcDetail(int empNo) {
+        return sqlSession.selectOne("mapper.vcMapper.selectVacation", empNo);
+    }
 
     /**
      * 총 휴가 일수
@@ -59,11 +66,12 @@ public class VctnDao {
      * 휴가
      * 상세페이지
      */
-    public VacationDTO getUsedVc(int vctnNo) {
-        return sqlSession.selectOne("mapper.vcMapper.getVcDetail", vctnNo);
+    public VacationDTO selectUsedVc(int empNo) {
+        return sqlSession.selectOne("mapper.vcMapper.selectUsedVc", empNo);
     }
+
     public VacationDTO getVcDetail(int vctnNo) {
-        return sqlSession.selectOne("mapper.vcMapper.getUsedVc", vctnNo);
+        return sqlSession.selectOne("mapper.vcMapper.selectUsedVc", vctnNo);
     }
 
 
@@ -74,8 +82,6 @@ public class VctnDao {
     public int updateVc(VacationDTO vacationDTO) {
         return sqlSession.update("mapper.vcMapper.updateVc", vacationDTO);
     }
-
-
 
 
 }

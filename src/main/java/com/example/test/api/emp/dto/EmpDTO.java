@@ -30,6 +30,8 @@ public class EmpDTO {
     @NotEmpty(message = "비밀번호는 필수입니다.")
     @Size(min = 4, max = 16, message = "비밀번호는 4~16자로 입력하세요.")
     private String empPwd;
+    @Schema(description = "비밀번호 솔트")
+    private String empPwdSalt;
 //    @Pattern(regexp = "\\d{2,3}\\d{3,4}\\d{4}", message = "ex)01012341234")
     @Schema(description = "전화번호")
     private String empPhn;
@@ -37,8 +39,12 @@ public class EmpDTO {
     private String empEml;
     @Schema(description = "사원상태 코드")
     private String empStCd;
+    @Schema(description = "사원상태")
+    private String empStNm;
     @Schema(description = "직급 코드")
     private String empRnkCd;
+    @Schema(description = "직급")
+    private String empRnkNm;
     @Schema(description = "입사일")
     private LocalDate empHrDt;
     @Schema(description = "연봉")

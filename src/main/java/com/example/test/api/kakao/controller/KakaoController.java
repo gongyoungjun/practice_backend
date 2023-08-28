@@ -11,6 +11,7 @@ import com.example.test.api.kakao.vo.KakaoReq;
 import com.example.test.api.kakao.vo.KakaoUserInfo;
 import com.example.test.api.login.vo.LoginReq;
 import com.example.test.api.login.vo.LoginRes;
+import com.example.test.api.util.PasswordUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ import static com.example.test.api.jwt.JwtUtil.generateToken;
 public class KakaoController {
 
     private final KakaoService kakaoService;
-
+    private final PasswordUtil passwordUtil;
     /**
      * 카카오
      * 인가코드
@@ -77,6 +78,9 @@ public class KakaoController {
     public ResponseEntity<EmpRes> kakaoEmpUpdate(@Valid @RequestBody EmpDTO empDTO) {
         EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
+        // 비밀번호를 SHA-256로 해싱
+        String hashedPassword = passwordUtil.sha256Encrypt(empDTO.getEmpPwd());
+        empDTO.setEmpPwd(hashedPassword);
 
         try {
             int result = kakaoService.kakaoEmpUpdate(empDTO);

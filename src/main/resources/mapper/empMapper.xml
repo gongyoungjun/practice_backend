@@ -28,17 +28,21 @@
     <!--    사원 목록 페이지-->
     <!--    사원 프로필 가져오기-->
     <select id="empList" resultType="EmpDTO" parameterType="int">
-        select EMP_NO       empno
-             , EMP_NM       empNm
-             , EMP_PHN      empPhn
-             , EMP_EML      empEml
-             , EMP_ST_CD    empStCd
-             , EMP_RNK_CD   empRnkCd
-             , EMP_HR_DT    empHrDt
-             , EMP_BRT_DT   empBrtDt
-             , EMP_VCTN_TTL empVctnTtl
-             , REG_DTM
-        from TB_EMPLOYEE
+        select EMP_NO         empno
+             , EMP_NM         empNm
+             , EMP_PHN        empPhn
+             , EMP_EML        empEml
+             , EMP_ST_CD      empStCd
+             , EMP_RNK_CD     empRnkCd
+             , EMP_HR_DT      empHrDt
+             , EMP_BRT_DT     empBrtDt
+             , EMP_VCTN_TTL   empVctnTtl
+             , C.CD_VAL_NM AS empStNm
+             , D.CD_VAL_NM AS empRnkNm
+        FROM TB_EMPLOYEE v
+                 LEFT JOIN TB_CODE C ON v.EMP_RNK_CD = C.CD_VAL AND C.CD_ID = 'EMP_ST_CD'
+                 LEFT JOIN TB_CODE D ON v.EMP_ST_CD = D.CD_VAL AND D.CD_ID = 'EMP_RNK_CD'
+        WHERE v.EMP_NO = #{empNo}
         LIMIT #{startList}, #{listSize}
     </select>
 
@@ -49,25 +53,39 @@
     </select>
 
     <!--    사원 목록 상세 조회-->
-    <select id="getEmpByEmpNo" parameterType="int" resultType="EmpDTO">
-        SELECT EMP_NO       empNo
-             , EMP_NM       empNm
-             , EMP_PHN      empPhn
-             , EMP_EML      empEml
-             , EMP_ST_CD    empStCd
-             , EMP_RNK_CD   empRnkCd
-             , EMP_HR_DT    empHrDt
-             , EMP_BRT_DT   empBrtDt
-             , EMP_VCTN_TTL empVctnTtl
-             , REG_DTM
-        FROM TB_EMPLOYEE
-        WHERE EMP_NO = #{empNo}
+    <select id="selectEmpByEmpNo" parameterType="int" resultType="EmpDTO">
+        SELECT v.EMP_NO       empNo
+             , v.EMP_NM       empNm
+             , v.EMP_PHN      empPhn
+             , v.EMP_PWD      empPwd
+             , v.EMP_EML      empEml
+             , v.EMP_ST_CD    empStCd
+             , v.EMP_RNK_CD   empRnkCd
+             , v.EMP_HR_DT    empHrDt
+             , v.EMP_BRT_DT   empBrtDt
+             , v.EMP_VCTN_TTL empVctnTtl
+             , (v.EMP_VCTN_TTL - IFNULL(vc.cnt, 0)) vctnRsdCnt
+             , C.CD_VAL_NM AS empRnkNm
+             , D.CD_VAL_NM AS empStNm
+
+        FROM TB_EMPLOYEE v
+                 LEFT JOIN TB_CODE C ON v.EMP_RNK_CD = C.CD_VAL AND C.CD_ID = 'EMP_RNK_CD'
+                 LEFT JOIN TB_CODE D ON v.EMP_ST_CD = D.CD_VAL AND D.CD_ID = 'EMP_ST_CD'
+                 LEFT OUTER JOIN (
+            SELECT IFNULL(SUM(z.VCTN_DAY_CNT), 0) cnt, z.EMP_NO
+            FROM TB_VACATION z
+            WHERE VCTN_ST_CD = '02'
+            GROUP BY z.EMP_NO
+        )  vc on v.EMP_NO = vc.EMP_NO
+        WHERE v.EMP_NO = #{empNo}
     </select>
+
     <!--로그인 구현-->
     <select id="selectLogin" parameterType="LoginReq" resultType="EmpDTO">
         SELECT EMP_NO     empNo
              , EMP_NM     empNm
              , EMP_PHN    empPhn
+             , EMP_AUTH_CD empAuthCd
              , EMP_EML    empEml
              , EMP_ST_CD  empStCd
              , EMP_RNK_CD empRnkCd
@@ -88,9 +106,12 @@
         , EMP_RNK_CD empRnkCd
         , EMP_HR_DT empHrDt
         , EMP_BRT_DT empBrtDt
-        , REG_DTM
         , EMP_VCTN_TTL empVctnTtl
-        from TB_EMPLOYEE
+        , C.CD_VAL_NM AS empStNm
+        , D.CD_VAL_NM AS empRnkNm
+        from TB_EMPLOYEE v
+        LEFT JOIN TB_CODE C ON v.EMP_RNK_CD = C.CD_VAL AND C.CD_ID = 'EMP_ST_CD'
+        LEFT JOIN TB_CODE D ON v.EMP_ST_CD = D.CD_VAL AND D.CD_ID = 'EMP_RNK_CD'
         <include refid="sqlSelectBoardList"/>
         LIMIT #{startList}, #{listSize}
     </select>
@@ -154,8 +175,8 @@
     <update id="empListUpdate" parameterType="EmpDTO">
         UPDATE TB_EMPLOYEE
         SET emp_Nm       = #{empNm},
-            emp_Pwd      = #{empPwd},
             emp_Phn      = #{empPhn},
+            EMP_PWD      = #{empPwd},
             emp_Eml      = #{empEml},
             emp_St_Cd    = #{empStCd},
             emp_Rnk_Cd   = #{empRnkCd},
@@ -163,6 +184,7 @@
             emp_Slr      = #{empSlr},
             emp_Brt_Dt   = #{empBrtDt},
             EMP_VCTN_TTL = #{empVctnTtl}
+
         WHERE emp_No = #{empNo}
     </update>
 
@@ -181,7 +203,7 @@
                , #{workCd})
     </insert>
     <!--    출퇴근 리스트 가져오기-->
-    <select id="selectCommuteList"  parameterType="EmpReq" resultType="EmpCommuteDTO">
+    <select id="selectCommuteList" parameterType="EmpReq" resultType="EmpCommuteDTO">
         select A.ATNDN_NO atndnNo
         , A.EMP_NO empNo
         , B.EMP_NM empNm

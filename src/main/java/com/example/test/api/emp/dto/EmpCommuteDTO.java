@@ -19,7 +19,7 @@ public class EmpCommuteDTO {
     @Schema(description = "위도 경도")
     private String geoLoc;
     @Schema(description = "시간")
-    private LocalDateTime time;
+    private String time;
     @Schema(description = "출퇴근 여부")
     private String workCd;
 

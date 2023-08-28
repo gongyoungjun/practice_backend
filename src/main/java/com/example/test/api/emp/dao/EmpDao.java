@@ -58,8 +58,8 @@ public class EmpDao {
     /**
      * 사원 상세 조회
      */
-    public EmpDTO getEmpByEmpNo(int empNo) {
-        return sqlSession.selectOne("mapper.empMapper.getEmpByEmpNo", empNo);
+    public EmpDTO selectEmpByEmpNo(int empNo) {
+        return sqlSession.selectOne("mapper.empMapper.selectEmpByEmpNo", empNo);
     }
 
     /**
@@ -81,8 +81,11 @@ public class EmpDao {
     /**
      * 로그인
      */
-    public List<EmpDTO> selectBoardList(LoginReq lReq) {
-        return sqlSession.selectList("mapper.empMapper.selectLogin", lReq);
+    public EmpDTO selectBoardList(LoginReq lReq) {
+        return sqlSession.selectOne("mapper.empMapper.selectLogin", lReq);
+    }
+    public EmpDTO findUser(LoginReq lReq) {
+        return sqlSession.selectOne("mapper.empMapper.selectLogin", lReq);
     }
 
     /**
@@ -122,7 +125,6 @@ public class EmpDao {
     public EmpDTO UpdateSnsKey(String snsKey) {
         return sqlSession.selectOne("mapper.empMapper.selectSnsKey", snsKey);
     }
-
 
     /**
      * sns키로 update

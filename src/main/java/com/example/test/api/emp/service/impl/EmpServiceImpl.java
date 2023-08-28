@@ -95,8 +95,8 @@ public class EmpServiceImpl implements EmpService {
      * 사원
      * 상세 목록
      */
-    public EmpDTO getEmpByEmpNo(int empNo) {
-        return empDao.getEmpByEmpNo(empNo);
+    public EmpDTO selectEmpByEmpNo(int empNo) {
+        return empDao.selectEmpByEmpNo(empNo);
     }
 
     /**

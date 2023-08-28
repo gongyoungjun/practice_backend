@@ -97,7 +97,7 @@ public class EmpController {
 
         try {
             // empService.getEmpByEmpNo 메서드에 empNo를 전달하여 특정 사원의 정보를 조회
-            res.setData(empService.getEmpByEmpNo(req.getEmpNo()));
+            res.setData(empService.selectEmpByEmpNo(req.getEmpNo()));
         } catch (Exception e) {
             code = Code.FAIL;
         }

@@ -37,7 +37,7 @@ public interface EmpService {
      * 사원
      * 상세 정보
      */
-    EmpDTO getEmpByEmpNo(int empNo);
+    EmpDTO selectEmpByEmpNo(int empNo);
 
 
     /**
