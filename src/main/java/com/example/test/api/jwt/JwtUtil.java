@@ -14,9 +14,9 @@ public class JwtUtil {
 //    eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMiIsImlhdCI6MTY5MTU0NzA2NywiZXhwIjoxNjkxNTUwNjY3fQ.uO8WI7ihXNVzXEbIGeL5_tZCZsMwve-lzvhPyCg2N2M
 private static final Algorithm algorithmHS = Algorithm.HMAC256(SECRET_KEY);
 
-    public static String generateToken(String empPhn, int empNo) {
+    public static String generateToken(int empNo) {
         return JWT.create()
-                .withSubject(empPhn)  // user 객체의 id 지정
+/*                .withSubject(empPhn)  // user 객체의 id 지정*/
                 .withClaim("empNo", empNo)
                 //JWT 발급한 시간
                 .withIssuedAt(new Date(System.currentTimeMillis()))

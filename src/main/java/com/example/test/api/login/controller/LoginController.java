@@ -31,7 +31,7 @@ public class LoginController {
 
     private final LoginService loginService;
     private final PasswordUtil passwordUtil;
-    private final String KAKAO_USERINFO_ENDPOINT = "https://kapi.kakao.com/v2/user/me";
+//    private final String KAKAO_USERINFO_ENDPOINT = "https://kapi.kakao.com/v2/user/me";
 
 
     /**
@@ -52,17 +52,16 @@ public class LoginController {
             EmpDTO data = loginService.selectLoginUser(lReq);
             // 저장된 비밀번호 해시값을 계산
 
-            // 비밀번호 값 db에 저장된 값과 비교
             if (data != null) {
                 // 로그인 성공
                 code = Code.SUCCESS;
 
                 // JWT 토큰 생성 (jjwt 사용)
-                String jwtToken = JwtUtil.generateToken(data.getEmpNm(), data.getEmpNo());
+                String jwtToken = JwtUtil.generateToken(data.getEmpNo());
                 loginRes.setToken(jwtToken);  // Token을 응답에 추가
                 loginRes.setData(data);  // EmpDTO를 리스트에 넣어서 설정
-            } else(Exception e){
-                e.printStackTrace();
+            } else {
+                code = Code.FAIL;
             }
         } catch (Exception e) {
             e.printStackTrace();

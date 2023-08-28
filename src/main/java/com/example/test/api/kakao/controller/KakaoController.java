@@ -86,7 +86,7 @@ public class KakaoController {
             int result = kakaoService.kakaoEmpUpdate(empDTO);
             if (result > 0) {
                 // 사원 정보 업데이트 성공 시, JWT 토큰 생성
-                String jwtToken = JwtUtil.generateToken(empDTO.getEmpNm(), empDTO.getEmpNo());
+                String jwtToken = JwtUtil.generateToken(empDTO.getEmpNo());
 
                 // 응답 헤더에 토큰 설정
                 HttpHeaders headers = new HttpHeaders();
@@ -150,7 +150,7 @@ public class KakaoController {
                     list = new ArrayList<>();
                     list.add(empDTO);
                     // snsKey가 유효하면 JWT 토큰을 생성
-                    String jwtToken = JwtUtil.generateToken(empDTO.getEmpNm(), empDTO.getEmpNo());
+                    String jwtToken = JwtUtil.generateToken(empDTO.getEmpNo());
                     // 응답 헤더에 토큰 설정
                     HttpHeaders headers = new HttpHeaders();
                     headers.set("Authorization", jwtToken);
