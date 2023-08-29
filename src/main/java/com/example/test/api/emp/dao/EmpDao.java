@@ -1,8 +1,6 @@
 package com.example.test.api.emp.dao;
 
 import com.example.test.api.emp.dto.EmpCommuteDTO;
-import com.example.test.api.emp.vo.EmpRes;
-import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.login.vo.LoginReq;
@@ -49,13 +47,6 @@ public class EmpDao {
     }
 
     /**
-     * 사원 목록 개수 조회
-     */
-    public int getBoardListCnt() throws Exception {
-        return sqlSession.selectOne("mapper.empMapper.getBoardListCnt");
-    }
-
-    /**
      * 사원 상세 조회
      */
     public EmpDTO selectEmpByEmpNo(int empNo) {
@@ -84,9 +75,6 @@ public class EmpDao {
     public EmpDTO selectBoardList(LoginReq lReq) {
         return sqlSession.selectOne("mapper.empMapper.selectLogin", lReq);
     }
-    public EmpDTO findUser(LoginReq lReq) {
-        return sqlSession.selectOne("mapper.empMapper.selectLogin", lReq);
-    }
 
     /**
      * 출퇴근
@@ -95,6 +83,7 @@ public class EmpDao {
     public int insertCommute(EmpCommuteDTO empCommuteDTO) {
         return sqlSession.insert("mapper.empMapper.insertCommute", empCommuteDTO);
     }
+
     /**
      * 출퇴근
      * list
@@ -102,7 +91,6 @@ public class EmpDao {
     public List<EmpCommuteDTO> selectCommuteList(EmpReq req) {
         return sqlSession.selectList("mapper.empMapper.selectCommuteList", req);
     }
-
 
     /**
      * 이메일 가입여부
@@ -117,7 +105,6 @@ public class EmpDao {
     public EmpDTO selectSnsKey(EmpReq req) {
         return sqlSession.selectOne("mapper.empMapper.selectSnsKey", req);
     }
-
 
     /**
      * sns키로 update

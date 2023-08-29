@@ -2,9 +2,8 @@ package com.example.test.api.util;
 
 import org.springframework.stereotype.Component;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 
 @Component
 public class PasswordUtil {

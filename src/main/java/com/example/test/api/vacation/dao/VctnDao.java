@@ -1,15 +1,12 @@
 package com.example.test.api.vacation.dao;
 
-import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.vacation.vo.VcCreate;
-import com.example.test.api.vacation.vo.VcReq;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -39,19 +36,6 @@ public class VctnDao {
      */
     public int insertVacation(VcCreate vcCreate) {
         return sqlSession.insert("mapper.vcMapper.insertVacation", vcCreate);
-    }
-    /**
-     * 사원 상세 조회
-     */
-    public VacationDTO selectVcDetail(int empNo) {
-        return sqlSession.selectOne("mapper.vcMapper.selectVacation", empNo);
-    }
-
-    /**
-     * 총 휴가 일수
-     */
-    public int getEmpVcTotal(VacationDTO vacationDTO) {
-        return sqlSession.update("mapper.vcMapper.getEmpVcTotal", vacationDTO);
     }
 
     /**

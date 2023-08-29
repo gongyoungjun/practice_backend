@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +31,6 @@ public class EmpController {
 
     private final EmpService empService;
 
-    private final MessageSourceAccessor MessageSourceAccessor;
-
     /**
      * 회원가입
      * PostMapping - consuemes
@@ -41,12 +38,11 @@ public class EmpController {
     @Operation(summary = "회원가입", description = "회원가입 API")
     @PostMapping("/signup")
     public ResponseEntity<String> insertUser(@RequestPart("file") MultipartFile file, @RequestBody EmpDTO empDTO) {
+
         try {
-            // 실패(99)
             String code = Code.FAIL;
             // 회원가입 로직 구현
             log.debug("회원가입 {}", empDTO);
-
 
             // 파일 업로드 처리
             if (!file.isEmpty()) {
@@ -59,13 +55,11 @@ public class EmpController {
                 code = Code.SUCCESS;
             }
             // ResponseEntity -> http에 해당하는 HttpHeader와 HttpBody를 포함하는 클래스
-            return ResponseEntity.ok(code); // 코드 반환 00,99
+            return ResponseEntity.ok(code);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
 
     /**
      * 사원 정보 검색
@@ -93,7 +87,6 @@ public class EmpController {
     public ResponseEntity<EmpDetailRes> setEmpList(@RequestBody EmpReq req) {
         EmpDetailRes res = new EmpDetailRes();
         String code = Code.SUCCESS;
-        List<EmpDTO> list = null;
 
         try {
             // empService.getEmpByEmpNo 메서드에 empNo를 전달하여 특정 사원의 정보를 조회
@@ -105,7 +98,6 @@ public class EmpController {
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
-
 
     /**
      * 사원 정보 수정 API
@@ -175,8 +167,6 @@ public class EmpController {
     }
 
 
-
-
     /**
      * 출퇴근
      */
@@ -220,7 +210,6 @@ public class EmpController {
     }
 
 
-
     /**
      * 사원 이메일
      * 가입 확인
@@ -250,9 +239,6 @@ public class EmpController {
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
-
-
-
 
 
 }

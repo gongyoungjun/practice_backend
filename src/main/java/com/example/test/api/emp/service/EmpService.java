@@ -1,15 +1,14 @@
 package com.example.test.api.emp.service;
 
 import com.example.test.api.emp.dto.EmpCommuteDTO;
+import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.EmpRes;
 import com.example.test.api.emp.vo.FileVo;
-import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.LessonRes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface EmpService {
 

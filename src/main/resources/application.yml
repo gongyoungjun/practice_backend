@@ -6,9 +6,6 @@ spring:
     password: ghdtjr2@
     driver-class-name: org.mariadb.jdbc.Driver
 
-
-
-
   # 멀티파트 요청 처리
   # 파일 업로드 최대 크기 10MB
   servlet:

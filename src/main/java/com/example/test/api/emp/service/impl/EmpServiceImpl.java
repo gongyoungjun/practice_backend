@@ -47,7 +47,6 @@ public class EmpServiceImpl implements EmpService {
         return empDao.insertUser(empDTO);
     }
 
-
     @Override
     public FileVo signUploadFile(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
@@ -81,7 +80,6 @@ public class EmpServiceImpl implements EmpService {
         return res;
     }
 
-
     /**
      * 사원목록
      * update
@@ -99,17 +97,6 @@ public class EmpServiceImpl implements EmpService {
         return empDao.selectEmpByEmpNo(empNo);
     }
 
-    /**
-     * 사원목록
-     * 전체 가져오기
-     */
-/*
-    @Override
-    public int getBoardListCnt() throws Exception {
-        return empDao.getBoardListCnt();
-
-    }
-*/
 
     /**
      * 파일
@@ -194,6 +181,7 @@ public class EmpServiceImpl implements EmpService {
         lessonRes = new LessonRes(lessonList, count10, count20);
         return lessonRes;
     }
+
     /**
      * 출퇴근
      */
@@ -231,7 +219,6 @@ public class EmpServiceImpl implements EmpService {
     public EmpDTO getEmpByEmpEml(String empEml) {
         return empDao.getEmpByEmpEml(empEml);
     }
-
 
 
 }

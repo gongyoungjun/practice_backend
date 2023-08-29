@@ -4,7 +4,6 @@ import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.EmpRes;
 import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.vacation.vo.VcCreate;
-import com.example.test.api.vacation.vo.VcReq;
 
 public interface EmpVcService {
 

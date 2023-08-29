@@ -1,6 +1,5 @@
 package com.example.test.api.vacation.service.impl;
 
-import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.EmpRes;
 import com.example.test.api.vacation.dao.VctnDao;
@@ -55,44 +54,7 @@ public class EmpVcServiceImpl implements EmpVcService {
     }
 
     /**
-     * 휴가
-     * 신청
-     */
-/*    @Override
-    public int insertVacation(VcCreate vcCreate) {
-        try {
-            // 시작과 끝 날짜를 LocalDate 객체로 변환합니다.
-            LocalDate startDate = vcCreate.getVctnStrDt();
-            LocalDate endDate = vcCreate.getVctnEndDt();
-
-
-            // 주말을 제외한 실제 휴가일을 계산
-            int vcDays = 0;
-
-            while (!startDate.isAfter(endDate)) {
-                DayOfWeek dayOfWeek = startDate.getDayOfWeek();
-                if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
-                    vcDays++;
-                }
-                startDate = startDate.plusDays(1);
-            }
-            // 휴가 분류 코드를 확인하고 반차 또는 전체 휴가일
-            if (vcCreate.getVctnKndCd().equals("02") || vcCreate.getVctnKndCd().equals("03")) {
-                vcCreate.setVctnHalfCnt((BigDecimal.valueOf(vcDays * 0.5)));
-            } else {
-                vcCreate.setVctnDayCnt(BigDecimal.valueOf(vcDays));
-            }
-
-            // DB에 저장 결과를 반환
-            return vctnDao.insertVacation(vcCreate);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }*/
-
-    /**
-     * 휴가를 신청합니다.
+     * 휴가 신청
      */
     public int insertVacation(VcCreate vcCreate) {
         try {
@@ -139,16 +101,6 @@ public class EmpVcServiceImpl implements EmpVcService {
 
     /**
      * 휴가
-     * 신청
-     * 기본
-     */
-/*    @Override
-    public int insertVacation(VcCreate vcCreate) {
-        return vctnDao.insertVacation(vcCreate);
-    }*/
-
-    /**
-     * 휴가
      * 상세 페이지
      */
     @Override
@@ -171,14 +123,5 @@ public class EmpVcServiceImpl implements EmpVcService {
         return vacationDTO;
     }
 
-/*    @Override
-    public VacationDTO approveVc(VcCreate vcCreate) {
-        VacationDTO vacationDTO = vctnDao.getVacation(vcCreate);
-        if (vacationDTO != null) {
-            vacationDTO.setVctnStCd(vcCreate.getVctnStCd());
-            vctnDao.updateVc(vacationDTO);
-        }
-        return vacationDTO;
-    }*/
 
 }

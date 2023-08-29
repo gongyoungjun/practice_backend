@@ -115,6 +115,7 @@
         <include refid="sqlSelectBoardList"/>
         LIMIT #{startList}, #{listSize}
     </select>
+
     <!-- 검색 조건(이름,empNo) -->
     <sql id="sqlSelectBoardList">
         <where>

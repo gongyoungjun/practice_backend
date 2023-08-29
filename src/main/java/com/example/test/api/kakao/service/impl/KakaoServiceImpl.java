@@ -1,17 +1,12 @@
 package com.example.test.api.kakao.service.impl;
 
-import com.example.test.api.emp.vo.EmpReq;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.test.api.emp.dao.EmpDao;
 import com.example.test.api.emp.dto.EmpDTO;
-import com.example.test.api.emp.vo.EmpRes;
+import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.kakao.service.KakaoService;
-import com.example.test.api.kakao.vo.KakaoUserInfo;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,9 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -68,23 +60,6 @@ public class KakaoServiceImpl implements KakaoService {
         log.info("Kakao token response: {}", responseBody);
 
         return responseBody;
-    }
-
-    /**
-     * id-token
-     * 인코딩을 디코딩으로
-     */
-    @Override
-    public String getIdToken(String jwtToken) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-            JWT.require(algorithm).build(); // token verifier
-            DecodedJWT jwt = JWT.decode(jwtToken);
-            return jwt.getClaim("sub").asString();
-        } catch (Exception e) {
-            new RuntimeException("인코딩을 디코딩 쪽 에러", e);
-        }
-        return jwtToken;
     }
 
     /**

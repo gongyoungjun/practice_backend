@@ -1,23 +1,18 @@
 package com.example.test.api.vacation.controller;
 
 import com.example.test.api.config.Code;
-import com.example.test.api.emp.vo.VctnDetailRes;
-import com.example.test.api.vacation.service.EmpVcService;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.EmpRes;
+import com.example.test.api.emp.vo.VctnDetailRes;
+import com.example.test.api.vacation.service.EmpVcService;
 import com.example.test.api.vacation.vo.VacationDTO;
 import com.example.test.api.vacation.vo.VcCreate;
-import com.example.test.api.vacation.vo.VcReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -73,7 +68,6 @@ public class EmpVcController {
     }
 
 
-
     /**
      * 휴가
      * 상세 페이지
@@ -85,7 +79,7 @@ public class EmpVcController {
         String code = Code.SUCCESS;
 
         try {
-            if(req.getVctnNo()>0) {
+            if (req.getVctnNo() > 0) {
                 res.setData(empVcService.getVcDetail(req.getVctnNo()));
             }
         } catch (Exception e) {

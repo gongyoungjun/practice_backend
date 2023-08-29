@@ -6,11 +6,6 @@ import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.emp.vo.EmpRes;
 import com.example.test.api.jwt.JwtUtil;
 import com.example.test.api.kakao.service.KakaoService;
-import com.example.test.api.kakao.vo.KakaoFriend;
-import com.example.test.api.kakao.vo.KakaoReq;
-import com.example.test.api.kakao.vo.KakaoUserInfo;
-import com.example.test.api.login.vo.LoginReq;
-import com.example.test.api.login.vo.LoginRes;
 import com.example.test.api.util.PasswordUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -18,16 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import static com.example.test.api.jwt.JwtUtil.generateToken;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,6 +25,7 @@ public class KakaoController {
 
     private final KakaoService kakaoService;
     private final PasswordUtil passwordUtil;
+
     /**
      * 카카오
      * 인가코드
@@ -105,29 +95,6 @@ public class KakaoController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
     }
 
-
-
-/*    @Operation(summary = "사원 정보 업데이트", description = "사원 정보 업데이트 api")
-    @PutMapping("/kakao/update")
-    public ResponseEntity<EmpRes> kakaoEmpUpdate(@Valid @RequestBody EmpDTO empDTO) {
-        EmpRes res = new EmpRes();
-        String code = Code.SUCCESS;
-
-        try {
-            int result = kakaoService.kakaoEmpUpdate(empDTO);
-            if (result > 0) {
-                code = Code.SUCCESS;
-            }
-        } catch (Exception e) {
-            code = Code.FAIL;
-        }
-
-        res.setCode(code);
-        return ResponseEntity.ok(res);
-    }*/
-
-
-
     /**
      * snsKey
      * 가입 확인
@@ -142,8 +109,8 @@ public class KakaoController {
         try {
             // snsKey와 empNm 모두 확인
             if (req.getSnsKey() != null && !req.getSnsKey().isEmpty()
-                  //  && req.getEmpPhn() != null && !req.getEmpPhn().isEmpty()
-            ){
+                //  && req.getEmpPhn() != null && !req.getEmpPhn().isEmpty()
+            ) {
 
                 EmpDTO empDTO = kakaoService.selectSnsKey(req);
                 if (empDTO != null) {
@@ -175,34 +142,6 @@ public class KakaoController {
         return ResponseEntity.ok(res);
     }
 
-
-
-//    @Operation(summary = "snsKey 확인", description = "snsKey 존재 여부 확인 API")
-//    @PostMapping("/kakao/snsKey")
-//    public ResponseEntity<EmpRes> checkSnsKey(@RequestBody EmpReq req) {
-//        EmpRes res = new EmpRes();
-//        String code = Code.SUCCESS;
-//        List<EmpDTO> list = null;
-//
-//        try {
-//            if (req.getSnsKey() != null && !req.getSnsKey().isEmpty()) {
-//                EmpDTO empDTO = kakaoService.selectSnsKey(req.getSnsKey());
-//                if (empDTO != null) {
-//                    list = new ArrayList<>();
-//                    list.add(empDTO);
-//                }
-//            } else {
-//                code = Code.FAIL;
-//            }
-//        } catch (Exception e) {
-//            code = Code.FAIL;
-//        }
-//
-//        res.setList(list);
-//        res.setCode(code);
-//        return ResponseEntity.ok(res);
-//    }
-
     /**
      * 사원
      * sns키로
@@ -212,11 +151,11 @@ public class KakaoController {
     @PostMapping("/kakao/detail")
     public ResponseEntity<EmpRes> UpdateSnsKey(@RequestBody EmpReq req) {
         System.out.println(req);  // 요청 본문 출력
-
         EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
         List<EmpDTO> list = null;
         String snsKey = req.getSnsKey();
+
         try {
             if (snsKey != null && !snsKey.trim().isEmpty()) {
                 EmpDTO empDTO = kakaoService.UpdateSnsKey(req.getSnsKey());
@@ -234,6 +173,5 @@ public class KakaoController {
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
-
 
 }

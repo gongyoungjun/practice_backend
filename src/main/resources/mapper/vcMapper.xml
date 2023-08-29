@@ -38,8 +38,8 @@
 
     <sql id="sqlSelectBoardList">
         <where>
-            <if test="vctnNo != null and vctnNo != ''">
-                and v.VCTN_NO = #{vctnNo}
+            <if test="empNo != null and empNo != ''">
+                and v.EMP_NO = #{empNo}
             </if>
             <if test="empNm != null and empNm != ''">
                 and e.EMP_NM LIKE CONCAT('%', #{empNm}, '%')
