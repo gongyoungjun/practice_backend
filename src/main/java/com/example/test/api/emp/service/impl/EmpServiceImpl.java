@@ -54,7 +54,6 @@ public class EmpServiceImpl implements EmpService {
         }
         // 파일 업로드 처리
         FileVo fileVo = uploadFile(file);
-        // 여기에서 파일 정보를 활용하여 추가적인 작업 수행 (예: 파일 경로 저장, 파일 정보 DB 등록)
         return fileVo;
     }
 
@@ -63,6 +62,8 @@ public class EmpServiceImpl implements EmpService {
      */
     @Override
     public EmpRes getEmpListAndSearch(EmpReq req) {
+
+
         List<EmpDTO> empList = null;
 
         EmpRes res = new EmpRes();

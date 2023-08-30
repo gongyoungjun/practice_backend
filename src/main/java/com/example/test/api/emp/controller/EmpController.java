@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,27 +37,23 @@ public class EmpController {
     @Operation(summary = "회원가입", description = "회원가입 API")
     @PostMapping("/signup")
     public ResponseEntity<String> insertUser(@RequestPart("file") MultipartFile file, @RequestBody EmpDTO empDTO) {
-
+        String code = Code.FAIL;
         try {
-            String code = Code.FAIL;
             // 회원가입 로직 구현
             log.debug("회원가입 {}", empDTO);
-
             // 파일 업로드 처리
             if (!file.isEmpty()) {
                 empService.signUploadFile(file);
             }
-
-            // res 성공적으로 등록(00) 여부 판단
             int res = empService.insertUser(empDTO);
             if (res > 0) {
                 code = Code.SUCCESS;
             }
-            // ResponseEntity -> http에 해당하는 HttpHeader와 HttpBody를 포함하는 클래스
-            return ResponseEntity.ok(code);
+
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            code = Code.FAIL;
         }
+        return ResponseEntity.ok(code);
     }
 
     /**
@@ -89,7 +84,6 @@ public class EmpController {
         String code = Code.SUCCESS;
 
         try {
-            // empService.getEmpByEmpNo 메서드에 empNo를 전달하여 특정 사원의 정보를 조회
             res.setData(empService.selectEmpByEmpNo(req.getEmpNo()));
         } catch (Exception e) {
             code = Code.FAIL;
@@ -104,11 +98,12 @@ public class EmpController {
      */
     @Operation(summary = "사원 정보 수정", description = "사원 정보 수정 api")
     @PutMapping("/emp/update")
-    public ResponseEntity<EmpRes> setEmpListUpdate(@Valid @RequestBody EmpDTO empDTO) {
+    public ResponseEntity<EmpRes> setEmpListUpdate(@RequestBody EmpDTO empDTO) {
         EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
 
         try {
+            log.debug("업데이트", res);
             int result = empService.empListUpdate(empDTO);
             if (result > 0) {
                 code = Code.SUCCESS;
@@ -143,7 +138,6 @@ public class EmpController {
     /**
      * 파일
      * losson
-     *
      * @PathVariable = 템플릿 변수 처리 {}
      */
     @Operation(summary = "Lesson", description = "Lesson")
@@ -165,7 +159,6 @@ public class EmpController {
         lessonRes.setCode(code);
         return ResponseEntity.ok(lessonRes);
     }
-
 
     /**
      * 출퇴근
@@ -209,37 +202,24 @@ public class EmpController {
         return ResponseEntity.ok(res);
     }
 
-
     /**
      * 사원 이메일
      * 가입 확인
      */
     @Operation(summary = "사원 이메일 확인", description = "사원 이메일 존재 여부 확인 API")
     @PostMapping("/emp/emailCheck")
-    public ResponseEntity<EmpRes> checkEmpEmail(@RequestBody EmpReq req) {
-        EmpRes res = new EmpRes();
+    public ResponseEntity<EmpDetailRes> checkEmpEmail(@RequestBody EmpReq req) {
+        EmpDetailRes res = new EmpDetailRes();
         String code = Code.SUCCESS;
-        List<EmpDTO> list = null;
 
         try {
-            if (req.getEmpEml() != null && !req.getEmpEml().isEmpty()) {
-                EmpDTO empDTO = empService.getEmpByEmpEml(req.getEmpEml());
-                if (empDTO != null) {
-                    list = new ArrayList<>();
-                    list.add(empDTO);
-                }
-            } else {
-                code = Code.FAIL;
-            }
+            res.setData(empService.getEmpByEmpEml(req.getEmpEml()));
         } catch (Exception e) {
             code = Code.FAIL;
         }
-
-        res.setList(list);
         res.setCode(code);
         return ResponseEntity.ok(res);
     }
-
 
 }
 

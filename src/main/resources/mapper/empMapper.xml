@@ -54,43 +54,41 @@
 
     <!--    사원 목록 상세 조회-->
     <select id="selectEmpByEmpNo" parameterType="int" resultType="EmpDTO">
-        SELECT v.EMP_NO       empNo
-             , v.EMP_NM       empNm
-             , v.EMP_PHN      empPhn
-             , v.EMP_PWD      empPwd
-             , v.EMP_EML      empEml
-             , v.EMP_ST_CD    empStCd
-             , v.EMP_RNK_CD   empRnkCd
-             , v.EMP_HR_DT    empHrDt
-             , v.EMP_BRT_DT   empBrtDt
-             , v.EMP_VCTN_TTL empVctnTtl
+        SELECT v.EMP_NO                             empNo
+             , v.EMP_NM                             empNm
+             , v.EMP_PHN                            empPhn
+             , v.EMP_PWD                            empPwd
+             , v.EMP_EML                            empEml
+             , v.EMP_ST_CD                          empStCd
+             , v.EMP_RNK_CD                         empRnkCd
+             , v.EMP_HR_DT                          empHrDt
+             , v.EMP_BRT_DT                         empBrtDt
+             , v.EMP_VCTN_TTL                       empVctnTtl
              , (v.EMP_VCTN_TTL - IFNULL(vc.cnt, 0)) vctnRsdCnt
-             , C.CD_VAL_NM AS empRnkNm
-             , D.CD_VAL_NM AS empStNm
+             , C.CD_VAL_NM AS                       empRnkNm
+             , D.CD_VAL_NM AS                       empStNm
 
         FROM TB_EMPLOYEE v
                  LEFT JOIN TB_CODE C ON v.EMP_RNK_CD = C.CD_VAL AND C.CD_ID = 'EMP_RNK_CD'
                  LEFT JOIN TB_CODE D ON v.EMP_ST_CD = D.CD_VAL AND D.CD_ID = 'EMP_ST_CD'
-                 LEFT OUTER JOIN (
-            SELECT IFNULL(SUM(z.VCTN_DAY_CNT), 0) cnt, z.EMP_NO
-            FROM TB_VACATION z
-            WHERE VCTN_ST_CD = '02'
-            GROUP BY z.EMP_NO
-        )  vc on v.EMP_NO = vc.EMP_NO
+                 LEFT OUTER JOIN (SELECT IFNULL(SUM(z.VCTN_DAY_CNT), 0) cnt, z.EMP_NO
+                                  FROM TB_VACATION z
+                                  WHERE VCTN_ST_CD = '02'
+                                  GROUP BY z.EMP_NO) vc on v.EMP_NO = vc.EMP_NO
         WHERE v.EMP_NO = #{empNo}
     </select>
 
     <!--로그인 구현-->
     <select id="selectLogin" parameterType="LoginReq" resultType="EmpDTO">
-        SELECT EMP_NO     empNo
-             , EMP_NM     empNm
-             , EMP_PHN    empPhn
+        SELECT EMP_NO      empNo
+             , EMP_NM      empNm
+             , EMP_PHN     empPhn
              , EMP_AUTH_CD empAuthCd
-             , EMP_EML    empEml
-             , EMP_ST_CD  empStCd
-             , EMP_RNK_CD empRnkCd
-             , EMP_HR_DT  empHrDt
-             , EMP_BRT_DT empBrtDt
+             , EMP_EML     empEml
+             , EMP_ST_CD   empStCd
+             , EMP_RNK_CD  empRnkCd
+             , EMP_HR_DT   empHrDt
+             , EMP_BRT_DT  empBrtDt
              , REG_DTM
         FROM TB_EMPLOYEE
         WHERE EMP_PHN = #{empPhn}
@@ -113,6 +111,7 @@
         LEFT JOIN TB_CODE C ON v.EMP_RNK_CD = C.CD_VAL AND C.CD_ID = 'EMP_ST_CD'
         LEFT JOIN TB_CODE D ON v.EMP_ST_CD = D.CD_VAL AND D.CD_ID = 'EMP_RNK_CD'
         <include refid="sqlSelectBoardList"/>
+        ORDER BY EMP_NO DESC
         LIMIT #{startList}, #{listSize}
     </select>
 
@@ -177,7 +176,6 @@
         UPDATE TB_EMPLOYEE
         SET emp_Nm       = #{empNm},
             emp_Phn      = #{empPhn},
-            EMP_PWD      = #{empPwd},
             emp_Eml      = #{empEml},
             emp_St_Cd    = #{empStCd},
             emp_Rnk_Cd   = #{empRnkCd},
@@ -185,10 +183,8 @@
             emp_Slr      = #{empSlr},
             emp_Brt_Dt   = #{empBrtDt},
             EMP_VCTN_TTL = #{empVctnTtl}
-
         WHERE emp_No = #{empNo}
     </update>
-
 
     <!-- 출퇴근 -->
     <insert id="insertCommute" parameterType="EmpCommuteDTO">
@@ -230,7 +226,10 @@
 
     <!-- 사원 목록 이메일 여부-->
     <select id="getEmpByEmpEml" parameterType="String" resultType="EmpDTO">
-        select EMP_EML empEml
+        select EMP_NO      empNo,
+               EMP_NM      empNm,
+               EMP_EML     empEml,
+               EMP_AUTH_CD empAuthCd
         FROM TB_EMPLOYEE
         WHERE EMP_EML = #{empEml}
     </select>
@@ -281,15 +280,16 @@
 
     <!-- snskey로 확인  -->
     <select id="selectSnsKey" parameterType="String" resultType="EmpDTO">
-        SELECT EMP_NO     empNo
-             , EMP_NM     empNm
-             , EMP_PHN    empPhn
-             , EMP_EML    empEml
-             , EMP_ST_CD  empStCd
-             , EMP_RNK_CD empRnkCd
-             , EMP_HR_DT  empHrDt
-             , EMP_BRT_DT empBrtDt
-             , SNS_KEY    snsKey
+        SELECT EMP_NO      empNo
+             , EMP_NM      empNm
+             , EMP_PHN     empPhn
+             , EMP_EML     empEml
+             , EMP_ST_CD   empStCd
+             , EMP_AUTH_CD empAuthCd
+             , EMP_RNK_CD  empRnkCd
+             , EMP_HR_DT   empHrDt
+             , EMP_BRT_DT  empBrtDt
+             , SNS_KEY     snsKey
              , REG_DTM
         FROM TB_EMPLOYEE
         WHERE SNS_KEY = #{snsKey}

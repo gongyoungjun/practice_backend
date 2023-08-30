@@ -43,7 +43,7 @@ public class VctnDao {
      * 목록
      */
     public VacationDTO getVacation(VcCreate vcCreate) {
-        return sqlSession.selectOne("mapper.vcMapper.getVacation", vcCreate);
+        return sqlSession.selectOne("mapper.vcMapper.selectUsedVc", vcCreate);
     }
 
     /**

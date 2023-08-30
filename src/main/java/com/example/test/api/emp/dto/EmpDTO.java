@@ -27,8 +27,8 @@ public class EmpDTO {
     @NotEmpty(message = "사원이름은 필수입니다.")
     private String empNm;
     @Schema(description = "비밀번호")
-    @NotEmpty(message = "비밀번호는 필수입니다.")
-    @Size(min = 4, max = 16, message = "비밀번호는 4~16자로 입력하세요.")
+/*    @NotEmpty(message = "비밀번호는 필수입니다.")*/
+ /*   @Size(min = 4, max = 16, message = "비밀번호는 4~16자로 입력하세요.")*/
     private String empPwd;
     @Schema(description = "비밀번호 솔트")
     private String empPwdSalt;
@@ -53,7 +53,6 @@ public class EmpDTO {
     private LocalDate empBrtDt;
     @Schema(description = "권한")
     private String empAuthCd;
-
     @Schema(description = "sns 로그인")
     private int snsCd;
     @Schema(description = "sns 키")
