@@ -36,6 +36,14 @@ public class EmpReq extends PageParam {
     private String snsKey;
     @Schema(description = "총 휴가일 수")
     private int empVctnTtl;
+    @Schema(description = "직급 코드")
+    private String empRnkCd;
+    @Schema(description = "직급")
+    private String empRnkNm;
+    @Schema(description = "사원상태")
+    private String empStNm;
+    @Schema(description = "사원상태 코드")
+    private String empStCd;
 
 }
 

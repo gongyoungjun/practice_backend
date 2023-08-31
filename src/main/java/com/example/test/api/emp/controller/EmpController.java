@@ -84,7 +84,9 @@ public class EmpController {
         String code = Code.SUCCESS;
 
         try {
-            res.setData(empService.selectEmpByEmpNo(req.getEmpNo()));
+            if (req.getEmpNo() > 0) {
+                res.setData(empService.selectEmpByEmpNo(req.getEmpNo()));
+            }
         } catch (Exception e) {
             code = Code.FAIL;
         }
@@ -101,15 +103,15 @@ public class EmpController {
     public ResponseEntity<EmpRes> setEmpListUpdate(@RequestBody EmpDTO empDTO) {
         EmpRes res = new EmpRes();
         String code = Code.SUCCESS;
-
         try {
-            log.debug("업데이트", res);
             int result = empService.empListUpdate(empDTO);
             if (result > 0) {
                 code = Code.SUCCESS;
             }
+            res.setData(result);
         } catch (Exception e) {
             code = Code.FAIL;
+            e.printStackTrace();
         }
 
         res.setCode(code);

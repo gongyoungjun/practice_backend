@@ -42,8 +42,8 @@
         FROM TB_EMPLOYEE v
                  LEFT JOIN TB_CODE C ON v.EMP_RNK_CD = C.CD_VAL AND C.CD_ID = 'EMP_ST_CD'
                  LEFT JOIN TB_CODE D ON v.EMP_ST_CD = D.CD_VAL AND D.CD_ID = 'EMP_RNK_CD'
-        WHERE v.EMP_NO = #{empNo}
-        LIMIT #{startList}, #{listSize}
+        WHERE v.EMP_NO = #{empNo} LIMIT #{startList}
+            , #{listSize}
     </select>
 
     <!--    페이징 데이터 가져오기-->
@@ -105,11 +105,11 @@
         , EMP_HR_DT empHrDt
         , EMP_BRT_DT empBrtDt
         , EMP_VCTN_TTL empVctnTtl
-        , C.CD_VAL_NM AS empStNm
-        , D.CD_VAL_NM AS empRnkNm
+        , C.CD_VAL_NM AS empRnkNm
+        , D.CD_VAL_NM AS empStNm
         from TB_EMPLOYEE v
-        LEFT JOIN TB_CODE C ON v.EMP_RNK_CD = C.CD_VAL AND C.CD_ID = 'EMP_ST_CD'
-        LEFT JOIN TB_CODE D ON v.EMP_ST_CD = D.CD_VAL AND D.CD_ID = 'EMP_RNK_CD'
+        LEFT JOIN TB_CODE C ON v.EMP_RNK_CD = C.CD_VAL AND C.CD_ID = 'EMP_RNK_CD'
+        LEFT JOIN TB_CODE D ON v.EMP_ST_CD = D.CD_VAL AND D.CD_ID = 'EMP_ST_CD'
         <include refid="sqlSelectBoardList"/>
         ORDER BY EMP_NO DESC
         LIMIT #{startList}, #{listSize}

@@ -4,6 +4,8 @@ import com.example.test.api.emp.dto.EmpCommuteDTO;
 import com.example.test.api.emp.dto.EmpDTO;
 import com.example.test.api.emp.vo.EmpReq;
 import com.example.test.api.login.vo.LoginReq;
+import com.example.test.api.vacation.vo.VacationDTO;
+import com.example.test.api.vacation.vo.VcCreate;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -60,7 +62,9 @@ public class EmpDao {
     public int empListUpdate(EmpDTO empDTO) {
         return sqlSession.update("mapper.empMapper.empListUpdate", empDTO);
     }
-
+    public EmpDTO selectEmpList(EmpReq req) {
+        return sqlSession.selectOne("mapper.vcMapper.selectBoardList", req);
+    }
     /**
      * 엑셀
      * 다운로드
