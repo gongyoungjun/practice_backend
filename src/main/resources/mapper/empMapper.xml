@@ -40,8 +40,8 @@
              , C.CD_VAL_NM AS empStNm
              , D.CD_VAL_NM AS empRnkNm
         FROM TB_EMPLOYEE v
-                 LEFT JOIN TB_CODE C ON v.EMP_RNK_CD = C.CD_VAL AND C.CD_ID = 'EMP_ST_CD'
-                 LEFT JOIN TB_CODE D ON v.EMP_ST_CD = D.CD_VAL AND D.CD_ID = 'EMP_RNK_CD'
+                 LEFT JOIN TB_CODE C ON v.EMP_ST_CD = C.CD_VAL AND C.CD_ID = 'EMP_ST_CD'
+                 LEFT JOIN TB_CODE D ON v.EMP_RNK_CD = D.CD_VAL AND D.CD_ID = 'EMP_RNK_CD'
         WHERE v.EMP_NO = #{empNo} LIMIT #{startList}
             , #{listSize}
     </select>

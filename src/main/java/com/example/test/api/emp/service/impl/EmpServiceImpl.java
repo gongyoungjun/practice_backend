@@ -63,7 +63,6 @@ public class EmpServiceImpl implements EmpService {
     @Override
     public EmpRes getEmpListAndSearch(EmpReq req) {
 
-
         List<EmpDTO> empList = null;
 
         EmpRes res = new EmpRes();

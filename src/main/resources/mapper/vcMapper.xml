@@ -69,34 +69,40 @@
     </select>
 
     <!-- 휴가 정보 상세 페이지 getUsedVc -->
+
     <select id="selectUsedVc" parameterType="int" resultType="VacationDTO">
-        SELECT v.VCTN_NO                            vctnNo,
-               v.EMP_NO                             empNo,
-               v.VCTN_DAY_CNT                       vctnDayCnt,
-               v.VCTN_RSN                           vctnRsn,
-               v.VCTN_KND_CD                        vctnKndCd,
+        SELECT v.VCTN_NO vctnNo,
+               v.EMP_NO empNo,
+               v.VCTN_DAY_CNT vctnDayCnt,
+               v.VCTN_RSN vctnRsn,
+               v.VCTN_KND_CD vctnKndCd,
                (e.EMP_VCTN_TTL - IFNULL(vc.cnt, 0)) vctnRsdCnt,
-               v.VCTN_ST_CD                         vctnStCd,
-               v.VCTN_STR_DT                        vctnStrDt,
-               v.VCTN_END_DT                        vctnEndDt,
-               v.VCTN_APL_DTM                       vctnAplDtm,
-               e.EMP_NM                             empNm,
-               e.EMP_PHN                            empPhn,
-               e.EMP_VCTN_TTL                       empVctnTtl
+               v.VCTN_ST_CD vctnStCd,
+               v.VCTN_STR_DT vctnStrDt,
+               v.VCTN_END_DT vctnEndDt,
+               v.VCTN_APL_DTM vctnAplDtm,
+               e.EMP_NM empNm,
+               e.EMP_PHN empPhn,
+               e.EMP_VCTN_TTL empVctnTtl
         FROM TB_VACATION v
                  INNER JOIN TB_EMPLOYEE e ON v.EMP_NO = e.EMP_NO
-                 left outer join (SELECT IFNULL(SUM(z.VCTN_DAY_CNT), 0) cnt, z.EMP_NO
-                                  FROM TB_VACATION z
-                                  WHERE VCTN_ST_CD = '02'
-                                  GROUP BY z.EMP_NO) vc on e.EMP_NO = vc.EMP_NO
-        WHERE v.VCTN_NO = #{vctnNo}
-        ORDER BY v.VCTN_NO DESC;
+                 left outer join (
+            SELECT IFNULL(SUM(z.VCTN_DAY_CNT), 0) cnt, z.EMP_NO
+            FROM TB_VACATION z
+            WHERE VCTN_ST_CD = '02'
+            GROUP BY z.EMP_NO
+        ) vc on e.EMP_NO = vc.EMP_NO
+        WHERE (v.VCTN_NO = #{vctnNo} OR v.EMP_NO = #{empNo})
+        ORDER BY v.VCTN_NO DESC
+            LIMIT 1;
     </select>
+
 
     <!--  휴가 신청 -->
     <insert id="insertVacation" parameterType="VcCreate">
         INSERT INTO TB_VACATION
         (
+        VCTN_NO,
         EMP_NO,
         VCTN_STR_DT,
         VCTN_END_DT,
@@ -108,6 +114,7 @@
         )
         VALUES
         (
+        #{vctnNo},
         #{empNo},
         #{vctnStrDt},
         #{vctnEndDt},
@@ -135,6 +142,9 @@
         </choose>
         )
     </insert>
+
+
+
 
 
     <!-- 휴가 조회 -->

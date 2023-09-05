@@ -82,7 +82,6 @@ public class EmpVcServiceImpl implements EmpVcService {
             VacationDTO vacationDTO = selectUsedVc(vcCreate.getEmpNo());
             int remain = vacationDTO.getVctnRsdCnt().intValue();
 
-
             // DB에 저장 결과를 반환
             return vctnDao.insertVacation(vcCreate);
         } catch (Exception e) {
