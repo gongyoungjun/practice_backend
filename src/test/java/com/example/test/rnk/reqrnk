@@ -1,0 +1,38 @@
+package com.whataulsan.biz.promotion.model.req;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ReqRnk {
+
+    @Schema(description = "랭킹 목록 : Update 문일 경우에만 사용", type = "long", nullable = true)
+    private long rnkSn;
+
+/*    @Schema(description = "회원아이디", type = "string", nullable = true)
+    private String mbrId;*/
+
+    @Schema(description = "일별 포인트", type = "String", nullable = true)
+    private String pntDate;
+
+    @Schema(description = "월별 포인트", type = "String", nullable = true)
+    private String pntMonth;
+
+/*
+    @Schema(description = "포인트", type = "String", nullable = true)
+    private String pntAmt;
+*/
+
+    @Schema(description = "회원명", type = "String", nullable = true)
+    private String mbrGnm;
+
+    @Schema(description = "휴대전화번호", type = "String", nullable = true)
+    private String mblTel;
+
+    @Schema(description = "로그인아이디", type = "String", nullable = true)
+    private String lgnId;
+
+
+}

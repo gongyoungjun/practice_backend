@@ -1,0 +1,89 @@
+package com.whataulsan.biz.promotion.controller;
+
+
+import com.whataulsan.biz.member.model.res.ResMember;
+import com.whataulsan.biz.promotion.service.RnkService;
+import com.whataulsan.biz.reward.model.req.ReqPointCurrentStatus;
+import com.whataulsan.biz.reward.model.res.ResPointCurrentStatus;
+import com.whataulsan.common.model.PagingResultVO;
+import com.whataulsan.common.model.SuccessResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.List;
+
+/**
+ * com.whataulsan.biz.promotion.controller.RnkController
+ * <p>
+ * 입점사 공지
+ *
+ * @author
+ * @version 1.0
+ * @since 2024/01/25
+ *
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ *     수정일        수정자           수정내용
+ *  ----------    --------        ---------------------------
+ *  2024/01/25    rrar           최초 생성
+ * </pre>
+ */
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/promotion/rnk")
+@Validated
+@Tag(name = "랭킹", description = "프로모션 API")
+public class RnkController {
+    final RnkService rnkService;
+
+    /**
+     * 일별 랭킹을 조회합니다.
+     *
+     * @param
+     * @return
+     */
+    @GetMapping("/daily")
+    @Parameters({
+            @Parameter(name = "fromDate", description = "검색시작일 (YYYY-MM-DD)", schema = @Schema(type = "String", nullable = true), in = ParameterIn.QUERY),
+            @Parameter(name = "toDate", description = "검색종료일 (YYYY-MM-DD)", schema = @Schema(type = "String", nullable = true), in = ParameterIn.QUERY),
+    })
+    @Operation(summary = "일별 랭킹 조회", description = "일별 랭킹 조회를 한다")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "일별 포인트 조회 성공", content = @Content(schema = @Schema(implementation = ResMember.class)))
+    })
+    public SuccessResponse getMemberList(@Parameter(hidden = true) @Valid dd reqMemberSearchFilter) {
+        rnkService.insertConnectionListRecord(reqMemberSearchFilter);
+        PagingResultVO result = rnkService.dd(reqMemberSearchFilter);
+        return new SuccessResponse(result);
+    }
+
+    @GetMapping("/month")
+    @Parameters({
+            @Parameter(name = "fromMonth", description = "검색시작월 (YYYY-MM)", schema = @Schema(type = "String"), in = ParameterIn.QUERY),
+            @Parameter(name = "toMonth", description = "검색종료월 (YYYY-MM)", schema = @Schema(type = "String"), in = ParameterIn.QUERY),
+    })
+    @Operation(summary = " 월별 포인트현황조회", description = "월별 포인트 현황을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "포인트 현황 조회 성공", content = @Content(schema = @Schema(implementation = ResPointCurrentStatus.class)))
+    })
+    public SuccessResponse getPointCurrentStatusByMonth(@Parameter(hidden = true) @Valid ReqPointCurrentStatus reqPointCurrentStatus) {
+        List<ResPointCurrentStatus> result = RnkService.dd(reqPointCurrentStatus);
+        return new SuccessResponse(result);
+    }
+
+}
+

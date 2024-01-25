@@ -1,0 +1,16 @@
+package com.whataulsan.biz.promotion.service;
+
+import com.whataulsan.biz.promotion.model.req.*;
+import com.whataulsan.biz.promotion.model.res.*;
+import com.whataulsan.common.model.PagingResultVO;
+import org.springframework.stereotype.Service;
+
+
+import java.util.List;
+
+@Service
+public interface RnkService {
+
+
+
+}
